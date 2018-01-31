@@ -1,9 +1,12 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET users listing. */
+/* GET welcome page strings. */
 router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+  res.json({
+    title: "Hejsan!",
+    body: "Detta ska bli en webapp."
+  });
 });
 
 module.exports = router;
