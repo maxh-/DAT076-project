@@ -1,29 +1,35 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 
 
 class App extends Component {
 
+  // constructor(props) {
+  //   super(props);
+  //   /////this.state = { strings: {} };
+  // }
+
   // get some data from server
   componentDidMount() {
-    return fetch('/welcome')
+    fetch('/welcome')
       .then(res => res.json())
-      .then(strings => this.setState({ strings }));
+      .then(strings => this.setState(strings))
+      .then(state => console.log(this.state));
   }
 
   // render component
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">{this.strings}</h1>
+        <div className="App">
+          <header className="App-header">
+          <h1 className="App-title">
+            { this.state && this.state.title }
+          </h1>
         </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
+          <p className="App-intro">
+            { this.state && this.state.body }
+          </p>
+        </div>
     );
   }
 }
