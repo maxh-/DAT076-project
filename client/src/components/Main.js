@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 
-class NewRecipe extends Component {
+
+class Main extends Component {
 
   // render component
   render() {
     return (
-      <div className="NewRecipe">
-        Nytt recept
+      <div>
+
       </div>
     );
   }
 }
 
-export default NewRecipe;
+export default Main;

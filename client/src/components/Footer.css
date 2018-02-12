@@ -1,6 +1,7 @@
-* {
-	border-radius: 0;
-}
-.footer{
-	margin-bottom: 0;
+
+.container {
+  display: block;
+  padding: 20px;
+  height: 60px;
+  width: 100%;
 }

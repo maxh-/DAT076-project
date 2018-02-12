@@ -18,10 +18,8 @@ class App extends Component {
     return (
         <div className="App">
           <Navigation />
-          <div className="main-content">
-          Hem
+          <Main />
           <Footer />
-          </div>
         </div>
     );
   }

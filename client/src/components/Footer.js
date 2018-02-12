@@ -1,17 +1,13 @@
 import React, { Component } from 'react';
-import { Navbar } from 'react-bootstrap';
-import './css/Footer.css';
+import { Nav, Navbar,NavItem, } from 'react-bootstrap';
 
 class Footer extends Component {
-
-
-  // render component
   render() {
-    return (
-        <Navbar className="footer" inverse>
-        </Navbar>
+    return(
+      <Navbar className="Footer" inverse collapseOnSelect>
+          <h3>Footer</h3>
+      </Navbar>
     );
   }
 }
-
-export default Footer;
+export default Footer

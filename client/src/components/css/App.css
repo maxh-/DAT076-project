@@ -1,4 +1,6 @@
-
+body {
+  margin-top: 50px;
+}
 .App {
   text-align: center;
 }
@@ -22,7 +24,10 @@
 .App-intro {
   font-size: large;
 }
-
+.Footer {
+  margin: auto;
+  color: white;
+}
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
