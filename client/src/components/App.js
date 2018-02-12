@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import './App.css';
+import './css/App.css';
+import Navigation from './Navigation'
+import Footer from './Footer'
 
 class App extends Component {
 
@@ -15,14 +17,11 @@ class App extends Component {
   render() {
     return (
         <div className="App">
-          <header className="App-header">
-          <h1 className="App-title">
-            { this.state && this.state.title }
-          </h1>
-        </header>
-          <p className="App-intro">
-            { this.state && this.state.body }
-          </p>
+          <Navigation />
+          <div className="main-content">
+          Hem
+          <Footer />
+          </div>
         </div>
     );
   }
