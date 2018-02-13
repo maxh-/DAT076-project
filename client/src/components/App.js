@@ -13,15 +13,15 @@ class App extends Component {
       .then(strings => this.setState(strings))
       .then(state => console.log(this.state));
   }
-
+  
   // render component
   render() {
     return (
-        <div className="App">
-          <Navigation />
-          <Main />
-          <Footer />
-        </div>
+      <div className="App">
+        <Navigation />
+        <Main />
+        <Footer />
+      </div>
     );
   }
 }
