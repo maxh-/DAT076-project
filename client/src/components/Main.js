@@ -7,8 +7,6 @@ import MyPages from './MyPages';
 import MyProfile from './MyProfile';
 import MySavedRecipes from './MySavedRecipes';
 
-
-
 class Main extends Component {
 
   // render component
@@ -22,7 +20,6 @@ class Main extends Component {
 		      <Route path='/new' component={NewRecipe}/>
 		      <Route path='/profile' component={MyProfile}/>
 		      <Route path='/saved' component={MySavedRecipes}/>
-
     		</Switch>
       </main>
     );
