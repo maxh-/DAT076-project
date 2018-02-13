@@ -19,7 +19,9 @@ class App extends Component {
     return (
       <div className="App">
         <Navigation />
-        <Main />
+        <div className="container">
+          <Main />
+        </div>
         <Footer />
       </div>
     );
