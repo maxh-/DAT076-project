@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import './App.css';
+import './css/App.css';
+import Navigation from './Navigation';
+import Footer from './Footer';
+import Main from './Main';
 
 class App extends Component {
 
@@ -10,20 +13,17 @@ class App extends Component {
       .then(strings => this.setState(strings))
       .then(state => console.log(this.state));
   }
-
+  
   // render component
   render() {
     return (
-        <div className="App">
-          <header className="App-header">
-          <h1 className="App-title">
-            { this.state && this.state.title }
-          </h1>
-        </header>
-          <p className="App-intro">
-            { this.state && this.state.body }
-          </p>
+      <div className="App">
+        <Navigation />
+        <div className="container">
+          <Main />
         </div>
+        <Footer />
+      </div>
     );
   }
 }
