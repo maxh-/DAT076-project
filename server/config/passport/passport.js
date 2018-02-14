@@ -20,9 +20,11 @@ passport.deserializeUser(function(id, done) {
   });
 });
 
-passport.use(new LocalStrategy(
-  function(username, password, done){
-    models.User.findOne({where:{username:username}}).then(user => {
+passport.use(new LocalStrategy({
+  usernameField: 'email'
+},
+  function(email, password, done){
+    models.User.findOne({where:{email:email}}).then(user => {
       passwd = user ? user.password : '';
       isMatch = models.User.validPassword(password, passwd, done, user);
     });
