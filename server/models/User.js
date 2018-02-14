@@ -53,15 +53,18 @@ module.exports  = (sequelize, DataTypes) => {
   };
 
   // salt password before create
-  User.beforeCreate((user, options) => {
-    const salt = bcrypt.genSalt(12, function(err, salt){
-      return salt;
-    });
-    return Promise.resolve(bcrypt.hash(user.password, salt, null, function(err, hash){
-      if(err) return next(err);
-      user.password = hash;
-    }));
-  });
+  User.beforeCreate(hashPassword);
+  User.beforeUpdate(hashPassword);
 
   return User;
+};
+
+const hashPassword = (user, options) =>{
+  const salt = bcrypt.genSalt(12, function(err, salt){
+    return salt;
+  });
+  return Promise.resolve(bcrypt.hash(user.password, salt, null, function(err, hash){
+    if(err) return next(err);
+    user.password = hash;
+  }));
 };

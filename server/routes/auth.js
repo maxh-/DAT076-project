@@ -59,7 +59,7 @@ router.post('/forgot', (req, res, next) => {
       models.User.find({where:{email:req.body.email}}).then(user => {
         if(user){
           user.resetPasswordToken = token;
-          user.resetPasswordExpires = Date.now() + 36000; // one hour
+          user.resetPasswordExpires = Date.now() + 3600000; // one hour
 
           user.save().then(() =>{
             done(null, token, user);
@@ -70,7 +70,7 @@ router.post('/forgot', (req, res, next) => {
       });
     },
     function(token, user, done) {
-      const smtpTransport = nodemailer.createTransport('SMTP', {
+      const smtpTransport = nodemailer.createTransport({
         service: 'gmail',
         auth: {
           user: 'noreplyrecept@gmail.com',
@@ -80,10 +80,10 @@ router.post('/forgot', (req, res, next) => {
       const mailOptions = {
         to: user.email,
         from: 'noreplyrecept@gmail.com',
-        subject: 'Node.js Password Reset',
+        subject: 'Receptappen Password Reset',
         text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
           'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-          'http://' + req.headers.host + '/reset/' + token + '\n\n' +
+          'http://' + req.headers.host + '/auth/reset/' + token + '\n\n' +
           'If you did not request this, please ignore this email and your password will remain unchanged.\n'
       };
       smtpTransport.sendMail(mailOptions, function(err) {
@@ -98,6 +98,69 @@ router.post('/forgot', (req, res, next) => {
 
 });
 
+/* GET reset password page */
+router.get('/reset/:token', (req, res, next) => {
+  models.User.find({
+    where:{resetPasswordToken:req.params.token,
+           resetPasswordExpires: {$gt: Date.now()}}
+  }).then(user => {
+    if(user){
+      res.redirect('/welcome'); // TODO: fix correct redirect (password reset form)
+    }else{
+      res.status(400).send("token expired or does not exist");
+    }
+  });
+});
+
+/* POST reset password */
+router.post('/reset/:token', (req, res, next) => {
+  async.waterfall([
+    function(done){
+      models.User.find({
+        where:{resetPasswordToken:req.params.token,
+               resetPasswordExpires: {$gt: Date.now()}}
+      }).then(user => {
+        if(user){
+          if(req.body.password === req.body.password2){
+            user.password = req.body.password;
+            user.resetPasswordToken = null;
+            user.resetPasswordExpires = null;
+
+            user.save().then(() => {
+              done(null, user);
+            });
+          }else{
+            res.status(400).send("passwords do not match");
+          }
+        }else{
+          res.status(400).send("token expired or does not exist");
+        }
+      });
+    },
+    function( user, done) {
+      const smtpTransport = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: 'noreplyrecept@gmail.com',
+          pass: 'testpass'
+        }
+      });
+      const mailOptions = {
+        to: user.email,
+        from: 'noreplyrecept@gmail.com',
+        subject: 'Your password has been changed',
+        text: 'Hello,\n\n' +
+          'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
+      };
+      smtpTransport.sendMail(mailOptions, function(err) {
+        done(err, 'done');
+      });
+    }
+
+  ], function(err){
+    res.redirect('/welcome'); // TODO: fix to correct redirect
+  });
+});
 
 
 module.exports = router;
