@@ -60,11 +60,13 @@ module.exports  = (sequelize, DataTypes) => {
 };
 
 const hashPassword = (user, options) =>{
-  const salt = bcrypt.genSalt(12, function(err, salt){
-    return salt;
-  });
-  return Promise.resolve(bcrypt.hash(user.password, salt, null, function(err, hash){
-    if(err) return next(err);
-    user.password = hash;
-  }));
+  if(user.changed('password')){
+    const salt = bcrypt.genSalt(12, function(err, salt){
+      return salt;
+    });
+    return Promise.resolve(bcrypt.hash(user.password, salt, null, function(err, hash){
+      if(err) return next(err);
+      user.password = hash;
+    }));
+  }
 };
