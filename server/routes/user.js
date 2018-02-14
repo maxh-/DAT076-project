@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const models = require('../models');
+const passport = require('passport');
 
 /* GET users. */
 router.get('/', (req, res, next) => {
@@ -19,5 +20,10 @@ router.get('/createTestUser/:id', (req, res, next) => {
     res.send(user);
   });
 });
+
+router.post('/login',
+  passport.authenticate('local', {successRedirect: '/user',
+                                  failRedirect: '/fail'})
+);
 
 module.exports = router;
