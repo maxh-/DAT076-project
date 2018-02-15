@@ -31,7 +31,6 @@ module.exports  = (sequelize, DataTypes) => {
     }
   });
 
-  // Dont return password to frontend
   // this makes the password still useable inside the backend! 
   User.prototype.toJSON =  function () {
     var values = Object.assign({}, this.get());

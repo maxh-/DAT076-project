@@ -15,7 +15,9 @@ const isAuthenticated = require('./server/middlewares/isAuthenticated');
 //routes
 const welcome = require('./server/routes/welcome');
 const auth = require('./server/routes/auth');
-const user = require('./server/routes/user-me');
+const userMe = require('./server/routes/user-me');
+const user = require('./server/routes/user');
+
 
 const app = express();
 
@@ -36,7 +38,8 @@ app.use(passport.session());
 // routes
 app.use('/welcome', welcome);
 app.use('/auth', auth);
-app.use('/user/me', isAuthenticated, user);
+app.use('/user/me', isAuthenticated, userMe);
+app.use('/user', user);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
