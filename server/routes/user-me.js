@@ -27,4 +27,14 @@ router.post('/changePassword', async (req, res, next) => {
   }
 });
 
+/* POST change user settings */
+router.post('/update', async (req, res, next) => {
+  const user = await models.User.findById(req.user.id);
+  user.firstName = req.body.firstName;
+  user.lastName = req.body.lastName;
+
+  await user.save();
+  res.send(user);
+});
+
 module.exports = router;
