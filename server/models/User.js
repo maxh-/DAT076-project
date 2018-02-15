@@ -40,7 +40,7 @@ module.exports  = (sequelize, DataTypes) => {
     return values;
   };
 
-  // check if password is valid
+  // check if password is valid for use with passport
   User.validPassword = function(password, passwd, done, user){
     bcrypt.compare(password, passwd, function(err, isMatch){
       if(err) console.log(err);
@@ -49,6 +49,16 @@ module.exports  = (sequelize, DataTypes) => {
       }else{
         return done(null, false);
       }
+    });
+  };
+
+  // check if passwords are equal
+  User.comparePassword = function(password, passwd){
+    return new Promise(resolve => {
+      bcrypt.compare(password, passwd, (err, isMatch) => {
+        if(err) console.log(err);
+        resolve(isMatch);
+      });
     });
   };
 
