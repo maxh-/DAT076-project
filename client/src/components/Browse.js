@@ -16,25 +16,24 @@ class Browse extends Component {
     super(props);
     this.state = {
     	searchWord: '',
-  		typ: '',
-  		ingrediens: '',
-  		ursprung: '',
-  		spec: ''
+  		typ: '1',
+  		ingrediens: '2',
+  		ursprung: '3',
+  		spec: '4'
   	};
-
-    this.typ = "";
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleChange(event) {
-    this.setState({value: event.target.value});
+  handleChange({ target }) {
+    this.setState({
+      [target.name]: target.value
+    });
   }
 
   handleSubmit(event) {
-    alert('A name was submitted: ' + this.state.value);
-    event.preventDefault();
+    console.log(this.state.searchWord);
   }
 
   render() {
@@ -45,34 +44,44 @@ class Browse extends Component {
 			  	{dummySentences.slice(0, 4).join(' ')}
 			  </Col>);
 		}
+		
 		//Switch för splash och sök?
     return (
     	<div className="content">
     		<div id="search" >
 		      <ButtonGroup  id="btnGrp" justified >
 		  			<DropdownButton id="leftBtn" title="Måltid">
-							<ToggleButtonGroup type="radio" onChange={this.handleChange} name="typ" defaultValue={1}>
-					      <ToggleButton bsSize="small" value={1.1}>Förrätt</ToggleButton>
-					      <ToggleButton bsSize="small" value={1.2}>Huvudrätt</ToggleButton>
-					      <ToggleButton bsSize="small" value={1.3}>Efterrätt</ToggleButton>
+							<ToggleButtonGroup name="typ" type="radio" defaultValue={1}>
+					      <ToggleButton bsSize="small" value={1.1} 
+					      	onClick={this.handleChange}>Förrätt</ToggleButton>
+					      <ToggleButton bsSize="small" value={1.2} 
+					      	onClick={this.handleChange} >Huvudrätt</ToggleButton>
+					      <ToggleButton bsSize="small" value={1.3}
+					      	onClick={this.handleChange} >Efterrätt</ToggleButton>
 					    </ToggleButtonGroup>
 					  </DropdownButton>
 		  			<DropdownButton title="Ingrediens">
-							<ToggleButtonGroup type="radio" onChange={this.handleChange} name="ingrediens" defaultValue={2}>
-					      <ToggleButton bsSize="small" value={2.1}>Fisk</ToggleButton>
-					      <ToggleButton bsSize="small" value={2.2}>Grönsaker</ToggleButton>
-					      <ToggleButton bsSize="small" value={2.3}>Kött</ToggleButton>
+							<ToggleButtonGroup type="radio" name="ingrediens" defaultValue={2}>
+					      <ToggleButton bsSize="small" value={2.1} 
+					      	onClick={this.handleChange} >Fisk</ToggleButton>
+					      <ToggleButton bsSize="small" value={2.2} 
+					      	onClick={this.handleChange} >Grönsaker</ToggleButton>
+					      <ToggleButton bsSize="small" value={2.3}
+					      	onClick={this.handleChange} >Kött</ToggleButton>
 					    </ToggleButtonGroup>
 					  </DropdownButton>
 					  <DropdownButton title="Ursprung">
 							<ToggleButtonGroup type="radio" name="ursprung" defaultValue={3}>
-					      <ToggleButton bsSize="small" value={3.1}>Thailand</ToggleButton>
-					      <ToggleButton bsSize="small" value={3.2}>Italien</ToggleButton>
-					      <ToggleButton bsSize="small" value={3.3}>Brasilien</ToggleButton>
+					      <ToggleButton bsSize="small" value={3.1} 
+					      	onClick={this.handleChange} >Thailand</ToggleButton>
+					      <ToggleButton bsSize="small" value={3.2}
+					      	onClick={this.handleChange} >Italien</ToggleButton>
+					      <ToggleButton bsSize="small" value={3.3}
+					      	onClick={this.handleChange}>Brasilien</ToggleButton>
 					    </ToggleButtonGroup>
 					  </DropdownButton>
-		  			<DropdownButton id="rightBtn" title="Specialkost">
-					  	<ToggleButtonGroup type="radio" name="spec" defaultValue={4}>
+		  			<DropdownButton id="rightBtn" title="Specialkost" >
+					  	<ToggleButtonGroup type="radio" name="spec" defaultValue={4} onClick={this.handleChange}>
 					      <ToggleButton bsSize="small" value={4.1}>Laktosfritt</ToggleButton>
 					      <ToggleButton bsSize="small" value={4.2}>Glutenfritt</ToggleButton>
 					      <ToggleButton bsSize="small" value={4.3}>Veganskt</ToggleButton>
@@ -84,21 +93,27 @@ class Browse extends Component {
 
 
 		      <Form inline id="fo">
-		      <InputGroup className="gr">
-			      <FormControl bsSize="large" id="fc" type="text" placeholder="Sök recept" value={this.state.value} onChange={this.handleChange}   />
-			      <InputGroup.Addon type="submit" id="addon" >
-				  		<Button id="subBtn" type="submit"bsSize="large">        		
-				  			<Glyphicon glyph="search" />
-							</Button>			      
-						</InputGroup.Addon>
-			    </InputGroup>
+			      <InputGroup className="gr">
+				      <FormControl bsSize="large" id="fc" type="text"  
+				      placeholder="Sök recept" name="searchWord" 
+				      value={this.state.searchWord} onChange={this.handleChange} />
+				      <InputGroup.Addon type="submit" id="addon" >
+					  		<Button id="subBtn" name="searchWord"
+					  			onclick={console.log(this.state.searchWord)} bsSize="large">        		
+					  			<Glyphicon glyph="search" />
+								</Button>			      
+							</InputGroup.Addon>
+				    </InputGroup>
 					</Form>
 				</div>
-	      	{ this.state.value }
+				<div>
+	      	{ this.state.searchWord }
+	      </div>
 	      <Grid className="gr">
 			    <Row  className="show-grid" >
-	          <Col sm={{ size: 12, offset: 4 }} md={{ size: 8, offset: 2 }} lg={{ size: 8, offset: 2 }}>
-				    	{dummyCols}
+	          <Col sm={{ size: 12, offset: 4 }} md={{ size: 8, offset: 2 }} 
+	          	lg={{ size: 8, offset: 2 }}>
+				    	{ dummyCols }
 				    </Col>
 		      </Row>
 			  </Grid>
