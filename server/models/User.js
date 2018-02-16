@@ -11,11 +11,11 @@ module.exports  = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       isEmail: true,
       unique: true,
-      notNull: true
+      allowNull: false
     },
     password: {
       type: DataTypes.STRING,
-      notNull: true
+      allowNull: false
     },
     firstName:{
       type: DataTypes.STRING
@@ -55,6 +55,11 @@ module.exports  = (sequelize, DataTypes) => {
   // salt password before create
   User.beforeCreate(hashPassword);
   User.beforeUpdate(hashPassword);
+
+  // associations
+  User.associate = function(models){
+    models.User.hasMany(models.Recipe);
+  };
 
   return User;
 };
