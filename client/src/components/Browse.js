@@ -14,7 +14,15 @@ class Browse extends Component {
 	
 	constructor(props) {
     super(props);
-    this.state = {searchWord: ''};
+    this.state = {
+    	searchWord: '',
+  		typ: '',
+  		ingrediens: '',
+  		ursprung: '',
+  		spec: ''
+  	};
+
+    this.typ = "";
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -42,32 +50,32 @@ class Browse extends Component {
     	<div className="content">
     		<div id="search" >
 		      <ButtonGroup  id="btnGrp" justified >
-		  			<DropdownButton id="leftBtn" title="Kategori">
-							<ToggleButtonGroup type="radio" name="options" defaultValue={1}>
-					      <ToggleButton bsSize="small" value={1}>Radio 1 (pre-checked)</ToggleButton>
-					      <ToggleButton bsSize="small" value={2}>Radio 2</ToggleButton>
-					      <ToggleButton bsSize="small" value={3}>Radio 3</ToggleButton>
+		  			<DropdownButton id="leftBtn" title="Måltid">
+							<ToggleButtonGroup type="radio" onChange={this.handleChange} name="typ" defaultValue={1}>
+					      <ToggleButton bsSize="small" value={1.1}>Förrätt</ToggleButton>
+					      <ToggleButton bsSize="small" value={1.2}>Huvudrätt</ToggleButton>
+					      <ToggleButton bsSize="small" value={1.3}>Efterrätt</ToggleButton>
 					    </ToggleButtonGroup>
 					  </DropdownButton>
-		  			<DropdownButton title="Huvudingrediens">
-							<ToggleButtonGroup type="radio" name="options" defaultValue={1}>
-					      <ToggleButton bsSize="small" value={1}>Radio 1 (pre-checked)</ToggleButton>
-					      <ToggleButton bsSize="small" value={2}>Radio 2</ToggleButton>
-					      <ToggleButton bsSize="small" value={3}>Radio 3</ToggleButton>
+		  			<DropdownButton title="Ingrediens">
+							<ToggleButtonGroup type="radio" onChange={this.handleChange} name="ingrediens" defaultValue={2}>
+					      <ToggleButton bsSize="small" value={2.1}>Fisk</ToggleButton>
+					      <ToggleButton bsSize="small" value={2.2}>Grönsaker</ToggleButton>
+					      <ToggleButton bsSize="small" value={2.3}>Kött</ToggleButton>
 					    </ToggleButtonGroup>
 					  </DropdownButton>
 					  <DropdownButton title="Ursprung">
-							<ToggleButtonGroup type="radio" name="options" defaultValue={1}>
-					      <ToggleButton bsSize="small" value={1}>Radio 1 (pre-checked)</ToggleButton>
-					      <ToggleButton bsSize="small" value={2}>Radio 2</ToggleButton>
-					      <ToggleButton bsSize="small" value={3}>Radio 3</ToggleButton>
+							<ToggleButtonGroup type="radio" name="ursprung" defaultValue={3}>
+					      <ToggleButton bsSize="small" value={3.1}>Thailand</ToggleButton>
+					      <ToggleButton bsSize="small" value={3.2}>Italien</ToggleButton>
+					      <ToggleButton bsSize="small" value={3.3}>Brasilien</ToggleButton>
 					    </ToggleButtonGroup>
 					  </DropdownButton>
-		  			<DropdownButton id="rightBtn" title="Typ av rätt">
-					  	<ToggleButtonGroup type="radio" name="options" defaultValue={1}>
-					      <ToggleButton bsSize="small" value={1}>Radio 1 (pre-checked)</ToggleButton>
-					      <ToggleButton bsSize="small" value={2}>Radio 2</ToggleButton>
-					      <ToggleButton bsSize="small" value={3}>Radio 3</ToggleButton>
+		  			<DropdownButton id="rightBtn" title="Specialkost">
+					  	<ToggleButtonGroup type="radio" name="spec" defaultValue={4}>
+					      <ToggleButton bsSize="small" value={4.1}>Laktosfritt</ToggleButton>
+					      <ToggleButton bsSize="small" value={4.2}>Glutenfritt</ToggleButton>
+					      <ToggleButton bsSize="small" value={4.3}>Veganskt</ToggleButton>
 					    </ToggleButtonGroup>
 					  </DropdownButton>
 					</ButtonGroup>
