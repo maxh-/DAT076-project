@@ -19,7 +19,7 @@ class App extends Component {
     return (
       <div className="App">
         <Navigation />
-        <div className="container">
+        <div className="contents">
           <Main />
         </div>
         <Footer />

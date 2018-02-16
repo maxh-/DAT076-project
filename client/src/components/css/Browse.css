@@ -1,9 +1,62 @@
+.content{
+	padding: 10px 0;
+}
+.gr {
+	width: 100%;
+	padding: 0;
+}
 
 .show-grid {
-	height: 150px;
+	width: 100%;
+	margin: 0;
+	padding: 20px;
 }
 .co {
-	border: 1px solid red;
-	height: 150px;
-	width: 220px;
+	border: 1px solid lightgrey;
+	height: 200px;
+}
+.dropdown-toggle {
+	padding: 0;
+	height: 24px;
+}
+#subBtn {
+	border-bottom-left-radius: 0px;
+	border-top-left-radius: 0px;
+	border-top-right-radius: 0px;
+	border-bottom-right-radius: 4px;
+}
+#fo {
+	width: 100%;
+}
+#fg {
+	width: 92%;
+	
+}
+#fc {
+	width: 100%;
+	border-bottom-right-radius: 0px;
+	border-top-right-radius: 0px;	
+	border-top-left-radius: 0px;
+	border-bottom-left-radius: 4px;
+}
+#search {
+	max-width: 800px;
+	margin: 0 auto;
+	padding: 0 20px;
+}
+#btnGrp{
+	height: 20px;
+	width: 100%;
+}
+#leftBtn {
+	border-bottom-left-radius: 0px;
+}
+#rightBtn {
+	border-bottom-right-radius: 0px;
+}
+#addon{
+	padding: 0;
+	border: none;
+	margin: 0;
+	width: 52px;
 }
