@@ -12,10 +12,37 @@ router.get('/', isAuthenticated, async (req, res, next) => {
 });
 
 /* POST login */
-// TODO: redirects needs to change to correct places
-router.post('/login',
-  passport.authenticate('local', {successRedirect: '/auth',
-                                  failRedirect: '/welcome'}));
+router.post('/login', (req, res, next) => {
+  passport.authenticate('local', function (err, user, info) {
+    if (err) {
+      return res.json({
+        success: false,
+        error: err
+      });
+    }
+    if (!user) {
+      return res.json({
+        success: false,
+        code: 400,
+        message: "email or password is invalid"
+      });
+    }
+    req.logIn(user, function(err) {
+      if (err) {
+        return res.json({
+          success: false,
+          error: err
+        });
+      }
+      return res.json({
+        success: true,
+        code: 200,
+        user: user.toJSON()
+      });
+    });
+  })(req, res, next);
+});
+
 
 /* GET logout */
 router.get('/logout', (req, res, next) => {
