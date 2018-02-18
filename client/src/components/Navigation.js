@@ -3,13 +3,16 @@ import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 import './css/Navigation.css';
 
 class Navigation extends Component {
-  
+
+
+
+
   // render component
   render() {
     return (
       <Navbar className="Navv" inverse fixedTop>
         <Navbar.Brand>
-          <a href="/">Hem</a>
+          <Navbar.Link href="/">Hem</Navbar.Link>
         </Navbar.Brand>
         <Navbar.Toggle />
         <Navbar.Collapse>
