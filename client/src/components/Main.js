@@ -10,7 +10,8 @@ import Register from './Register';
 import Login from './Login';
 
 class Main extends Component {
-
+  
+  
   // render component
   render() {
   	return (
