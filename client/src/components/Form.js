@@ -5,8 +5,8 @@ export default class Form extends React.Component {
     firstName: "",
     lastName: "",
     email: "",
-    pass1: "",
-    pass2:""
+    password: "",
+    password2:""
   }
 
   change = e => {
@@ -22,8 +22,8 @@ export default class Form extends React.Component {
       firstName: "",
       lastName: "",
       email: "",
-      pass1: "",
-      pass2:""
+      password: "",
+      password2:""
     })
   };
     render() {
@@ -55,19 +55,19 @@ export default class Form extends React.Component {
         <br />
         <input
         className="forms"
-        name='pass1'
+        name='password'
         type="password"
         placeholder="Lösenord"
-        value={this.state.pass1}
+        value={this.state.password}
         onChange={e => this.change(e)}
         />
         <br />
         <input
         className="forms"
-        name ='pass2'
+        name ='password2'
         type ="password"
         placeholder="Återupprepa lösenord"
-        value={this.state.pass2}
+        value={this.state.password2}
         onChange={e => this.change(e)}
         />
         <br />

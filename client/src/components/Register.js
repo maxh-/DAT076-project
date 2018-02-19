@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Form from './Form'
+import Form from './Form';
 import './css/Form.css';
 
 class Register extends Component {
@@ -18,7 +18,6 @@ onSubmit = fields => {
       <h1>Registrera dig!</h1>
       <Form onSubmit={fields => this.onSubmit(fields)}/>
       </div>
-
     );
   }
 }
