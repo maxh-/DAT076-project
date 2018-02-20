@@ -10,18 +10,14 @@ router.get('/', async (req, res, next) => {
 
 /* POST change password */
 router.post('/changePassword', async (req, res, next) => {
-  const response = user.controller.updatePassword(req.body);
+  const response = userController.updatePassword(req.body);
   res.json(response);
 });
 
 /* POST change user settings */
 router.post('/update', async (req, res, next) => {
-  const user = await models.User.findById(req.user.id);
-  user.firstName = req.body.firstName;
-  user.lastName = req.body.lastName;
-
-  await user.save();
-  res.send(user);
+  const response = userController.update(req.body, req.user.id);
+  res.json(response);
 });
 
 module.exports = router;
