@@ -1,0 +1,49 @@
+const models = require('../models');
+
+exports.findMe = async (id) =>{
+  const user = await models.User.findById(id);
+  if(user){
+    return {
+      success: true,
+      code: 200,
+      user: user.toJSON()
+    };
+  } else {
+    return {
+      success: false,
+      code: 404,
+      message: "user does not exist"
+    };
+  }
+
+};
+
+exports.updatePassword = async (params) => {
+  if(params.password === params.password2){
+    const user = await models.User.findById(params.id);
+    const isMatch = await models.User.comparePassword(params.oldPassword, user.password);
+
+    if(isMatch){
+      user.password = params.password;
+      await user.save();
+      return {
+        success: true,
+        code: 201,
+        message: "password updated"
+      };
+    }else{
+      return {
+        success: false,
+        code: 400,
+        message: "old password is not correct"
+      };
+    }
+
+  }else{
+    return {
+      success: false,
+      code: 400,
+      message: "passwords do not match"
+    };
+  }
+};

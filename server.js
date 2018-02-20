@@ -28,7 +28,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Add passport to app
-app.use(session({ secret: 'extremthemligsecret', 
+app.use(session({ secret: 'extremthemligsecret',
                   resave: false,
                   saveUninitialized: false}));
 app.use(passport.initialize());
