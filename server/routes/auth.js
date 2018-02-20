@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const models = require('../models');
 const passport = require('passport');
 const isAuthenticated = require('../middlewares/isAuthenticated');
 const authController = require('../controllers/authController');
