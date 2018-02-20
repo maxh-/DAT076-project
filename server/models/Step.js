@@ -6,12 +6,12 @@ module.exports  = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER
     },
     number: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       allowNull: false
     },
     instruction: {
       type: DataTypes.STRING,
-      allowNull: true
+      allowNull: false
     }
   });
 
