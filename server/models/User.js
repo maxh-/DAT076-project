@@ -37,6 +37,8 @@ module.exports  = (sequelize, DataTypes) => {
     var values = Object.assign({}, this.get());
 
     delete values.password;
+    delete values.resetPasswordExpires;
+    delete values.resetPasswordToken;
     return values;
   };
 
