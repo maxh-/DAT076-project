@@ -1,49 +1,66 @@
 const express = require('express');
 const router = express.Router();
-const models = require('../models');
 const passport = require('passport');
 const async = require('async');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
+const isAuthenticated = require('../middlewares/isAuthenticated');
+const authController = require('../controllers/authController');
+
 
 /* GET users. */
-router.get('/', (req, res, next) => {
-  if(req.user){
-    res.send("you are logged in as " +req.user.email);
-  }else{
-    res.send(403).send("you are not logged in");
-  }
+router.get('/', isAuthenticated, async (req, res, next) => {
+  const response = await authController.findUserById(req.user.id);
+  res.json(response);
 });
 
 /* POST login */
-// TODO: redirects needs to change to correct places
-router.post('/login',
-  passport.authenticate('local', {successRedirect: '/auth',
-                                  failRedirect: '/welcome'}));
+router.post('/login', (req, res, next) => {
+  passport.authenticate('local', function (err, user, info) {
+    if (err) {
+      return res.json({
+        success: false,
+        error: err
+      });
+    }
+    if (!user) {
+      return res.json({
+        success: false,
+        code: 400,
+        message: "email or password is invalid"
+      });
+    }
+    req.logIn(user, function(err) {
+      if (err) {
+        return res.json({
+          success: false,
+          error: err
+        });
+      }
+      return res.json({
+        success: true,
+        code: 200,
+        user: user.toJSON()
+      });
+    });
+  })(req, res, next);
+});
+
 
 /* GET logout */
 router.get('/logout', (req, res, next) => {
   req.logout();
-  res.redirect('/auth');
+  res.json({
+    success: true,
+    code: 200,
+    message: "logout"
+  });
 });
 
 /* POST register user */
-router.post('/register', (req, res, next) => {
-  if(req.body.password === req.body.password2){
-    models.User.findOrCreate({where: {email: req.body.email},
-                              defaults:{ password: req.body.password,
-                                         firstName: req.body.firstName,
-                                         lastName: req.body.lastName
-                                       }}).spread((user, created) => {
-      if(created){
-        res.send(user);
-      }else{
-        res.status(400).send("User already exists");
-      }
-    });
-  }else{
-    res.status(400).send("passwords dont match");
-  }
+router.post('/register', async (req, res, next) => {
+  const response = await authController.register(req.body);
+  res.json(response);
 });
 
 /* POST forgot password */
