@@ -7,7 +7,8 @@ module.exports  = (sequelize, DataTypes) => {
     },
     tag: {
       type: DataTypes.STRING(255),
-      allowNull: false
+      allowNull: false,
+      unique: true
     }
   });
 
@@ -15,7 +16,7 @@ module.exports  = (sequelize, DataTypes) => {
   Tag.associate = function(models){
     models.Tag.belongsToMany(models.Recipe, {
       through: models.RecipeTags
-    });
+      });
   };
   return Tag;
 };

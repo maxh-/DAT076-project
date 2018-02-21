@@ -15,6 +15,7 @@ const isAuthenticated = require('./server/middlewares/isAuthenticated');
 //routes
 const welcome = require('./server/routes/welcome');
 const auth = require('./server/routes/auth');
+const recipe = require('./server/routes/recipe');
 
 const app = express();
 
@@ -35,6 +36,7 @@ app.use(passport.session());
 // routes
 app.use('/welcome', welcome);
 app.use('/auth', auth);
+app.use('/recipe', recipe);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
