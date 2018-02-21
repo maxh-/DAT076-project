@@ -1,0 +1,47 @@
+#recipe {
+	width: 100%;
+
+}
+#recipe  .container {
+	width: 100%;
+}
+#gl-space {
+	padding-left: 30px;
+}
+.jumbotron span+small {
+	padding-right: 10px;
+}
+.lis {
+	-ms-text-align-last: left;
+	text-align-last: left;
+}
+.show-grid {
+	background-color: #eee;
+}
+.jumbotron {
+	margin: 0;
+}
+.jumbotron p span {
+	padding: 0 5px;
+}
+.gl {
+	padding: 10px;
+}
+#pic {
+	background: #FFF;
+	border: none;
+	color: #000;
+	display: block;
+	font: initial;
+	letter-spacing: normal;
+	line-height: normal;
+	padding: 0;
+	width: 100%;
+	margin: 0 auto;
+	height: auto;
+	object-fit: cover;
+}
+#ingrs {
+}
+#steps {
+}
