@@ -11,10 +11,10 @@ class Recipe extends Component {
       title: "Spaghetti Carbonara",
       upVotes: "1",
       downVotes: "5421",
-      time: "30",
+      time: "0:30",
       description:"Spaghetti carbonara – en älskad favorit med rökt fläsk eller bacon och grädde! Lika bra till släktmiddagen som till fredagsmyset.",
       ingredients: [["spaghetti", 300, "g"], ["rökt fläsk", 150, "g"], ["vispgrädde", 0.5, "dl"]],
-      steps: ["Koka spaghettin", "Skär fläsket i små tärningar. Stek fläsket knaprigt i smör i en stekpanna","Vispa ihop grädde, salt, vitlök och hälften av osten","Rör ner fläsk och ostblandningen i den kokta spaghettin"]
+      steps: ["Koka spaghettin", "Skär fläsket i små tärningar. Stek fläsket knaprigt i smör i en stekpanna","Vispa ihop grädde, salt, vitlök och hälften av osten","Rör ner fläsk och ostblandningen i den kokta spaghettinRör ner fläsk och ostblandningen i den kokta spaghettinRör ner fläsk och ostblandningen i den kokta spaghettin", "Rör ner fläsk och ostblandningen i den kokta spaghettinRör ner fläsk och ostblandningen i den kokta spaghettinRör ner fläsk och ostblandningen i den kokta spaghettinRör ner fläsk och ostblandningen i den kokta spaghettinRör ner fläsk och ostblandningen i den kokta spaghettinRör ner fläsk och ostblandningen i den kokta spaghettinRör ner fläsk och ostblandningen i den kokta spaghettinRör ner fläsk och ostblandningen i den kokta spaghettinRör ner fläsk och ostblandningen i den kokta spaghettinRör ner fläsk och ostblandningen i den kokta spaghettin"]
     }
   }
   // render component
@@ -33,8 +33,10 @@ class Recipe extends Component {
     let stps = [];
     this.state.steps.forEach(function(stp) {
       stps.push(
-          <li key={c}> 
-            { stp } 
+          <li key={c} className="itemInList"> 
+            <p>
+              { stp } 
+            </p>
           </li>
         );
       c++;
@@ -51,7 +53,7 @@ class Recipe extends Component {
             <Glyphicon glyph=" glyphicon glyphicon-thumbs-down "  />
             <small>({ this.state.downVotes })</small>
             <Glyphicon glyph=" glyphicon glyphicon glyphicon-time " id="gl-space" />
-            <small> {this.state.time} minuter </small>
+            <small> {this.state.time} timmar </small>
 
 
           </p>
@@ -72,10 +74,7 @@ class Recipe extends Component {
             <Col xs={12} md={8} id="steps" className="lis">
               <h1> Instruktioner </h1>
               <ol>
-                <li>Koka spaghettin.</li>
-                <li>Skär fläsket i små tärningar. Stek fläsket knaprigt i smör i en stekpanna.</li>
-                <li>Vispa ihop grädde, salt, vitlök och hälften av osten.</li>
-                <li>Rör ner fläsk och ostblandningen i den kokta spaghettin </li>
+                { stps }  
               </ol>
             </Col>
           </Row>

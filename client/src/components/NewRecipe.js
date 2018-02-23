@@ -27,12 +27,13 @@ class NewRecipe extends Component {
     this.createSteps = this.createSteps.bind(this);
   }
 
-  handleChange({ target }, event) {
+  handleChange({ target }) {
     this.setState({
       [target.name]: target.value
     });
   }
-  handleObjectChange({ target }, event) {
+
+  handleObjectChange({ target }) {
     var x = this.state.steps.filter(function(obj) {
       return obj['id'] === target.name;
     });
@@ -49,24 +50,6 @@ class NewRecipe extends Component {
     this.setState(prevState => ({
       steps: newSteps
     }));
-
-  }
-  addStep = (event) => {
-    if(event.key === 'Enter'){
-      let id = this.state.stepIndex;
-      let step = this.stp.value;
-      console.log(id);
-      this.setState(prevState => ({
-        steps: prevState.steps.concat({id,step}),
-        stepIndex: prevState.stepIndex+1,
-      }));
-      this.stp.value = "";
-    }
-  }
-
-
-  componentDidUpdate(prevProps, prevState) {
-    console.log(this.state);
   }
 
   handleClick(action,key,type) {
@@ -80,13 +63,46 @@ class NewRecipe extends Component {
         });      
       }
       else if(type==='id') {
+        let filteredItems = [];
+        let stepCounter = 1;
+        this.state.steps.forEach(function(step) {
+          if(step['id'] === key ) {
+          }
+          else {
+            if(step.id === stepCounter) {
+              filteredItems.push(step);
+            }else {
+              step.id = stepCounter;
+              filteredItems.push(step);
+            }
+            stepCounter++;
+          }
+        });
+
+/*
         var filteredItems = this.state.steps.filter(function (item) {
           return (item['id'] !== key);
         });
+*/
         this.setState(prevState => ({
           steps: filteredItems,
+          stepIndex: stepCounter
         }));              
       } 
+    }
+  }
+  addStep = (event) => {
+    if(event.key === 'Enter'){
+      let id = this.state.stepIndex;
+      let step = this.stp.value;
+      if(step.length > 1) {
+        this.setState(prevState => ({
+          steps: prevState.steps.concat({id,step}),
+          stepIndex: prevState.stepIndex+1,
+        }));
+        this.stp.value = "";
+      }
+      event.preventDefault();
     }
   }
 
@@ -104,7 +120,7 @@ class NewRecipe extends Component {
 
   createIngredients(ing) {
     return    <ListGroupItem onClick={this.handleClick.bind(this,'del',ing['ingr'], 'ingr')} key={ing['ingr']}>
-                <Col xs={8}>
+                <Col xs={6}>
                   <b>{ing['ingr']} </b>
                 </Col>
                 <Col xs={2}>
@@ -148,7 +164,7 @@ class NewRecipe extends Component {
 
 
     return (
-      <div className="NewRecipe">
+      <div id="NewRecipe">
         <Form horizontal>
           <FormGroup controlId="titel">
             <Col componentClass={ControlLabel} sm={2}>
@@ -210,32 +226,34 @@ class NewRecipe extends Component {
             <Col xs={12} componentClass={ControlLabel} sm={2}>
                 Ingredienser
             </Col>
-            <Col xs={12} sm={5}>            
-              <FormControl
-                type="text"
-                placeholder="Enter ingredient"
-                inputRef={(a) => this.ingr = a} 
-              />
-            </Col>
-            <Col xs={4} sm={2} className="pr">            
-              <FormControl
-                type="text"
-                placeholder="Amount"
-                inputRef={(b) => this.am = b} 
-              />
-            </Col>
-            <Col xs={4} sm={1} className="p">            
-              <FormControl
-                type="text"
-                placeholder="Unit"
-                inputRef={(c) => this.un = c} 
-              />
-            </Col>
-            <Col xs={4} sm={2} className="pl">
-              <Button onClick={this.addItem.bind(this,'in')} className="hundred">
-                Lägg till
-              </Button>
-            </Col>            
+            <Col xs={12} sm={10}>            
+              <Col sm={6} className="p">
+                <FormControl
+                  type="text"
+                  placeholder="Enter ingredient"
+                  inputRef={(a) => this.ingr = a} 
+                />
+              </Col>
+              <Col xs={4} sm={2} className="p">            
+                <FormControl
+                  type="text"
+                  placeholder="Amount"
+                  inputRef={(b) => this.am = b} 
+                />
+              </Col>
+              <Col xs={4} sm={2} className="p">            
+                <FormControl
+                  type="text"
+                  placeholder="Unit"
+                  inputRef={(c) => this.un = c} 
+                />
+              </Col>
+              <Col xs={4} sm={2} className="p">
+                <Button onClick={this.addItem.bind(this,'in')} className="hundred">
+                  Lägg till
+                </Button>
+              </Col>      
+            </Col>      
 
             <Col sm={2}> </Col>
 
@@ -266,15 +284,15 @@ class NewRecipe extends Component {
             </Col>
           </FormGroup>
           <Col sm={2}></Col>
-          <Col id="submitCol">
-            <ButtonToolbar>
-              <Button bsStyle="primary" bsSize="large" disabled>
+          <Col id="submitCol" sm={8} xs={10}>
+            <ButtonToolbar inline>
+              <Button bsStyle="primary" bsSize="large" disabled  /*onClick={}*/>
                 Publicera  
               </Button>
-              <Button bsSize="large" disabled>
+              <Button bsSize="large" disabled  /*onClick={}*/>
                 Spara utkast
               </Button>
-              <Button bsSize="large" disabled>
+              <Button bsSize="large" disabled /*onClick={}*/>
                 Stäng
               </Button>
             </ButtonToolbar>
