@@ -13,7 +13,8 @@ ootmappen.
 
 **RequiresAuth**: YES
 
-**JSON**: ```
+**JSON**: 
+```
 {
 	title: String,
 	timeToComplete: Integer,
