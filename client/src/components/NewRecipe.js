@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Form, Col, FormGroup, ControlLabel, FormControl,
   Button, ButtonToolbar, InputGroup, Glyphicon,
-  ListGroup, ListGroupItem } from 'react-bootstrap';
+  ListGroup, ListGroupItem, MenuItem, DropdownButton,
+   } from 'react-bootstrap';
 import './css/NewRecipe.css';
 
 class NewRecipe extends Component {
@@ -78,12 +79,6 @@ class NewRecipe extends Component {
             stepCounter++;
           }
         });
-
-/*
-        var filteredItems = this.state.steps.filter(function (item) {
-          return (item['id'] !== key);
-        });
-*/
         this.setState(prevState => ({
           steps: filteredItems,
           stepIndex: stepCounter
@@ -91,8 +86,9 @@ class NewRecipe extends Component {
       } 
     }
   }
-  addStep = (event) => {
-    if(event.key === 'Enter'){
+
+  addStep = (e) => {
+    if(e.key === 'Enter'){
       let id = this.state.stepIndex;
       let step = this.stp.value;
       if(step.length > 1) {
@@ -102,11 +98,11 @@ class NewRecipe extends Component {
         }));
         this.stp.value = "";
       }
-      event.preventDefault();
+      e.preventDefault();
     }
   }
 
-  addItem(e) {
+  addItem = (e) => {
     var ingr  = this.ingr.value;
     var am    = this.am.value;
     var un    = this.un.value;
@@ -230,23 +226,27 @@ class NewRecipe extends Component {
               <Col sm={6} className="p">
                 <FormControl
                   type="text"
-                  placeholder="Enter ingredient"
+                  placeholder="Ingrediens"
                   inputRef={(a) => this.ingr = a} 
                 />
               </Col>
               <Col xs={4} sm={2} className="p">            
                 <FormControl
                   type="text"
-                  placeholder="Amount"
+                  placeholder="Mängd"
                   inputRef={(b) => this.am = b} 
                 />
               </Col>
               <Col xs={4} sm={2} className="p">            
-                <FormControl
-                  type="text"
-                  placeholder="Unit"
-                  inputRef={(c) => this.un = c} 
-                />
+                  <ButtonToolbar>
+                    <DropdownButton title="Default button" id="dropdown-size-medium"
+                        inputRef={(c) => this.un = c} >
+                      <MenuItem eventKey="1" value={"dl"}>dl</MenuItem>
+                      <MenuItem eventKey="2"value={"cl"}>cl</MenuItem>
+                      <MenuItem eventKey="3"value={"l"}>l</MenuItem>
+                      <MenuItem eventKey="4"value={"dussin"}>dussin</MenuItem>
+                    </DropdownButton>
+                  </ButtonToolbar>
               </Col>
               <Col xs={4} sm={2} className="p">
                 <Button onClick={this.addItem.bind(this,'in')} className="hundred">
