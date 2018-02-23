@@ -238,15 +238,13 @@ class NewRecipe extends Component {
                 />
               </Col>
               <Col xs={4} sm={2} className="p">            
-                  <ButtonToolbar>
-                    <DropdownButton title="Default button" id="dropdown-size-medium"
-                        inputRef={(c) => this.un = c} >
-                      <MenuItem eventKey="1" value={"dl"}>dl</MenuItem>
-                      <MenuItem eventKey="2"value={"cl"}>cl</MenuItem>
-                      <MenuItem eventKey="3"value={"l"}>l</MenuItem>
-                      <MenuItem eventKey="4"value={"dussin"}>dussin</MenuItem>
-                    </DropdownButton>
-                  </ButtonToolbar>
+                <FormControl componentClass="select" placeholder="Enhet"
+                    defaultValue="l" inputRef={(c) => this.un = c }>
+                  <option value="dl">dl</option>
+                  <option value="st">st</option>
+                  <option value="dussin st">dussin st</option>
+                  <option value="hundra st">hundra st</option>
+                </FormControl>
               </Col>
               <Col xs={4} sm={2} className="p">
                 <Button onClick={this.addItem.bind(this,'in')} className="hundred">
@@ -293,7 +291,7 @@ class NewRecipe extends Component {
                 Spara utkast
               </Button>
               <Button bsSize="large" disabled /*onClick={}*/>
-                Stäng
+                Släng
               </Button>
             </ButtonToolbar>
           </Col>
