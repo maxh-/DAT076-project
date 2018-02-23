@@ -20,11 +20,11 @@ exports.findById = async (id) => {
 exports.create = async (params, userId) => {
   const recipe = await models.Recipe.create({
     UserId: userId,
-    title: "hello",
-    timeToComplete: 200,
+    title: params.title,
+    timeToComplete: params.timeToComplete,
     Steps: params.steps
   }, {
-    include: [ models.Step]
+    include: [ models.Step ]
   });
   // Find or create tags
   const tags = await Promise.all(
@@ -34,31 +34,25 @@ exports.create = async (params, userId) => {
         return res[0];
       })
   );
-  recipe.addTags(tags);
-  await models.Unit.create({abbreviation: "dl", name: "deciliter"});
-  const tmp = [
-    {
-      number:1,
-      amount:2,
-      UnitId:1,
-      Ingredient: "hello"
-    }
-  ];
-  const ingredients = await Promise.all(
-    tmp.map(
-      async (recipeIngredient) => {
-        if(recipeIngredient.IngredientId !== undefined){
-          const ingredient = await models.Ingredient.findById(tmp.ingredientId);
-          return ingredient;
-        }else{
+  await recipe.addTags(tags);
+  // create recipeIngredients from supplied ingredients
+  const recipeIngredients = await Promise.all(
+    params.ingredients.map(
+      async (ingredient) => {
+        if(ingredient.IngredientId === undefined){
           const res = await models.Ingredient.findOrCreate(
-            {where: {name: recipeIngredient.Ingredient}
+            {where: {name: ingredient.ingredient}
             });
-          return res[0];
+          ingredient.IngredientId = res[0].id;
         }
+        const recipeIngredient = await models.RecipeIngredients.create(ingredient);
+        return recipeIngredient;
       })
   );
-  
-  recipe.addRecipeIngredients(ingredients);
-  return recipe.toJSON();
+  await recipe.addRecipeIngredients(recipeIngredients);
+  return {
+    success: true,
+    code: 201,
+    recipe: recipe.toJSON()
+  };
 };
