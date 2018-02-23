@@ -9,6 +9,7 @@ const debug = require('debug')('dat-073-project:server');
 const http = require('http');
 const Sequelize = require('sequelize');
 const models = require('../server/models')
+const databaseFiller = require('../server/config/databaseFiller');
 
 /**
  * Get port from environment and store in Express.
@@ -26,7 +27,8 @@ const server = http.createServer(app);
 /**
  * Listen on provided port, on all network interfaces.
  */
-models.sequelize.sync({force: true}).then(function () {
+models.sequelize.sync({force: true}).then(async function () {
+  await databaseFiller.fill();
   server.listen(port);
   server.on('error', onError);
   server.on('listening', onListening);
