@@ -8,8 +8,11 @@ ootmappen.
 
 # Routes
 **Path**: /recipe/create
+
 **Method**: POST
+
 **RequiresAuth**: YES
+
 **JSON**: {
 	"title": String,
 	"timeToComplete": Integer,
