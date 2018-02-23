@@ -59,5 +59,23 @@ router.post('/register', async (req, res, next) => {
   res.json(response);
 });
 
+/* POST forgot password */
+router.post('/forgot', async (req, res, next) => {
+  const response = await authController.forgotPassword(req.body.email, req.headers.host);
+  res.json(response);
+});
+
+/* GET reset password page */
+router.get('/reset/:token', async (req, res, next) => {
+  const response = await authController.checkResetToken(req.params.token);
+  res.json(response);
+});
+
+/* POST reset password */
+router.post('/reset/:token', async (req, res, next) => {
+  const response = await authController.resetPassword(req.body, req.params.token);
+  res.json(response);
+});
+
 
 module.exports = router;

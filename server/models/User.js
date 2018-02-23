@@ -24,6 +24,13 @@ module.exports  = (sequelize, DataTypes) => {
     lastName:{
       type: DataTypes.STRING(255),
       allowNull: false
+    },
+    resetPasswordToken: {
+      type: DataTypes.STRING(255)
+    },
+    resetPasswordExpires: {
+      type: DataTypes.DATE
+
     }
   });
 
@@ -33,6 +40,8 @@ module.exports  = (sequelize, DataTypes) => {
     var values = Object.assign({}, this.get());
 
     delete values.password;
+    delete values.resetPasswordExpires;
+    delete values.resetPasswordToken;
     return values;
   };
 
@@ -49,7 +58,14 @@ module.exports  = (sequelize, DataTypes) => {
   };
 
   // salt password before create
-  User.beforeCreate((user, options) => {
+  User.beforeCreate(hashPassword);
+  User.beforeUpdate(hashPassword);
+
+  return User;
+};
+
+const hashPassword = (user, options) =>{
+  if(user.changed('password')){
     const salt = bcrypt.genSalt(12, function(err, salt){
       return salt;
     });
@@ -57,7 +73,5 @@ module.exports  = (sequelize, DataTypes) => {
       if(err) return next(err);
       user.password = hash;
     }));
-  });
-
-  return User;
+  }
 };
