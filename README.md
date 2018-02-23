@@ -15,28 +15,28 @@ ootmappen.
 
 **JSON**: ```
 {
-	"title": String,
-	"timeToComplete": Integer,
-	"steps": [
+	title: String,
+	timeToComplete: Integer,
+	steps: [
 		{
-			"instruction": String,
-			"number": Integer
+			instruction: String,
+			number: Integer
 		}
 		],
-	"tags": [ 
-		{"tag":String}
+	tags: [ 
+		{tag:String}
 		],
-	"ingredients": [
+	ingredients: [
 		{
-			"number": Integer,
-			"amount": Integer,
-			"UnitId": Integer,
-			"ingredient": String
+			number: Integer,
+			amount: Integer,
+			UnitId: Integer,
+			ingredient: String
 		},{
-			"number": Integer,
-			"amount": Integer,
-			"UnitId": Integer,
-			"IngredientId": Integer
+			number: Integer,
+			amount: Integer,
+			UnitId: Integer,
+			IngredientId: Integer
 		}
 	]
 }
