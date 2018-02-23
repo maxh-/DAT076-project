@@ -7,12 +7,9 @@ ootmappen.
 
 
 # Routes
-**Path**: /recipe/create
-
-**Method**: POST
-
-**RequiresAuth**: YES
-
+**Path**: /recipe/create  
+**Method**: POST  
+**RequiresAuth**: YES  
 **JSON**: 
 ```
 {
