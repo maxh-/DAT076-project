@@ -54,6 +54,11 @@ exports.update = async (params, id) => {
   user.lastName = params.lastName;
 
   await user.save();
+  return{
+    success: true,
+    code: 200,
+    message: "user updated"
+  };
 };
 
 
@@ -65,7 +70,7 @@ exports.findUser = async (id) => {
     return {
       success: true,
       code: 200,
-      user: user.toJSON()
+      user: user
     };
   } else {
     return {
