@@ -6,11 +6,7 @@ import { Glyphicon, Grid, Row, Col, Button, InputGroup,
 import './css/Browse.css';
 import bild from './bild.jpg';
 
-  const dummySentences = [
-  'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
-  'Donec hendrerit tempor.',
-  'Donec pretium posuere tellus.',
-  'Proin quam nisl, tincidunt et, mattis eget, convallis nec, purus.'];
+  const dummySentence = 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit';
 
 class Browse extends Component {
 	
@@ -32,7 +28,6 @@ class Browse extends Component {
     
   }
 
-
   componentDidUpdate(prevProps, prevState) {
     console.log("Måltid: " + this.state.meal);
   	console.log(this.state.searchWord);
@@ -43,7 +38,6 @@ class Browse extends Component {
     this.setState({
       [target.name]: target.value
     });
-
   }
 
   addFilter({ target }) {
@@ -60,6 +54,22 @@ class Browse extends Component {
 			}
 		}
   }
+  dummyCols() {
+    let dummyCols = [];
+    for(let i = 0; i < 6; i++) {
+      dummyCols.push(
+        <Col className="parent" xs={12} sm={6} lg={4} key={i}>
+          <div className="child">
+          </div>
+          <div className="op">
+            <span>
+              {dummySentence}
+            </span>
+          </div>
+        </Col>);
+    }
+    return dummyCols;
+  }
 
   handleSubmit(event) {
     alert('Searched for: ' + this.state.searchWord);
@@ -67,20 +77,6 @@ class Browse extends Component {
   }
 
   render() {
-  	let dummyCols = [];
-		for(let i = 0; i < 6; i++) {
-		  dummyCols.push(
-		  	<Col className="parent" xs={12} sm={6} lg={4} key={i}>
-          <div className="child">
-          </div>
-          <div className="op">
-            <span>
-  			  	  {dummySentences.slice(1, 2).join(' ')}
-            </span>
-          </div>
-			  </Col>);
-		}
-
 		//Switch för splash och sök?
     return (
     	<div className="content">
@@ -101,7 +97,7 @@ class Browse extends Component {
 
 				  <ButtonToolbar >
             <DropdownButton title="Måltid">
-				      <ToggleButtonGroup type="radio" name="meal" 
+				      <ToggleButtonGroup type="radio" name="meal" id="dropdownMenu" 
         						onClick={this.handleChange.bind(this)}>
   				      <ToggleButton className="dropdownItem" value={'#förrätt'}>Förrätt</ToggleButton>
   				      <ToggleButton className="dropdownItem" value={'#huvudrätt'}>Huvudrätt</ToggleButton>
@@ -109,7 +105,7 @@ class Browse extends Component {
   				      <ToggleButton className="dropdownItem" value={'#mellanmål'}>Mellanmål</ToggleButton>
               </ToggleButtonGroup>
             </DropdownButton>
-            <ToggleButtonGroup type="radio" name="filter" id="btn-group" pushRight
+            <ToggleButtonGroup type="radio" name="filter" id="btn-group"
                     value={this.state.filter}
                     onClick={this.addFilter.bind(this)} >
 				      <ToggleButton value={'#pizza'}>Pizza</ToggleButton>
@@ -138,7 +134,7 @@ class Browse extends Component {
 	      <Grid className="gr">
 			    <Row  className="show-grid" >
 	          <Col >
-				    	{ dummyCols }
+				    	{ this.dummyCols() }
 				    </Col>
 		      </Row>
 			  </Grid>
@@ -149,7 +145,7 @@ class Browse extends Component {
 	      <Grid className="gr">
 			    <Row  className="show-grid" >
 	          <Col >
-				    	{ dummyCols }
+				    	{ this.dummyCols() }
 				    </Col>
 		      </Row>
 			  </Grid>

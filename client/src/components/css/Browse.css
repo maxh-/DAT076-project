@@ -5,16 +5,11 @@
 	width: 100%;
 	padding: 0;
 }
-
 .show-grid {
 	width: 100%;
 	margin: 0;
 	padding: 10px 20px;
 }
-/* Global Styling */
-
-#logo {height: 80px; margin-left: 20px;}
-
 .parent {
 	padding: 0;
 	height: 300px;
@@ -64,33 +59,20 @@
 	margin-right: auto; 
   	width: 90%; /* Need a specific value to work */
  	align-self: flex-end;
-
 }
-
 .op span {
 	opacity: 1;
  	color: white;
  	font-size: 28px;
  }
-.dropdownItem {
-	width: 100%;
-	padding: 5px 0; 
-}
 .dropdown-menu { 
 	padding: 0;
 	margin: 0;	
 }
-#btn-group {
-	right: 0;
-}
-.red {
-	background-color: red;
-}
-.blue {
-	background-color: blue;
-}
-.green {
-	background-color: green;
+#dropdownMenu .dropdownItem {
+	width: 100%;
+	padding: 5px 0;
+	margin: 0; 
 }
 #subBtn {
 	border-bottom-left-radius: 0px;
