@@ -6,7 +6,7 @@ module.exports  = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER
     },
     tag: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.STRING(127),
       allowNull: false,
       unique: true
     }
