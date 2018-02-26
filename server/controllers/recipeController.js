@@ -1,7 +1,7 @@
 const models = require('../models');
 
 exports.findById = async (id) => {
-  const recipe = models.Recipe.findById(id);
+  const recipe = await models.Recipe.findById(id, {include: [models.Step, models.Tag, models.RecipeIngredients]});
   if(recipe){
     return {
       success: true,
@@ -26,6 +26,7 @@ exports.create = async (params, userId) => {
   }, {
     include: [ models.Step ]
   });
+
   // Find or create tags
   const tags = await Promise.all(
     params.tags.map(
