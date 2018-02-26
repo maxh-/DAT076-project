@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import './css/App.css';
-import NavigationO from './NavigationO';
-import NavigationI from './NavigationI';
 import Footer from './Footer';
+import Navigation from './Navigation';
 import Main from './Main';
 
 class App extends Component {
@@ -19,7 +18,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <NavigationI />
+        <Navigation />
         <div className="container">
           <Main />
         </div>
