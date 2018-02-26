@@ -49,16 +49,27 @@ exports.updatePassword = async (params) => {
 };
 
 exports.update = async (params, id) => {
-  const user = await models.User.findById(id);
-  user.firstName = params.firstName;
-  user.lastName = params.lastName;
+  if(params.firstName !== "" &&
+     params.firstName !== null &&
+     params.lastName !== "" &&
+     params.lastname !== null){
+    const user = await models.User.findById(id);
+    user.firstName = params.firstName;
+    user.lastName = params.lastName;
 
-  await user.save();
-  return{
-    success: true,
-    code: 200,
-    message: "user updated"
-  };
+    await user.save();
+    return{
+      success: true,
+      code: 200,
+      message: "user updated"
+    };
+  } else {
+    return {
+      success: false,
+      code: 401,
+      message: "firstname or lastname cant be empty"
+    };
+  }
 };
 
 
