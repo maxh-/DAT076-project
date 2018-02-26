@@ -17,6 +17,10 @@ module.exports  = (sequelize, DataTypes) => {
     models.Ingredient.belongsToMany(models.Unit, {
       through: models.RecipeIngredients
     });
+    models.Ingredient.belongsToMany(models.Recipe, {
+      through: models.RecipeIngredients
+    });
   };
+
   return Ingredient;
 };

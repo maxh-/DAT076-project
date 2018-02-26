@@ -1,7 +1,21 @@
 const models = require('../models');
 
 exports.findById = async (id) => {
-  const recipe = await models.Recipe.findById(id, {include: [models.Step, models.Tag, models.RecipeIngredients]});
+/*  const recipe = await models.Recipe.findById(id, {
+    include: [
+      models.Step,
+      models.Tag,
+      {
+        model: models.RecipeIngredients,
+        include: [models.Ingredient, models.Unit]
+      }]
+  }); */
+  const recipe = await models.Recipe.findById(id, {
+    include: [
+      {all: true,
+       nested: true}
+      ]
+  });
   if(recipe){
     return {
       success: true,
@@ -41,16 +55,21 @@ exports.create = async (params, userId) => {
     params.ingredients.map(
       async (ingredient) => {
         if(ingredient.IngredientId === undefined){
-          const res = await models.Ingredient.findOrCreate(
+          var res = await models.Ingredient.findOrCreate(
             {where: {name: ingredient.ingredient}
             });
           ingredient.IngredientId = res[0].id;
         }
-        const recipeIngredient = await models.RecipeIngredients.create(ingredient);
-        return recipeIngredient;
+        //const recipeIngredient = await models.RecipeIngredients.create(ingredient);
+        //return recipeIngredient;
+        res[0].RecipeIngredients = ingredient;
+        console.log(res[0].toJSON());
+        return res[0];
+
       })
   );
-  await recipe.addRecipeIngredients(recipeIngredients);
+  console.log(recipeIngredients);
+  await recipe.addIngredients(recipeIngredients);
   return {
     success: true,
     code: 201,
