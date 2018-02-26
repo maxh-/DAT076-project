@@ -8,7 +8,7 @@ exports.findUserById = async (id) => {
   if(user){
     return {
       success: true,
-      code: 201,
+      code: 200,
       user: user.toJSON()};
   }else {
     return {
