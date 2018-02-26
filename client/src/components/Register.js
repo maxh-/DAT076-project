@@ -33,22 +33,42 @@ class RegisterForm extends Component {
     //this.handleEm = this.handleChange.bind(this);
 
     this.state = {
-      email: ''
+      email: '',
+      firstName: '',
+      lastName: '',
+      password1: '',
+      password2: ''
     };
   }
 
-  getValidEmailState() {
-    if (this.state.email.length > 0) {
-      const isValid = EmailValidator.validate(this.state.email);
-      if (isValid) return 'success';
-      else return 'error';
+  getEmailState() {
+    if (this.state.email.length == 0) return null;
+    
+    const isValid = EmailValidator.validate(this.state.email);
+    if (isValid) {
+      return 'success';
     } else {
-      return null;
+      return 'error';
+    }
+  }
+
+  getFirstNameState() {
+    if (this.state.firstName.length == 0) return null;
+
+    if (/^[a-zA-Z]+$/.test(this.state.firstName)) {
+      return 'success';
+    } else {
+      return 'error';
     }
   }
 
   onEmailChange(e) {
     this.setState({ email: e.target.value });
+    console.log(this.state);
+  }
+
+  onFirstNameChange(e) {
+    this.setState({ firstName: e.target.value });
     console.log(this.state);
   }
 
@@ -59,7 +79,7 @@ class RegisterForm extends Component {
           <form>
             <FormGroup
               controlId="email"
-              validationState={this.getValidEmailState()}
+              validationState={this.getEmailState()}
               bsSize="large">
               <ControlLabel>E-post:</ControlLabel>
               <FormControl
@@ -67,6 +87,18 @@ class RegisterForm extends Component {
                 value={this.state.value}
                 placeholder="exempel@email.com"
                 onChange={this.onEmailChange.bind(this)} />
+              <FormControl.Feedback />
+            </FormGroup>
+            <FormGroup
+              controlId="firstName"
+              validationState={this.getFirstNameState()}
+              bsSize="large">
+              <ControlLabel>Förnamn:</ControlLabel>
+              <FormControl
+                type="text"
+                value={this.state.value}
+                placeholder="Förnamn"
+                onChange={this.onFirstNameChange.bind(this)} />
               <FormControl.Feedback />
               <HelpBlock>help text</HelpBlock>
             </FormGroup>
