@@ -11,13 +11,86 @@
 	margin: 0;
 	padding: 10px 20px;
 }
-.co {
-	border: 1px solid lightgrey;
-	height: 200px;
-}
-.dropdown-toggle {
+/* Global Styling */
+
+#logo {height: 80px; margin-left: 20px;}
+
+.parent {
 	padding: 0;
-	height: 24px;
+	height: 300px;
+    overflow: hidden;
+    position: relative;
+	cursor: pointer;
+    display: flex;
+}
+
+.child {
+	width: 100%;
+	background-position: center;
+	background-image: url('../bild.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    -webkit-transition: all .4s;
+    -moz-transition: all .4s;
+    -o-transition: all .4s;
+    transition: all .4s;
+}
+
+.parent:hover .child, .parent:focus .child {
+    -ms-transform: 		scale(1.05);
+    -moz-transform: 	scale(1.05);
+    -webkit-transform: 	scale(1.05);
+    -o-transform: 		scale(1.05);
+    transform: 			scale(1.05);
+}
+
+
+.child:before {
+    content: "";
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.op {
+	border-top-right-radius: 4px;
+	border-top-left-radius: 4px;
+	background-color: rgba(0,0,0,0.5);
+	position: absolute;
+	left: 0; 
+	right: 0; 
+	bottom: 10px;
+	margin-left: auto;   
+	margin-right: auto; 
+  	width: 90%; /* Need a specific value to work */
+ 	align-self: flex-end;
+
+}
+
+.op span {
+	opacity: 1;
+ 	color: white;
+ 	font-size: 28px;
+ }
+.dropdownItem {
+	width: 100%;
+	padding: 5px 0; 
+}
+.dropdown-menu { 
+	padding: 0;
+	margin: 0;	
+}
+#btn-group {
+	right: 0;
+}
+.red {
+	background-color: red;
+}
+.blue {
+	background-color: blue;
+}
+.green {
+	background-color: green;
 }
 #subBtn {
 	border-bottom-left-radius: 0px;

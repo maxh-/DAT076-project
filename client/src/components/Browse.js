@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 import { Glyphicon, Grid, Row, Col, Button, InputGroup,
-	FormControl, 
+	FormControl, DropdownButton, 
 	ToggleButtonGroup, ToggleButton,
 	PageHeader, ButtonToolbar } from 'react-bootstrap';
 import './css/Browse.css';
+import bild from './bild.jpg';
 
   const dummySentences = [
   'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
-  'Donec hendrerit tempor tellus.',
+  'Donec hendrerit tempor.',
   'Donec pretium posuere tellus.',
   'Proin quam nisl, tincidunt et, mattis eget, convallis nec, purus.'];
+
 class Browse extends Component {
 	
 	constructor(props) {
@@ -17,14 +19,22 @@ class Browse extends Component {
     this.state = {
     	searchWord: '',
   		typ: '',
-  		filter: []
+  		filter: [],
+      meal:""
   	};
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.addFilter = this.addFilter.bind(this);
   }
+
+  componentDidMount() {
+    
+  }
+
+
   componentDidUpdate(prevProps, prevState) {
+    console.log("Måltid: " + this.state.meal);
   	console.log(this.state.searchWord);
   	console.log(this.state.filter);
 	}
@@ -58,10 +68,16 @@ class Browse extends Component {
 
   render() {
   	let dummyCols = [];
-		for(let i = 0; i < 12; i++) {
+		for(let i = 0; i < 6; i++) {
 		  dummyCols.push(
-		  	<Col className="co" xs={6} sm={6} md={4} lg={3} key={i}>
-			  	{dummySentences.slice(0, 4).join(' ')}
+		  	<Col className="parent" xs={12} sm={6} lg={4} key={i}>
+          <div className="child">
+          </div>
+          <div className="op">
+            <span>
+  			  	  {dummySentences.slice(1, 2).join(' ')}
+            </span>
+          </div>
 			  </Col>);
 		}
 
@@ -73,8 +89,8 @@ class Browse extends Component {
 		      <form onSubmit={this.handleSubmit}>
 			      <InputGroup className="gr">
 				      <FormControl bsSize="large" id="fc" type="text"  
-				      placeholder="Sök recept" name="searchWord" 
-				       onChange={this.handleChange} />
+				        placeholder="Sök recept" name="searchWord" 
+				        onChange={this.handleChange} />
 				      <InputGroup.Addon id="addon" >
 					  		<Button id="subBtn" type="submit" bsSize="large">        		
 					  			<Glyphicon glyph="search" />
@@ -83,14 +99,19 @@ class Browse extends Component {
 				    </InputGroup>
 				  </form>
 
-				  <ButtonToolbar>
-				    <ToggleButtonGroup type="radio" name="filter" 
-				    				value={this.state.filter}
-        						onClick={this.addFilter.bind(this)} >
-				      <ToggleButton value={'#förrätt'}>Förrätt</ToggleButton>
-				      <ToggleButton value={'#huvudrätt'}>Huvudrätt</ToggleButton>
-				      <ToggleButton value={'#efterrätt'}>Efterrätt</ToggleButton>
-				      <ToggleButton value={'#mellanmål'}>Mellanmål</ToggleButton>
+				  <ButtonToolbar >
+            <DropdownButton title="Måltid">
+				      <ToggleButtonGroup type="radio" name="meal" 
+        						onClick={this.handleChange.bind(this)}>
+  				      <ToggleButton className="dropdownItem" value={'#förrätt'}>Förrätt</ToggleButton>
+  				      <ToggleButton className="dropdownItem" value={'#huvudrätt'}>Huvudrätt</ToggleButton>
+  				      <ToggleButton className="dropdownItem" value={'#efterrätt'}>Efterrätt</ToggleButton>
+  				      <ToggleButton className="dropdownItem" value={'#mellanmål'}>Mellanmål</ToggleButton>
+              </ToggleButtonGroup>
+            </DropdownButton>
+            <ToggleButtonGroup type="radio" name="filter" id="btn-group" pushRight
+                    value={this.state.filter}
+                    onClick={this.addFilter.bind(this)} >
 				      <ToggleButton value={'#pizza'}>Pizza</ToggleButton>
 				      <ToggleButton value={'#pasta'}>Pasta</ToggleButton>
 				      <ToggleButton value={'#burgare'}>Burgare</ToggleButton>
