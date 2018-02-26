@@ -18,9 +18,9 @@ exports.findMe = async (id) =>{
 
 };
 
-exports.updatePassword = async (params) => {
+exports.updatePassword = async (params, id) => {
   if(params.password === params.password2){
-    const user = await models.User.findById(params.id);
+    const user = await models.User.findById(id);
     const isMatch = await models.User.comparePassword(params.oldPassword, user.password);
 
     if(isMatch){

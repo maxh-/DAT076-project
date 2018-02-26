@@ -10,7 +10,7 @@ router.get('/', async (req, res, next) => {
 
 /* POST change password */
 router.post('/changePassword', async (req, res, next) => {
-  const response = await userController.updatePassword(req.body);
+  const response = await userController.updatePassword(req.body, req.user.id);
   res.json(response);
 });
 
