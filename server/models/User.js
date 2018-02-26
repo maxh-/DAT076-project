@@ -5,7 +5,7 @@ module.exports  = (sequelize, DataTypes) => {
     id: {
       autoIncrement: true,
       primaryKey: true,
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER(255)
     },
     email: {
       type: DataTypes.STRING(127),
@@ -14,33 +14,36 @@ module.exports  = (sequelize, DataTypes) => {
       allowNull: false
     },
     password: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(255),
       allowNull: false
     },
     firstName:{
-      type: DataTypes.STRING
+      type: DataTypes.STRING(255),
+      allowNull: false
     },
     lastName:{
-      type: DataTypes.STRING
+      type: DataTypes.STRING(255),
+      allowNull: false
     },
     resetPasswordToken: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING(255)
     },
     resetPasswordExpires: {
       type: DataTypes.DATE
     }
   });
 
-  // Dont return password to frontend
   // this makes the password still useable inside the backend! 
   User.prototype.toJSON =  function () {
     var values = Object.assign({}, this.get());
 
     delete values.password;
+    delete values.resetPasswordExpires;
+    delete values.resetPasswordToken;
     return values;
   };
 
-  // check if password is valid
+  // check if password is valid for use with passport
   User.validPassword = function(password, passwd, done, user){
     bcrypt.compare(password, passwd, function(err, isMatch){
       if(err) console.log(err);
@@ -49,6 +52,16 @@ module.exports  = (sequelize, DataTypes) => {
       }else{
         return done(null, false);
       }
+    });
+  };
+
+  // check if passwords are equal
+  User.comparePassword = function(password, passwd){
+    return new Promise(resolve => {
+      bcrypt.compare(password, passwd, (err, isMatch) => {
+        if(err) console.log(err);
+        resolve(isMatch);
+      });
     });
   };
 

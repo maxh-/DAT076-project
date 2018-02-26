@@ -7,6 +7,8 @@ ootmappen.
 
 
 # Routes
+
+## Recipe
 **Path**: /recipe/create  
 **Method**: POST  
 **RequiresAuth**: YES  
@@ -45,3 +47,113 @@ ootmappen.
 **Method**: Get  
 **RequiresAuth**: NO  
 **Beskrivning**: Hämtar ett recept
+
+## User
+
+**Path**: /user/all  
+**Method**: GET  
+**RequiresAuth**: NO  
+**Beskrivning**: Hämtar publik info om alla användare
+
+**Path**: /user/:id  
+**Method**: GET  
+**RequiresAuth**: NO  
+**Beskrivning**: hämtar publik info om en specifik användare
+
+**Path**: /user/me/  
+**Method**: GET  
+**RequiresAuth**: YES  
+**Beskrivning**: Hämtar infon om den inloggade användaren
+
+**Path**: /user/me/changePassword  
+**Method**: POST  
+**RequiresAuth**: YES  
+**JSON**: 
+```
+{
+  oldPassword: String,
+  pasword: String,
+  password2: String
+}
+```
+*Beskrivning**: ändrar lösenord på den inloggade användaren.
+
+**Path**: /user/me/update  
+**Method**: POST  
+**RequiresAuth**: YES  
+**JSON**: 
+```
+{
+  firstName: String,
+  lastName: String
+
+}
+```
+*Beskrivning**: ändrar uppgifter på den inloggade användaren. firstName och lastName får inte vara tomma! 
+
+## Auth
+**Path**: /auth/  
+**Method**: GET  
+**RequiresAuth**: YES  
+**Beskrivning**: hämtar den inloggade användaren ifall personen är inloggad
+
+**Path**: /auth/register  
+**Method**: POST  
+**RequiresAuth**: NO  
+**JSON**: 
+```
+{
+  email: String,
+  pasword: String,
+  password2: String,
+  firstName: String,
+  lastName: String
+}
+```
+**Beskrivning**: Skapar ny användare, code: 201 ifall det funkade.
+
+**Path**: /auth/login  
+**Method**: POST  
+**RequiresAuth**: NO  
+**JSON**: 
+```
+{
+  email: String,
+  pasword: String,
+}
+```
+**Beskrivning**: Loggar in användaren. Får användaren som user i response.
+
+**Path**: /auth/logout  
+**Method**: GET  
+**RequiresAuth**: NO/  
+**Beskrivning**: Loggar in användaren. Får användaren som user i response.
+
+**Path**: /auth/forgot  
+**Method**: POST  
+**RequiresAuth**: NO  
+**JSON**: 
+```
+{
+  email: String
+}
+```
+**Beskrivning**: Skickar mail till användaren med en länk med en token i så de kan ändra sitt lösenord.
+
+**Path**: /auth/reset/:token  
+**Method**: GET  
+**RequiresAuth**: NO  
+**Beskrivning**: skickar code 200 om token existerar och inte gått ut och token går att hitta i response som `token`
+
+**Path**: /auth/reset/:token  
+**Method**: POST  
+**RequiresAuth**: NO  
+**JSON**: 
+```
+{
+  password: String,
+  password2: String
+}
+```
+**Beskrivning**: Skickar mail till användaren ifall det fungerade. code: 200 ifall det fungerade i response;
+

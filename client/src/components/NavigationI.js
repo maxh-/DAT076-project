@@ -3,7 +3,7 @@ import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 import './css/Navigation.css';
 
 class Navigation extends Component {
-
+  
   // render component
   render() {
     return (
@@ -26,8 +26,6 @@ class Navigation extends Component {
               <MenuItem eventKey={2.1} href="/new">Nytt recept</MenuItem>
               <MenuItem eventKey={2.2} href="/profile">Min profil</MenuItem>
               <MenuItem eventKey={2.3} href="/saved">Mina sparade recept</MenuItem>
-              <MenuItem eventKey={2.4} href="/register"> Registrera dig</MenuItem>
-              <MenuItem eventKey={2.5} href="/login">Logga in </MenuItem>
               <MenuItem divider />
             </NavDropdown>
           </Nav>

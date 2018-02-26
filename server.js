@@ -16,6 +16,8 @@ const isAuthenticated = require('./server/middlewares/isAuthenticated');
 const welcome = require('./server/routes/welcome');
 const auth = require('./server/routes/auth');
 const recipe = require('./server/routes/recipe');
+const userMe = require('./server/routes/user-me');
+const user = require('./server/routes/user');
 
 const app = express();
 
@@ -26,7 +28,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Add passport to app
-app.use(session({ secret: 'extremthemligsecret', 
+app.use(session({ secret: 'extremthemligsecret',
                   resave: false,
                   saveUninitialized: false}));
 app.use(passport.initialize());
@@ -37,6 +39,9 @@ app.use(passport.session());
 app.use('/welcome', welcome);
 app.use('/auth', auth);
 app.use('/recipe', recipe);
+app.use('/user/me', isAuthenticated, userMe);
+app.use('/user', user);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
