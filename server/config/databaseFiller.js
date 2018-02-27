@@ -19,6 +19,27 @@ exports.fill = async () => {
   await models.Unit.create({name: "Hekto", abbreviation: "hg"});
   await models.Unit.create({name: "Gram", abbreviation: "g"});
 
+  // tags
+
+  await models.Tag.create({tag: "förrätt"});
+  await models.Tag.create({tag: "huvudrätt"});
+  await models.Tag.create({tag: "efterrätt"});
+  await models.Tag.create({tag: "mellanmål"});
+  await models.Tag.create({tag: "nattamat"});
+  await models.Tag.create({tag: "bakismat"});
+  await models.Tag.create({tag: "veganskt"});
+  await models.Tag.create({tag: "lakto-vegitarianskt"});
+  await models.Tag.create({tag: "lakto-ovo-vegitarianskt"});
+  await models.Tag.create({tag: "ovo-vegitarianskt"});
+  await models.Tag.create({tag: "pizza"});
+  await models.Tag.create({tag: "pasta"});
+  await models.Tag.create({tag: "burgare"});
+  await models.Tag.create({tag: "fisk"});
+  await models.Tag.create({tag: "grönsaker"});
+  await models.Tag.create({tag: "kött"});
+  await models.Tag.create({tag: "glutenfritt"});
+  await models.Tag.create({tag: "laktosfritt"});
+
   // ingredienser
   await models.Ingredient.create({name: "Röda Linser"});
   await models.Ingredient.create({name: "Havremjölk"});
