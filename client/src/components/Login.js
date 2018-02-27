@@ -38,12 +38,13 @@ export default class Login extends Component {
         password: this.state.password
       })
     })
-      .then(res => this.handleLogin(res.json()));
+      .then(res => res.json())
+      .then(body => this.handleLogin(body));
   }
 
-  // verify user is logged in and either redirect or show error
-  handleLogin = (res)  => {
-    
+  // check wether user is logged in and either redirect or show error
+  handleLogin = (body)  => {
+    // TODO: fix
   }
   
   render = () => {
