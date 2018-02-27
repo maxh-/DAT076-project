@@ -16,11 +16,6 @@ class Navigation extends Component {
         </Navbar.Brand>
         <Navbar.Toggle />
         <Navbar.Collapse>
-        <Nav>
-          <NavItem href="/browse">
-            Bläddra
-          </NavItem>
-        </Nav>
           <Nav pullRight>
             <Navbar.Text>
               Signed in as: <Navbar.Link href="/pages">Mark Otto</Navbar.Link>

@@ -85,7 +85,7 @@ class Browse extends Component {
 			      <InputGroup className="gr">
 				      <FormControl bsSize="large" id="fc" type="text"  
 				        placeholder="Sök recept" name="searchWord" 
-				        onChange={this.handleChange} />
+				        onChange={this.handleChange.bind(this)} />
 				      <InputGroup.Addon id="addon" >
 					  		<Button id="subBtn" type="submit" bsSize="large">        		
 					  			<Glyphicon glyph="search" />
