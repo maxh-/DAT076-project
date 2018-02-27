@@ -1,7 +1,7 @@
 const models = require('../models');
 
 exports.findById = async (id) => {
-/*  const recipe = await models.Recipe.findById(id, {
+  const recipe = await models.Recipe.findById(id, {
     include: [
       models.Step,
       models.Tag,
@@ -9,12 +9,6 @@ exports.findById = async (id) => {
         model: models.RecipeIngredients,
         include: [models.Ingredient, models.Unit]
       }]
-  }); */
-  const recipe = await models.Recipe.findById(id, {
-    include: [
-      {all: true,
-       nested: true}
-      ]
   });
   if(recipe){
     return {

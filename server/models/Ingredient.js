@@ -14,9 +14,6 @@ module.exports  = (sequelize, DataTypes) => {
 
   // associations
   Ingredient.associate = function(models){
-    models.Ingredient.belongsToMany(models.Unit, {
-      through: models.RecipeIngredients
-    });
     models.Ingredient.belongsToMany(models.Recipe, {
       through: models.RecipeIngredients
     });
