@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Col, FormGroup, ControlLabel, FormControl,
-  Button, ButtonToolbar, InputGroup, Glyphicon,
-  ListGroup, ListGroupItem, MenuItem, DropdownButton,
-   } from 'react-bootstrap';
+  Button, ButtonToolbar, InputGroup, Glyphicon, ToggleButton,
+  ListGroup, ListGroupItem, ToggleButtonGroup,   } from 'react-bootstrap';
 import './css/NewRecipe.css';
 
 class NewRecipe extends Component {
@@ -18,7 +17,9 @@ class NewRecipe extends Component {
       stepIndex:1,
       time: "0:15",
       description: "",
-      title: ""
+      title: "",
+      meal: "appetizer",
+      tags: ["#fisk", "#3"]
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleObjectChange = this.handleObjectChange.bind(this);
@@ -27,7 +28,9 @@ class NewRecipe extends Component {
     this.createIngredients = this.createIngredients.bind(this);
     this.createSteps = this.createSteps.bind(this);
   }
-
+  componentDidUpdate(prevProps, prevState) {
+    console.log(this.state);
+  }
   handleChange({ target }) {
     this.setState({
       [target.name]: target.value
@@ -38,7 +41,7 @@ class NewRecipe extends Component {
     var x = this.state.steps.filter(function(obj) {
       return obj['id'] === target.name;
     });
-    x={id:parseInt(target.name),step:target.value};
+    x={id:parseInt(target.name,10),step:target.value};
     let newSteps = [];
     this.state.steps.forEach((element) => {
       if(element.id === x.id) {
@@ -114,6 +117,21 @@ class NewRecipe extends Component {
     this.am.value = "";
   }
 
+  addTags({ target }) {
+    if(target.value !== undefined) {
+      if(!this.state.tags.includes(target.value)) {
+        this.setState({
+          tags: this.state.tags.concat(target.value)
+        });
+      }
+      else {
+        this.setState({
+          tags: this.state.tags.filter(word => word !== target.value)
+        });
+      }
+    }
+  }
+
   createIngredients(ing) {
     return    <ListGroupItem onClick={this.handleClick.bind(this,'del',ing['ingr'], 'ingr')} key={ing['ingr']}>
                 <Col xs={6}>
@@ -157,7 +175,6 @@ class NewRecipe extends Component {
     var ingrsItems = ingrs.map(this.createIngredients);
     var stps = this.state.steps;
     var stpsItems = stps.map(this.createSteps);
-
 
     return (
       <div id="NewRecipe">
@@ -205,6 +222,24 @@ class NewRecipe extends Component {
             </Col>
           </FormGroup>
 
+          <FormGroup controlId="formControlsSelect">
+            <Col sm={2} componentClass={ControlLabel}>            
+                Måltid
+            </Col>
+            <Col sm={10}>
+                <FormControl componentClass="select" placeholder="select"
+                    value={this.state.meal}
+                    onChange={this.handleChange.bind(this)}
+                    name="meal"
+                    defaultValue="appetizer">
+                  <option value="appetizer">Förrätt</option>
+                  <option value="main">Huvudrätt</option>
+                  <option value="dessert">Efterrätt</option>
+                  <option value="snack">Mellanmål</option>
+                </FormControl>
+            </Col>
+          </FormGroup>
+
           <FormGroup controlId="beskrivning">
             <Col sm={2} componentClass={ControlLabel}>
               Beskrivning
@@ -217,6 +252,22 @@ class NewRecipe extends Component {
             </Col>
           </FormGroup>
 
+          <FormGroup>
+            <Col sm={2} componentClass={ControlLabel}>            
+              Taggar
+            </Col>
+            <Col sm={10}>
+              <ToggleButtonGroup name="tags"
+                type="checkbox"
+                value={this.state.tags}
+                onClick={this.addTags.bind(this)} >
+                <ToggleButton value={"#förrätt"}>förrätt</ToggleButton>
+                <ToggleButton value={"#fisk"}>fisk</ToggleButton>
+                <ToggleButton value={"#3"}>3</ToggleButton>
+              </ToggleButtonGroup>
+            </Col>
+          </FormGroup>
+          
           <FormGroup
             controlId="formBasicText">
             <Col xs={12} componentClass={ControlLabel} sm={2}>
@@ -283,7 +334,7 @@ class NewRecipe extends Component {
           </FormGroup>
           <Col sm={2}></Col>
           <Col id="submitCol" sm={8} xs={10}>
-            <ButtonToolbar inline>
+            <ButtonToolbar >
               <Button bsStyle="primary" bsSize="large" disabled  /*onClick={}*/>
                 Publicera  
               </Button>

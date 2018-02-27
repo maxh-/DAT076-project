@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Jumbotron, Grid, Row, Col, PageHeader,
-  Glyphicon, Button } from 'react-bootstrap';
+import { Jumbotron, Grid, Row, Col,
+  Glyphicon } from 'react-bootstrap';
 import bild from './bild.jpg';
 import './css/Recipe.css';
 
@@ -17,7 +17,7 @@ class Recipe extends Component {
       steps: ["Koka spaghettin", "Skär fläsket i små tärningar. Stek fläsket knaprigt i smör i en stekpanna","Vispa ihop grädde, salt, vitlök och hälften av osten","Rör ner fläsk och ostblandningen i den kokta spaghettinRör ner fläsk och ostblandningen i den kokta spaghettinRör ner fläsk och ostblandningen i den kokta spaghettin", "Rör ner fläsk och ostblandningen i den kokta spaghettinRör ner fläsk och ostblandningen i den kokta spaghettinRör ner fläsk och ostblandningen i den kokta spaghettinRör ner fläsk och ostblandningen i den kokta spaghettinRör ner fläsk och ostblandningen i den kokta spaghettinRör ner fläsk och ostblandningen i den kokta spaghettinRör ner fläsk och ostblandningen i den kokta spaghettinRör ner fläsk och ostblandningen i den kokta spaghettinRör ner fläsk och ostblandningen i den kokta spaghettinRör ner fläsk och ostblandningen i den kokta spaghettin"]
     }
   }
-  // render component
+
   render() {
     let c = 0;
     let ingrs = [];
@@ -44,7 +44,7 @@ class Recipe extends Component {
 
     return (
       <div id="recipe">
-        <img src={bild} id="pic" />
+        <img src={bild} id="pic" alt="bild"/>
         <Jumbotron>
           <h1> { this.state.title } </h1>
           <p>
