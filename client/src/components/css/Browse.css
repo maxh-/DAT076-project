@@ -38,8 +38,19 @@
     -o-transform: 		scale(1.05);
     transform: 			scale(1.05);
 }
+.btn-toolbar {
+	margin: 0;
+}
+.col-xs-3 {
+	padding: 0;
+}
+.col-xs-3 .dropdown {
+	width: 100%;
+}
+.dropdown .dropdown-toggle {
+	width: 100%;
 
-
+}
 .child:before {
     content: "";
     display: none;
@@ -69,10 +80,10 @@
 	padding: 0;
 	margin: 0;	
 }
-#dropdownMenu .dropdownItem {
+#search .btn-toolbar .col-xs-3 .btn-group .dropdownItem {
 	width: 100%;
-	padding: 5px 0;
-	margin: 0; 
+	padding: 0 auto;
+	margin: 0;
 }
 #subBtn {
 	border-bottom-left-radius: 0px;

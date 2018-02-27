@@ -81,7 +81,6 @@ class Browse extends Component {
     return (
     	<div className="content">
     		<div id="search" >
-
 		      <form onSubmit={this.handleSubmit}>
 			      <InputGroup className="gr">
 				      <FormControl bsSize="large" id="fc" type="text"  
@@ -93,31 +92,52 @@ class Browse extends Component {
 								</Button>			      
 							</InputGroup.Addon>
 				    </InputGroup>
-				  </form>
-
-				  <ButtonToolbar >
-            <DropdownButton title="Måltid">
-				      <ToggleButtonGroup type="radio" name="meal" id="dropdownMenu" 
-        						onClick={this.handleChange.bind(this)}>
-  				      <ToggleButton className="dropdownItem" value={'#förrätt'}>Förrätt</ToggleButton>
-  				      <ToggleButton className="dropdownItem" value={'#huvudrätt'}>Huvudrätt</ToggleButton>
-  				      <ToggleButton className="dropdownItem" value={'#efterrätt'}>Efterrätt</ToggleButton>
-  				      <ToggleButton className="dropdownItem" value={'#mellanmål'}>Mellanmål</ToggleButton>
-              </ToggleButtonGroup>
-            </DropdownButton>
-            <ToggleButtonGroup type="radio" name="filter" id="btn-group"
-                    value={this.state.filter}
-                    onClick={this.addFilter.bind(this)} >
-				      <ToggleButton value={'#pizza'}>Pizza</ToggleButton>
-				      <ToggleButton value={'#pasta'}>Pasta</ToggleButton>
-				      <ToggleButton value={'#burgare'}>Burgare</ToggleButton>
-				      <ToggleButton value={'#fisk'}>Fisk</ToggleButton>
-				      <ToggleButton value={'#grönsaker'}>Grönsaker</ToggleButton>
-				      <ToggleButton value={'#kött'}>Kött</ToggleButton>
-				      <ToggleButton value={'#glutenfritt'}>Glutenfritt</ToggleButton>
-				      <ToggleButton value={'#veganskt'}>Veganskt</ToggleButton>
-				      <ToggleButton value={'#laktosfritt'}>Laktosfritt</ToggleButton>
-						</ToggleButtonGroup>
+		  		</form>
+          <ButtonToolbar>
+            <Col xs={3}>
+              <DropdownButton title="Måltid">
+    			      <ToggleButtonGroup type="radio" name="meal"  
+          						onClick={this.handleChange.bind(this)}>
+    				      <ToggleButton className="dropdownItem" value={'#förrätt'}>Förrätt</ToggleButton>
+    				      <ToggleButton className="dropdownItem" value={'#huvudrätt'}>Huvudrätt</ToggleButton>
+    				      <ToggleButton className="dropdownItem" value={'#efterrätt'}>Efterrätt</ToggleButton>
+    				      <ToggleButton className="dropdownItem" value={'#mellanmål'}>Mellanmål</ToggleButton>
+                </ToggleButtonGroup>
+              </DropdownButton>
+            </Col>
+            <Col xs={3}>
+             	<DropdownButton title="Rättyp">
+  		          <ToggleButtonGroup type="radio" name="filter" 
+                      value={this.state.filter}
+                      onClick={this.addFilter.bind(this)} >
+      			      <ToggleButton className="dropdownItem" value={'#pizza'}>Pizza</ToggleButton>
+      			      <ToggleButton className="dropdownItem" value={'#pasta'}>Pasta</ToggleButton>
+                  <ToggleButton className="dropdownItem" value={'#burgare'}>Burgare</ToggleButton>
+  				      </ToggleButtonGroup>
+              </DropdownButton>
+            </Col>
+            <Col xs={3}>
+              <DropdownButton title="Ingrediens">
+  		          <ToggleButtonGroup type="radio" name="filter"
+  		      					value={this.state.filter}
+          						onClick={this.addFilter.bind(this)}>
+      			      <ToggleButton className="dropdownItem" value={'#fisk'}>Fisk</ToggleButton>
+      			      <ToggleButton className="dropdownItem" value={'#grönsaker'}>Grönsaker</ToggleButton>
+      			      <ToggleButton className="dropdownItem" value={'#kött'}>Kött</ToggleButton>
+                </ToggleButtonGroup>
+              </DropdownButton>
+            </Col>
+            <Col xs={3}>
+              <DropdownButton title="Sepcialkost">
+                <ToggleButtonGroup type="radio" name="filter" 
+  		      					value={this.state.filter}
+          						onClick={this.addFilter.bind(this)}>
+      			      <ToggleButton className="dropdownItem" value={'#glutenfritt'}>Glutenfritt</ToggleButton>
+      			      <ToggleButton className="dropdownItem" value={'#veganskt'}>Veganskt</ToggleButton>
+      			      <ToggleButton className="dropdownItem" value={'#laktosfritt'}>Laktosfritt</ToggleButton>
+                </ToggleButtonGroup>  
+              </DropdownButton>
+            </Col>
 				  </ButtonToolbar>
 				</div>
 
