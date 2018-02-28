@@ -13,47 +13,10 @@ router.get('/', isAuthenticated, async (req, res, next) => {
   res.json(response);
 });
 
-/* POST login */
-router.post('/login', (req, res, next) => {
-  passport.authenticate('local', function (err, user, info) {
-    if (err) {
-      return res.json({
-        success: false,
-        error: err
-      });
-    }
-    if (!user) {
-      return res.json({
-        success: false,
-        code: 400,
-        message: "email or password is invalid"
-      });
-    }
-    req.logIn(user, function(err) {
-      if (err) {
-        return res.json({
-          success: false,
-          error: err
-        });
-      }
-      return res.json({
-        success: true,
-        code: 200,
-        user: user.toJSON()
-      });
-    });
-  })(req, res, next);
-});
-
-
-/* GET logout */
-router.get('/logout', (req, res, next) => {
-  req.logout();
-  res.json({
-    success: true,
-    code: 200,
-    message: "logout"
-  });
+/* POST get mah token. */
+router.post('/login', async (req, res, next) => {
+  const response = await authController.getToken(req.body);
+  res.json(response);
 });
 
 /* POST register user */

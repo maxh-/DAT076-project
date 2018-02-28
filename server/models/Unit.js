@@ -19,9 +19,7 @@ module.exports  = (sequelize, DataTypes) => {
 
   // associations
   Unit.associate = function(models){
-    models.Unit.belongsToMany(models.Ingredient, {
-      through: models.RecipeIngredients
-    });
+    models.Unit.hasMany(models.RecipeIngredients);
   };
   return Unit;
 };
