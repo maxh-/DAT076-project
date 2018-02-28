@@ -17,6 +17,7 @@ const auth = require('./server/routes/auth');
 const recipe = require('./server/routes/recipe');
 const userMe = require('./server/routes/user-me');
 const user = require('./server/routes/user');
+const ingredient = require('./server/routes/ingredient');
 
 const app = express();
 
@@ -36,6 +37,7 @@ app.use('/auth', auth);
 app.use('/recipe', recipe);
 app.use('/user/me', isAuthenticated, userMe);
 app.use('/user', user);
+app.use('/ingredient', ingredient);
 
 
 // catch 404 and forward to error handler
