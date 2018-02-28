@@ -8,10 +8,11 @@ import MyProfile from './MyProfile';
 import MySavedRecipes from './MySavedRecipes';
 import Register from './Register';
 import Login from './Login';
-
+import ResetPass from './ResetPass';
+import ResetPass2 from './ResetPass2';
 class Main extends Component {
-  
-  
+
+
   // render component
   render() {
   	return (
@@ -25,6 +26,8 @@ class Main extends Component {
 		      <Route path='/new' component={NewRecipe}/>
 		      <Route path='/profile' component={MyProfile}/>
 		      <Route path='/saved' component={MySavedRecipes}/>
+          <Route path='/resetpass' component={ResetPass}/>
+          <Route path='/resetpass2' component={ResetPass2}/>
     		</Switch>
       </main>
     );

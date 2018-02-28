@@ -46,7 +46,7 @@ export default class Login extends Component {
   handleLogin = (body)  => {
     // TODO: fix
   }
-  
+
   render = () => {
     return (
       <div className="login">
@@ -77,6 +77,7 @@ export default class Login extends Component {
                   value={this.state.password}
                   onChange={this.onChange.bind(this)} />
               </FormGroup>
+              <a href="/ResetPass" >Glömt lösenord</a>
               <Button type="submit" className="btn btn-primary btn-lg pull-right">Logga in </Button>
             </form>
           </Col>
@@ -84,6 +85,5 @@ export default class Login extends Component {
       </div>
     );
   }
-  
-}
 
+}
