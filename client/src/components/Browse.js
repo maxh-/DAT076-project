@@ -4,7 +4,6 @@ import { Glyphicon, Grid, Row, Col, Button, InputGroup,
 	ToggleButtonGroup, ToggleButton,
 	PageHeader, ButtonToolbar } from 'react-bootstrap';
 import './css/Browse.css';
-import bild from './bild.jpg';
 
   const dummySentence = 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit';
 

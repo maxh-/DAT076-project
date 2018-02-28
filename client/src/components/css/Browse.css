@@ -8,7 +8,7 @@
 .show-grid {
 	width: 100%;
 	margin: 0;
-	padding: 10px 20px;
+	padding: 10px 0;
 }
 .parent {
 	padding: 0;
@@ -18,11 +18,13 @@
 	cursor: pointer;
     display: flex;
 }
-
+.container {
+	width: 99%;
+}
 .child {
 	width: 100%;
 	background-position: center;
-	background-image: url('../bild.jpg');
+	background-image: url('/img/bild.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     -webkit-transition: all .4s;
