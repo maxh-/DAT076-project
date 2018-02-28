@@ -10,6 +10,9 @@ import {
 import './css/ResetPass.css';
 
 export default class ResetPass2 extends Component {
+//constructor(props) {
+  //super(props);
+//}
   state = {
     password: '',
     password2: ''
@@ -20,9 +23,12 @@ onChange = ({ target }) => {
     [target.name]: target.value
   });
 }
-
 onSubmit = (e) => {
+
   e.preventDefault();
+  console.log(document.URL);
+  console.log(this.props);
+
 
   fetch('/auth/reset/:token', {
     headers: {
@@ -31,7 +37,8 @@ onSubmit = (e) => {
     },
     method: 'POST',
     body: JSON.stringify({
-      email: this.state.email
+      password: this.state.password,
+      password2: this.state.password2
     })
 
   })
@@ -75,5 +82,4 @@ onSubmit = (e) => {
       </div>
     );
   }
-
 }

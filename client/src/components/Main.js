@@ -27,7 +27,7 @@ class Main extends Component {
 		      <Route path='/profile' component={MyProfile}/>
 		      <Route path='/saved' component={MySavedRecipes}/>
           <Route path='/resetpass' component={ResetPass}/>
-          <Route path='/resetpass2' component={ResetPass2}/>
+          <Route path='/resetpass2/:token' component={ResetPass2}/>
     		</Switch>
       </main>
     );
