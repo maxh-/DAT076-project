@@ -30,8 +30,6 @@ class RegisterForm extends Component {
     constructor(props, context) {
     super(props, context);
 
-    //this.handleEm = this.handleChange.bind(this);
-
     this.state = {
       email: '',
       firstName: '',
@@ -90,7 +88,6 @@ class RegisterForm extends Component {
     } else {
       return 'success';
     }
-
   }
 
   onEmailChange(e) {
@@ -210,7 +207,7 @@ async onPassword2Change(e) {
                     onChange={this.onPassword2Change.bind(this)} />
               <FormControl.Feedback />
             </FormGroup>
-            <button type="submit" class="btn btn-primary">Registrera</button>
+            <button type="submit" class="btn btn-primary pull-right">Registrera</button>
           </form>
         </Col>
       </Row>
