@@ -27,6 +27,10 @@ class NewRecipe extends Component {
     this.addItem = this.addItem.bind(this);
     this.createIngredients = this.createIngredients.bind(this);
     this.createSteps = this.createSteps.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+  componentDidMount() {
+    //hämta tags, units etc
   }
   componentDidUpdate(prevProps, prevState) {
     console.log(this.state);
@@ -88,6 +92,9 @@ class NewRecipe extends Component {
         }));              
       } 
     }
+  }
+  handleSubmit(event) {
+
   }
 
   addStep = (e) => {
@@ -177,7 +184,7 @@ class NewRecipe extends Component {
     var stpsItems = stps.map(this.createSteps);
 
     return (
-      <div id="NewRecipe">
+      <div id="mainContainer" onSubmit={this.handleSubmit.bind(this)} >
         <Form horizontal>
           <FormGroup controlId="titel">
             <Col componentClass={ControlLabel} sm={2}>
@@ -274,21 +281,21 @@ class NewRecipe extends Component {
                 Ingredienser
             </Col>
             <Col xs={12} sm={10}>            
-              <Col sm={6} className="p">
+              <Col sm={6} className="noPadding">
                 <FormControl
                   type="text"
                   placeholder="Ingrediens"
                   inputRef={(a) => this.ingr = a} 
                 />
               </Col>
-              <Col xs={4} sm={2} className="p">            
+              <Col xs={4} sm={2} className="noPadding">            
                 <FormControl
                   type="text"
                   placeholder="Mängd"
                   inputRef={(b) => this.am = b} 
                 />
               </Col>
-              <Col xs={4} sm={2} className="p">            
+              <Col xs={4} sm={2} className="noPadding">            
                 <FormControl componentClass="select" placeholder="Enhet"
                     defaultValue="l" inputRef={(c) => this.un = c }>
                   <option value="dl">dl</option>
@@ -297,8 +304,8 @@ class NewRecipe extends Component {
                   <option value="hundra st">hundra st</option>
                 </FormControl>
               </Col>
-              <Col xs={4} sm={2} className="p">
-                <Button onClick={this.addItem.bind(this,'in')} className="hundred">
+              <Col xs={4} sm={2} className="noPadding">
+                <Button onClick={this.addItem.bind(this,'in')} className="fillWidth">
                   Lägg till
                 </Button>
               </Col>      
@@ -329,7 +336,7 @@ class NewRecipe extends Component {
             <Col sm={2}> </Col>
 
             <Col sm={10}> 
-              <ol id="ol"> { stpsItems } </ol>      
+              <ol id="noListStyle"> { stpsItems } </ol>      
             </Col>
           </FormGroup>
           <Col sm={2}></Col>

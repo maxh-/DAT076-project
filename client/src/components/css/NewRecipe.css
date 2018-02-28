@@ -1,25 +1,22 @@
-#NewRecipe {
+#mainContainer {
 	padding: 10px 0;
 }
 #submitCol {
 	padding-left: 5px;
 }
-#ol {
+#noListStyle {
 	list-style-type: none; 
 	padding: 0;
 }
-#ol li div{
+#noListStyle li div{
 	margin: 0;
 }
-.p {
+.noPadding {
 	padding: 0;
 }
-.pr {
-	padding-right: 0;
-}
-.pl {
-	padding-left: 0;
-}
-.hundred {
+.fillWidth {
 	width: 100%;
+}
+textarea {
+    resize: none;
 }
