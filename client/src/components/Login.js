@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router';
+import { observer } from 'mobx-react';
 import {
   FormGroup,
   FormControl,
@@ -7,14 +9,18 @@ import {
   Col,
   Button
 } from 'react-bootstrap';
+
 import './css/Login.css';
+import Auth from '../util/AuthService';
 
-export default class Login extends Component {
-
-  state = {
-    email: '',
-    password: '',
-    showError: false
+const Login = observer(class Login extends Component {
+  constructor(props) {
+    super(props);
+    
+    this.state = {
+      email: '',
+      password: ''
+    };
   }
 
   // handle field changes
@@ -24,30 +30,23 @@ export default class Login extends Component {
     });
   }
 
-  // post credentials to backend
+  // login
   onSubmit = (e) => {
     e.preventDefault();
-    fetch('/auth/login', {
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      method: 'POST',
-      body: JSON.stringify({
-        email: this.state.email,
-        password: this.state.password
+    return Auth.login(this.state.email, this.state.password)
+      .then(() => {
+        console.log('login success');
       })
-    })
-      .then(res => res.json())
-      .then(body => this.handleLogin(body));
-  }
-
-  // check wether user is logged in and either redirect or show error
-  handleLogin = (body)  => {
-    // TODO: fix
+      .catch(() => {
+        console.log('login failed');
+      });
   }
   
   render = () => {
+    if (Auth.isLoggedIn) {
+      this.props.history.push('/');
+    }
+    
     return (
       <div className="login">
         <Row>
@@ -64,7 +63,8 @@ export default class Login extends Component {
                   autoComplete="email"
                   name="email"
                   value={this.state.email}
-                  onChange={this.onChange.bind(this)} />
+                  onChange={this.onChange.bind(this)}
+                  />
               </FormGroup>
               <FormGroup
                 controlId="password"
@@ -75,15 +75,18 @@ export default class Login extends Component {
                   autoComplete="current-password"
                   name="password"
                   value={this.state.password}
-                  onChange={this.onChange.bind(this)} />
+                  onChange={this.onChange.bind(this)}
+                  />
               </FormGroup>
-              <Button type="submit" className="btn btn-primary btn-lg pull-right">Logga in </Button>
+              <Button type="submit" className="btn btn-primary btn-lg pull-right">
+                Logga in
+              </Button>
             </form>
           </Col>
         </Row>
       </div>
     );
   }
-  
-}
+});
 
+export default Login;
