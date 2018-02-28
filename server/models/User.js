@@ -30,11 +30,9 @@ module.exports  = (sequelize, DataTypes) => {
     },
     resetPasswordExpires: {
       type: DataTypes.DATE
-
     }
   });
 
-  // Dont return password to frontend
   // this makes the password still useable inside the backend! 
   User.prototype.toJSON =  function () {
     var values = Object.assign({}, this.get());
@@ -45,7 +43,7 @@ module.exports  = (sequelize, DataTypes) => {
     return values;
   };
 
-  // check if password is valid
+  // check if password is valid for use with passport
   User.validPassword = function(password, passwd, done, user){
     bcrypt.compare(password, passwd, function(err, isMatch){
       if(err) console.log(err);
@@ -57,9 +55,24 @@ module.exports  = (sequelize, DataTypes) => {
     });
   };
 
+  // check if passwords are equal
+  User.comparePassword = function(password, passwd){
+    return new Promise(resolve => {
+      bcrypt.compare(password, passwd, (err, isMatch) => {
+        if(err) console.log(err);
+        resolve(isMatch);
+      });
+    });
+  };
+
   // salt password before create
   User.beforeCreate(hashPassword);
   User.beforeUpdate(hashPassword);
+
+  // associations
+  User.associate = function(models){
+    models.User.hasMany(models.Recipe);
+  };
 
   return User;
 };

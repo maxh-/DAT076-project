@@ -51,7 +51,6 @@ exports.register = async (params) => {
   }
 };
 
-
 exports.forgotPassword = async (email, host) => {
   const buf = await crypto.randomBytes(20);
   const token = buf.toString('hex');
