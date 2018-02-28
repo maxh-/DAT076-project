@@ -1,5 +1,4 @@
 import { extendObservable } from 'mobx';
-import jwt from 'jsonwebtoken';
 
 import Storage from './authStore';
 

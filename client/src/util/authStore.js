@@ -1,4 +1,4 @@
-import { extendObservable, action, reaction } from 'mobx';
+import { extendObservable, reaction } from 'mobx';
 
 class AuthStore {
   constructor() {    
