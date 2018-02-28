@@ -9,45 +9,50 @@ class Auth {
       get isLoggedIn() {
         return !!Storage.getUser();
       },
-      get getToken() {
-        return Storage.getToken();
+      get token() {
+        return Storage.token;
       },
-      get getUser() {
-        return Storage.getUser();
+      get user() {
+        return JSON.parse(Storage.user);
       }
     });
   }
 
-  async login(username, password) {
-    const result = await fetch('/auth/login', {
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      method: 'POST',
-      body: JSON.stringify({
-        username: username,
-        password: password
+  login(email, password) {
+    return new Promise((resolve, reject) => {
+      fetch('/auth/login', {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        method: 'POST',
+        body: JSON.stringify({
+          email: email,
+          password: password
+        })
       })
-    })
-      .then(res => res.json())
-      .then(async body => {
-        if(body.success === true) {
-          await Storage.setToken(body.token);
-          await Storage.setUser(body.user);
-          return true;
-        } else {
-          return false;
-        }
-      });
-    
-    return result;
+        .then(res => res.json())
+        .then((body) => {
+          if(body.success && body.user && body.token) {
+            Storage.token = body.token;
+            Storage.user = JSON.stringify(body.user);
+            resolve();
+          } else {
+            reject();
+          }
+        });
+    });
   }
 
+
   logout() {
-    Storage.removeToken();
+    Storage.user = null;
+    Storage.token = null;
+    return true;
   }
   
 }
 
 export default new Auth();
+
+//window.auth = new Auth();

@@ -4,14 +4,7 @@ class CommonStore {
   constructor() {    
     extendObservable(this, {
       token: window.localStorage.getItem('jwt'),
-      user: window.localStorage.getItem('jwt'),
-      appLoaded: false,
-      setToken: action((token) => {
-        this.token = token;
-      }),
-      removeToken: action(() => {
-        this.token = null;
-      })
+      user: window.localStorage.getItem('user')
     });
 
     reaction(
@@ -28,6 +21,8 @@ class CommonStore {
       () => this.user, user => {
         if (user) {
           window.localStorage.setItem('user', JSON.stringify(user));
+        } else {
+          window.localStorage.removeItem('user');
         }
       }
     );
@@ -36,3 +31,5 @@ class CommonStore {
 }
 
 export default new CommonStore();
+
+//window.store = new CommonStore();
