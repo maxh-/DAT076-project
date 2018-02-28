@@ -4,7 +4,7 @@ class CommonStore {
   constructor() {    
     extendObservable(this, {
       token: window.localStorage.getItem('jwt'),
-      user: window.localStorage.getItem('user')
+      user: JSON.parse(window.localStorage.getItem('user'))
     });
 
     reaction(

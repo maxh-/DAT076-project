@@ -13,7 +13,7 @@ class Auth {
         return Storage.token;
       },
       get user() {
-        return JSON.parse(Storage.user);
+        return Storage.user;
       }
     });
   }
@@ -35,7 +35,7 @@ class Auth {
         .then((body) => {
           if(body.success && body.user && body.token) {
             Storage.token = body.token;
-            Storage.user = JSON.stringify(body.user);
+            Storage.user = body.user;
             resolve();
           } else {
             reject();
@@ -55,4 +55,4 @@ class Auth {
 
 export default new Auth();
 
-//window.auth = new Auth();
+window.auth = new Auth();
