@@ -15,9 +15,9 @@ class Main extends Component {
 
   // render component
   render() {
-  	return (
-    	<main>
-    		<Switch>
+    return (
+      <main>
+        <Switch>
           <Route path='/browse' component={Browse}/>
           <Route path='/register' component={Register}/>
           <Route path='/login' component={Login}/>

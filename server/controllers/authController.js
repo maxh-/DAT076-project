@@ -2,6 +2,52 @@ const models = require('../models');
 const async = require('async');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
+const jwt = require('jwt-simple');
+const cfg = require('../config/jwtConfig');
+const env = process.env.NODE_ENV || 'development';
+const config = require('../config/config')[env];
+
+exports.getToken = async (params) => {
+  if (params.email && params.password) {
+    const email = params.email;
+    const password = params.password;
+
+    const user = await models.User.find({where: {email: email}});
+    if(user === null){
+      return {
+        success: false,
+        code:404,
+        message: "Email or password incorrect"
+      };
+    }
+    const isMatch = await models.User.comparePassword(password, user.password);
+    if (isMatch) {
+      const payload = {
+        id: user.id
+      };
+      const token = jwt.encode(payload, cfg.jwtSecret);
+      return {
+        success: true,
+        code: 200,
+        token: token,
+        user: user.toJSON()
+      };
+    } else {
+      return {
+        success: false,
+        code:404,
+        message: "Email or password incorrect"
+      };
+    }
+  } else {
+    return {
+      success: false,
+      code:404,
+      message: "Email or password incorrect"
+    };
+  }
+
+};
 
 exports.findUserById = async (id) => {
   const user = await models.User.findById(id);
@@ -81,7 +127,7 @@ exports.forgotPassword = async (email, host) => {
     subject: 'Receptappen Password Reset',
     text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
       'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-      'http://' + host + '/auth/reset/' + token + '\n\n' +
+      'http://' + config.clientLocation + '/resetpass2/' + token + '\n\n' +
       'If you did not request this, please ignore this email and your password will remain unchanged.\n'
   };
   await smtpTransport.sendMail(mailOptions);

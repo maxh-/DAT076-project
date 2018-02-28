@@ -23,9 +23,7 @@ ootmappen.
 			number: Integer
 		}
 		],
-	tags: [ 
-		{tag:String}
-		],
+	tags: [ tagid ],
 	ingredients: [
 		{
 			number: Integer,
