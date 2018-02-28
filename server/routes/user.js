@@ -1,23 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const models = require('../models');
+const userController = require('../controllers/userController');
 
-/* GET users. */
-router.get('/', (req, res, next) => {
-  console.log("serving users");
-  models.User.findAll().then(users => {
-    res.send(users);
-  });
+/* GET all users */
+router.get('/all', async (req, res, next) => {
+  const response = await userController.findAll();
+  res.json(response);
 });
 
-router.get('/createTestUser/:id', (req, res, next) => {
-  console.log("creating test user");
-  models.User.create({
-    username: req.params.id,
-    password: "testpass"
-  }).then(user => {
-    res.send(user);
-  });
+/* GET a user by id. */
+router.get('/:id', async (req, res, next) => {
+  const response = await userController.findUser(req.params.id);
+  res.json(response);
 });
 
 module.exports = router;
