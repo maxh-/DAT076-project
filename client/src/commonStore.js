@@ -1,9 +1,10 @@
 import { extendObservable, action, reaction } from 'mobx';
-import singleton from 'singleton';
 
-class CommonStore extends singleton {
+class CommonStore {
 
   constructor() {
+    //super();
+    
     extendObservable(this, {
       token: window.localStorage.getItem('jwt'),
       appLoaded: false,
@@ -12,7 +13,14 @@ class CommonStore extends singleton {
       }),
       removeToken: action(() => {
         this.token = null;
-      })
+      }),
+      getToken() {
+        if(this.token) {
+          return this.token;
+        } else {
+          return null;
+        }
+      }
     });
 
     reaction(
