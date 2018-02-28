@@ -6,18 +6,20 @@ import Storage from './commonStore';
 class Auth {
   constructor() {
     extendObservable(this, {
-      user: null,
       get isLoggedIn() {
         return !!Storage.getUser();
       },
       get getToken() {
         return Storage.getToken();
+      },
+      get getUser() {
+        return Storage.getUser();
       }
     });
   }
 
   async login(username, password) {
-    await fetch('/auth/login', {
+    const result = await fetch('/auth/login', {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -32,12 +34,14 @@ class Auth {
       .then(async body => {
         if(body.success === true) {
           await Storage.setToken(body.token);
-          await Storage.setUser(this.getUser(body.token));
+          await Storage.setUser(body.user);
           return true;
         } else {
           return false;
         }
       });
+    
+    return result;
   }
 
   logout() {
