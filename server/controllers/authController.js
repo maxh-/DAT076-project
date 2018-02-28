@@ -2,6 +2,49 @@ const models = require('../models');
 const async = require('async');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
+const jwt = require('jwt-simple');
+const cfg = require('../config/jwtConfig');
+
+exports.getToken = async (params) => {
+  if (params.email && params.password) {
+    const email = params.email;
+    const password = params.password;
+
+    const user = await models.User.find({where: {email: email}});
+    if(user === null){
+      return {
+        success: false,
+        code:404,
+        message: "Email or password incorrect"
+      };
+    }
+    const isMatch = await models.User.comparePassword(password, user.password);
+    if (isMatch) {
+      const payload = {
+        id: user.id
+      };
+      const token = jwt.encode(payload, cfg.jwtSecret);
+      return {
+        success: true,
+        code: 200,
+        token: token
+      };
+    } else {
+      return {
+        success: false,
+        code:404,
+        message: "Email or password incorrect"
+      };
+    }
+  } else {
+    return {
+      success: false,
+      code:404,
+      message: "Email or password incorrect"
+    };
+  }
+
+};
 
 exports.findUserById = async (id) => {
   const user = await models.User.findById(id);

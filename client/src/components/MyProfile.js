@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './css/MyProfile.css';
-import { Row, Col, Container } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 
 class MyProfile extends Component {
 
@@ -10,12 +10,12 @@ class MyProfile extends Component {
       <div className="MyProfile">
         <Row>
           <Col md={2} className="profilePic">
-            <img src="/img/sample-profile-pic.jpg" />
+            <img src="/img/sample-profile-pic.jpg" alt=""/>
           </Col>
           <Col md={10} className="aboutUser">
             <Row>
               <Col>
-                <h2>Namn Namnsson <small><a href="#">Redigera profil</a></small></h2>
+                <h2>Namn Namnsson <small><a href="/">Redigera profil</a></small></h2>
               </Col>
             </Row>
             <Row>
