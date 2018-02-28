@@ -1,9 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const passport = require('passport');
-const async = require('async');
-const crypto = require('crypto');
-const nodemailer = require('nodemailer');
 const isAuthenticated = require('../middlewares/isAuthenticated');
 const authController = require('../controllers/authController');
 
