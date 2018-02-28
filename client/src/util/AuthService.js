@@ -7,7 +7,7 @@ class Auth {
   constructor() {
     extendObservable(this, {
       get isLoggedIn() {
-        return !!Storage.getUser();
+        return !!Storage.user;
       },
       get token() {
         return Storage.token;
