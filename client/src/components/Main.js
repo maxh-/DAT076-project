@@ -14,18 +14,18 @@ class Main extends Component {
   
   // render component
   render() {
-  	return (
-    	<main>
-    		<Switch>
+    return (
+      <main>
+        <Switch>
           <Route path='/browse' component={Browse}/>
           <Route path='/register' component={Register}/>
           <Route path='/login' component={Login}/>
-		      <Route exact path='/' component={Home}/>
-		      <Route path='/pages' component={MyPages}/>
-		      <Route path='/new' component={NewRecipe}/>
-		      <Route path='/profile' component={MyProfile}/>
-		      <Route path='/saved' component={MySavedRecipes}/>
-    		</Switch>
+          <Route exact path='/' component={Home}/>
+          <Route path='/pages' component={MyPages}/>
+          <Route path='/new' component={NewRecipe}/>
+          <Route path='/profile' component={MyProfile}/>
+          <Route path='/saved' component={MySavedRecipes}/>
+        </Switch>
       </main>
     );
   }

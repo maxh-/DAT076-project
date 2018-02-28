@@ -27,7 +27,8 @@ exports.getToken = async (params) => {
       return {
         success: true,
         code: 200,
-        token: token
+        token: token,
+        user: user.toJSON()
       };
     } else {
       return {
