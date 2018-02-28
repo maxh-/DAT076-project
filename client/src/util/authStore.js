@@ -1,6 +1,6 @@
 import { extendObservable, action, reaction } from 'mobx';
 
-class CommonStore {
+class AuthStore {
   constructor() {    
     extendObservable(this, {
       token: window.localStorage.getItem('jwt'),
@@ -27,9 +27,8 @@ class CommonStore {
       }
     );
   }
-
 }
 
-export default new CommonStore();
+export default new AuthStore();
 
-//window.store = new CommonStore();
+//window.store = new AuthStore();

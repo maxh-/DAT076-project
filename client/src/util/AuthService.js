@@ -1,7 +1,7 @@
 import { extendObservable } from 'mobx';
 import jwt from 'jsonwebtoken';
 
-import Storage from './commonStore';
+import Storage from './authStore';
 
 class Auth {
   constructor() {
