@@ -30,7 +30,7 @@ class Navigation extends Component {
               Bläddra
             </NavItem>
           </Nav>
-          <Greeting isLoggedIn={this.state.isLoggedIn}/>
+          <Greeting isLoggedIn={true}/>
         </Navbar.Collapse>
       </Navbar>
     );
@@ -56,11 +56,9 @@ function  UserGreeting(props) {
         <MenuItem eventKey={2.1} href="/new">Nytt recept</MenuItem>
         <MenuItem eventKey={2.2} href="/profile">Min profil</MenuItem>
         <MenuItem eventKey={2.3} href="/saved">Mina sparade recept</MenuItem>
-        <MenuItem eventKey={2.4} href="/register"> Registrera dig</MenuItem>
-        <MenuItem eventKey={2.5} href="/login">Logga in </MenuItem>
         <MenuItem divider />
       </NavDropdown>
-    </Nav>  
+    </Nav>
   );
 }
 
