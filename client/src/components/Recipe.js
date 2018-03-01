@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Jumbotron, Grid, Row, Col,
   Glyphicon, Button, Modal, Popover, 
   OverlayTrigger, Carousel } from 'react-bootstrap';
-import bild from './bild.jpg';
 import './css/Recipe.css';
 
 class Recipe extends Component {
@@ -72,7 +71,7 @@ class Recipe extends Component {
     return (
       <div id="mainContainer">
         <div>
-        <img src={bild} id="pic" alt="bild"/>
+        <img src="/img/bild.jpg" id="pic" alt="bild"/>
           <Jumbotron>
             <h1> { this.state.title } </h1>
             <p>
