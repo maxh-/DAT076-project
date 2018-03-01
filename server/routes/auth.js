@@ -12,7 +12,7 @@ router.get('/', isAuthenticated, async (req, res, next) => {
 /* POST get mah token. */
 router.post('/login', async (req, res, next) => {
   const response = await authController.getToken(req.body);
-  res.json(response);
+  res.status(response.code).json(response);
 });
 
 /* POST register user */
