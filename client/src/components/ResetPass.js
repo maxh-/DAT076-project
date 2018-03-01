@@ -10,33 +10,36 @@ import {
 import './css/ResetPass.css';
 
 export default class ResetPass extends Component {
+//constructor(props) {
+  //super(props);
+//}
   state = {
-    email: ''
+    password: '',
+    password2: ''
   }
 
-  async onChange(e) {
-    await this.setState({ email: e.target.value });
-    console.log(this.state);
-  }
-
+onChange = ({ target }) => {
+  this.setState({
+    [target.name]: target.value
+  });
+}
 onSubmit = (e) => {
-  e.preventDefault();
 
-  fetch('/auth/forgot', {
+  e.preventDefault();
+  console.log(this.props.match.token);
+  fetch('/auth/reset/' + this.props.match.params.token, {
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
     method: 'POST',
     body: JSON.stringify({
-      email: this.state.email
+      password: this.state.password,
+      password2: this.state.password2
     })
-
   })
   .then(res => res.json())
   .then(res => console.log(res));
-
-  alert("Ett mail har skickats till " + this.state.email + " med mer information. ")
 }
 
   render = () => {
@@ -44,26 +47,34 @@ onSubmit = (e) => {
       <div className="resetpass">
         <Row>
           <Col md={7}>
-            <h2>Återställ Lösenord</h2>
+            <h2>Ange nytt lösenord</h2>
             <hr />
             <form onSubmit={this.onSubmit.bind(this)}>
               <FormGroup
-                controlId="email"
+                controlId="password"
                 bsSize="large">
-                <ControlLabel>E-post:</ControlLabel>
+                <ControlLabel>Lösenord:</ControlLabel>
                 <FormControl
-                  type="text"
-                  autoComplete="email"
-                  name="email"
-                  value={this.state.email}
+                  type="password"
+                  name="password"
+                  value={this.state.password}
                   onChange={this.onChange.bind(this)} />
               </FormGroup>
-              <a href="/resetpass2">ResetPass2(debugging)</a>
+              <FormGroup
+                controlId="password"
+                bsSize="large">
+                <ControlLabel>Upprepa lösenord:</ControlLabel>
+                <FormControl
+                  type="password"
+                  name="password2"
+                  value={this.state.password2}
+                  onChange={this.onChange.bind(this)} />
+              </FormGroup>
               <Button type="submit" className="btn btn-primary btn-lg pull-right">Återställ</Button>
             </form>
           </Col>
         </Row>
       </div>
-      );
-    }
+    );
   }
+}

@@ -77,7 +77,7 @@ export default class Login extends Component {
                   value={this.state.password}
                   onChange={this.onChange.bind(this)} />
               </FormGroup>
-              <a href="/resetpass" >Glömt lösenord</a>
+              <a href="/forgotpass" >Glömt lösenord</a>
               <Button type="submit" className="btn btn-primary btn-lg pull-right">Logga in </Button>
             </form>
           </Col>
