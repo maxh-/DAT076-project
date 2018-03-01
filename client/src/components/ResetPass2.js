@@ -26,11 +26,8 @@ onChange = ({ target }) => {
 onSubmit = (e) => {
 
   e.preventDefault();
-  console.log(document.URL);
-  console.log(this.props);
 
-
-  fetch('/auth/reset/:token', {
+  fetch('/auth/reset/' + this.props.match.params.token, {
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
@@ -40,7 +37,6 @@ onSubmit = (e) => {
       password: this.state.password,
       password2: this.state.password2
     })
-
   })
   .then(res => res.json())
   .then(res => console.log(res));
