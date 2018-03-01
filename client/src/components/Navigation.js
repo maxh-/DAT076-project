@@ -30,7 +30,7 @@ class Navigation extends Component {
               Bläddra
             </NavItem>
           </Nav>
-          <Greeting isLoggedIn={true}/>
+          <Greeting isLoggedIn={this.state.isLoggedIn}/>
         </Navbar.Collapse>
       </Navbar>
     );
