@@ -10,18 +10,20 @@ import {
 import './css/ResetPass.css';
 
 export default class ResetPass extends Component {
-
-  state = {
-    password: '',
-    password2: ''
+constructor(props) {
+    super(props);
+    this.state = {
+      password: '',
+      password2: ''
+    };
   }
 
-onChange = ({ target }) => {
+onChange({ target }) {
   this.setState({
     [target.name]: target.value
   });
 }
-onSubmit = (e) => {
+onSubmit(e) {
 
   e.preventDefault();
   fetch('/auth/reset/' + this.props.match.params.token, {
@@ -39,7 +41,7 @@ onSubmit = (e) => {
   .then(res => console.log(res));
 }
 
-  render = () => {
+  render() {
     return (
       <div className="resetpass">
         <Row>
