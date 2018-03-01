@@ -1,30 +1,42 @@
 import React, { Component } from 'react';
 import { Jumbotron, Grid, Row, Col,
   Glyphicon, Button, Modal, Popover, 
-  OverlayTrigger, Carousel } from 'react-bootstrap';
+  OverlayTrigger, Carousel, Label } from 'react-bootstrap';
 import './css/Recipe.css';
 
 class Recipe extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: "Spaghetti Carbonara",
+      title: "",
       upVotes: "1",
       downVotes: "5421",
-      time: "0:30",
+      time: "",
       description:"Spaghetti carbonara – en älskad favorit med rökt fläsk eller bacon och grädde! Lika bra till släktmiddagen som till fredagsmyset.",
-      ingredients: [["spaghetti", 300, "g"], ["rökt fläsk", 150, "g"], ["vispgrädde", 0.5, "dl"]],
-      steps: ["Koka spaghettin", "Skär fläsket i små tärningar. Stek fläsket knaprigt i smör i en stekpanna","Vispa ihop grädde, salt, vitlök och hälften av osten","Rör ner fläsk och ostblandningen i den kokta spaghettinRör ner fläsk och ostblandningen i den kokta spaghettinRör ner fläsk och ostblandningen i den kokta spaghettin", "Rör ner fläsk och ostblandningen i den kokta spaghettinRör ner fläsk och ostblandningen i den kokta spaghettinRör ner fläsk och ostblandningen i den kokta spaghettinRör ner fläsk och ostblandningen i den kokta spaghettinRör ner fläsk och ostblandningen i den kokta spaghettinRör ner fläsk och ostblandningen i den kokta spaghettinRör ner fläsk och ostblandningen i den kokta spaghettinRör ner fläsk och ostblandningen i den kokta spaghettinRör ner fläsk och ostblandningen i den kokta spaghettinRör ner fläsk och ostblandningen i den kokta spaghettin"],
-      show: false
+      ingredients: [],
+      steps: [],
+      show: false,
+      tags: []
     }
   }
 
   componentDidMount() {
     // from the path `/inbox/messages/:id`
-    console.log(this.props.match.params.id);
-    /*
-    fetch('/recipe/')
-    */
+    let id = this.props.match.params.id;
+    var recipe;
+    fetch('/recipe/'+id, {
+      method: 'GET',
+    }).then(res => res.json())
+    .then(res => {
+      console.log(res.recipe.Tags);
+      this.setState({
+        title: res.recipe.title,
+        time: res.recipe.timeToComplete,
+        steps: res.recipe.Steps,
+        ingredients: res.recipe.RecipeIngredients,
+        tags: res.recipe.Tags
+      });
+    });
   }
 
   cookingMode = (e) => {
@@ -36,44 +48,50 @@ class Recipe extends Component {
   }
   displayModalSteps = (e) => {
     let stps = [];
-    let indexKey = 1;
     this.state.steps.forEach(function(stp) {
       stps.push(
-        <Carousel.Item key={indexKey} className="carouselItem">
-          <h1>{indexKey}</h1>
+        <Carousel.Item key={stp.number} className="carouselItem">
+          <h1>{stp.number}</h1>
           <b>
-            {stp}
+            {stp.instruction}
           </b>
         </Carousel.Item>
       );
-      indexKey++;
     });
     return stps;
+  }
+  tags() {
+    let tgs = [];
+    this.state.tags.forEach(function(tag) { 
+      tgs.push(
+          <Label className="tag-label" >
+            <b># </b>{ tag.tag }
+          </Label>
+      );
+    });
+    return tgs;
   }
 
 
   render() {
-    let c = 0;
     let ingrs = [];
     this.state.ingredients.forEach(function(ingr) {
       ingrs.push(
-          <li key={c}> 
-            <b>{ ingr[0] }</b>
-            <small>{ ingr[1] }{ ingr[2]}</small>
+          <li key={ingr.number}> 
+            <b>{ ingr.Ingredient.name } </b>
+            <small> { ingr.amount } { ingr.Unit.name }</small>
           </li>
         );
-      c++;
     });
     let stps = [];
     this.state.steps.forEach(function(stp) {
       stps.push(
-          <li key={c} className="itemInList"> 
+          <li key={stp.number} className="itemInList"> 
             <p>
-              { stp } 
+              { stp.instruction } 
             </p>
           </li>
         );
-      c++;
     });
 
     return (
@@ -94,6 +112,9 @@ class Recipe extends Component {
             </p>
             <p>
              { this.state.description }
+            </p>
+            <p>
+              { this.tags() }
             </p>
           </Jumbotron>
         </div>
