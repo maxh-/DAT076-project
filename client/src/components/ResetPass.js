@@ -22,9 +22,9 @@ onChange = ({ target }) => {
   });
 }
 onSubmit = (e) => {
-
+  let token = this.props.match.params.token;
   e.preventDefault();
-  fetch('/auth/reset/' + this.props.match.params.token, {
+  fetch('/auth/reset/' + token, {
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
@@ -36,7 +36,20 @@ onSubmit = (e) => {
     })
   })
   .then(res => res.json())
-  .then(res => console.log(res));
+  .then(function(res) {
+    console.log(res);
+    const isSuccess = res.success;
+    if(isSuccess === true) {
+      alert("Ditt lösenord är nu ändrat.");
+      window.location = '/login';
+    } else {
+      alert("Något gick fel, försök att återställa lösenordet igen.")
+    }
+})
+
+
+
+
 }
 
   render = () => {
