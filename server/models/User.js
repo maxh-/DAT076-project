@@ -60,6 +60,8 @@ module.exports  = (sequelize, DataTypes) => {
   // associations
   User.associate = function(models){
     models.User.hasMany(models.Recipe);
+
+    models.User.belongsToMany(models.Recipe);
   };
 
   return User;
