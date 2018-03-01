@@ -32,7 +32,9 @@ module.exports  = (sequelize, DataTypes) => {
     });
     models.Recipe.hasMany(models.RecipeIngredients);
     models.Recipe.belongsToMany(models.User, {
-      through: 'Likes'
+      through: 'Likes',
+      as: 'likes',
+      foreignKey: 'recipeId'
     });
   };
   return Recipe;
