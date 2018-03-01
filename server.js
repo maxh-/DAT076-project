@@ -19,6 +19,7 @@ const userMe = require('./server/routes/user-me');
 const user = require('./server/routes/user');
 const ingredient = require('./server/routes/ingredient');
 const tag = require('./server/routes/tag');
+const unit = require('./server/routes/unit');
 
 const app = express();
 
@@ -40,6 +41,7 @@ app.use('/user/me', isAuthenticated, userMe);
 app.use('/user', user);
 app.use('/ingredient', ingredient);
 app.use('/tag', tag);
+app.use('/unit', unit);
 
 
 // catch 404 and forward to error handler
