@@ -12,8 +12,6 @@ import Login from './Login';
 import ForgotPass from './ForgotPass';
 import ResetPass from './ResetPass';
 class Main extends Component {
-  
-  // render component
   render() {
     return (
       <main>
