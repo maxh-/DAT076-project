@@ -1,7 +1,15 @@
 const models = require('../models');
 
 exports.findById = async (id) => {
-  const recipe = models.Recipe.findById(id);
+  const recipe = await models.Recipe.findById(id, {
+    include: [
+      models.Step,
+      models.Tag,
+      {
+        model: models.RecipeIngredients,
+        include: [models.Ingredient, models.Unit]
+      }]
+  });
   if(recipe){
     return {
       success: true,
@@ -26,30 +34,30 @@ exports.create = async (params, userId) => {
   }, {
     include: [ models.Step ]
   });
-  // Find or create tags
-  const tags = await Promise.all(
-    params.tags.map(
-      async (tag) => {
-        const res = await models.Tag.findOrCreate({where:tag});
-        return res[0];
-      })
-  );
-  await recipe.addTags(tags);
-  // create recipeIngredients from supplied ingredients
-  const recipeIngredients = await Promise.all(
+
+  await recipe.addTags(params.tags);
+
+  // coerce ingredients to fit model
+  const ingredients = await Promise.all(
     params.ingredients.map(
-      async (ingredient) => {
-        if(ingredient.IngredientId === undefined){
-          const res = await models.Ingredient.findOrCreate(
-            {where: {name: ingredient.ingredient}
+      async (recipeIngredient) => {
+        let ingredient = {};
+        if(recipeIngredient.IngredientId !== undefined){
+          ingredient = await models.Ingredient.findById(recipeIngredient.IngredientId);
+        }else{
+          var res = await models.Ingredient.findOrCreate(
+            {where: {name: recipeIngredient.ingredient}
             });
-          ingredient.IngredientId = res[0].id;
+          ingredient = res[0];
         }
-        const recipeIngredient = await models.RecipeIngredients.create(ingredient);
-        return recipeIngredient;
+        ingredient.RecipeIngredients = recipeIngredient;
+        console.log(ingredient.toJSON());
+        return ingredient;
+
       })
   );
-  await recipe.addRecipeIngredients(recipeIngredients);
+  console.log(ingredients);
+  await recipe.addIngredients(ingredients);
   return {
     success: true,
     code: 201,

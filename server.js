@@ -4,8 +4,7 @@ const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-const passport = require('passport');
-const passportConfig = require('./server/config/passport/passport');
+const passportConfig = require('./server/config/passport/passport')();
 const session = require('express-session');
 const models = require('./server/models');
 
@@ -18,6 +17,9 @@ const auth = require('./server/routes/auth');
 const recipe = require('./server/routes/recipe');
 const userMe = require('./server/routes/user-me');
 const user = require('./server/routes/user');
+const ingredient = require('./server/routes/ingredient');
+const tag = require('./server/routes/tag');
+const unit = require('./server/routes/unit');
 
 const app = express();
 
@@ -27,12 +29,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Add passport to app
-app.use(session({ secret: 'extremthemligsecret',
-                  resave: false,
-                  saveUninitialized: false}));
-app.use(passport.initialize());
-app.use(passport.session());
+// add passport to app
+app.use(passportConfig.initialize());
 
 
 // routes
@@ -41,6 +39,9 @@ app.use('/auth', auth);
 app.use('/recipe', recipe);
 app.use('/user/me', isAuthenticated, userMe);
 app.use('/user', user);
+app.use('/ingredient', ingredient);
+app.use('/tag', tag);
+app.use('/unit', unit);
 
 
 // catch 404 and forward to error handler
