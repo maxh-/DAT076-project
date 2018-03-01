@@ -1,0 +1,71 @@
+#mainContainer {
+	padding: 10px 0;
+	width: 100%;
+
+}
+#mainContainer .container {
+	width: 100%;
+}
+#glyph-space {
+	padding-left: 30px;
+}
+.jumbotron {
+	margin: 0;
+}
+.jumbotron p span {
+	padding: 0 5px;
+}
+.jumbotron span+small {
+	padding-right: 10px;
+}
+.pad {
+	margin: 0 20px;
+}
+.gl {
+	padding: 10px;
+}
+.show-grid {
+	background-color: #eee;
+}
+.lists {
+	-ms-text-align-last: left;
+	text-align-last: left;
+}
+.itemInList {
+	text-align: justify;
+}
+#modal .modal-dialog {
+	width: 90%;
+}
+#modalBody .carousel .carousel-control {
+	background-image: none;
+}
+#modal {
+	width: 100%;
+}
+#modalBody {
+	height: 330px;
+}
+.carouselItem {
+	padding: 30px;
+	min-height: 300px;
+}
+#pic {
+	background: #FFF;
+	border: none;
+	color: #000;
+	display: block;
+	font: initial;
+	letter-spacing: normal;
+	line-height: normal;
+	padding: 0;
+	width: 100%;
+	margin: 0 auto;
+	height: auto;
+	object-fit: cover;
+}
+/* TODO */
+#ingrs {
+}
+#steps {
+}
