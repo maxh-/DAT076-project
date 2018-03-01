@@ -30,6 +30,7 @@ exports.create = async (params, userId) => {
     UserId: userId,
     title: params.title,
     timeToComplete: params.timeToComplete,
+    tweet: params.tweet,
     Steps: params.steps
   }, {
     include: [ models.Step ]

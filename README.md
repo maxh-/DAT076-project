@@ -17,6 +17,7 @@ ootmappen.
 {
 	title: String,
 	timeToComplete: Integer,
+    tweet: String,
 	steps: [
 		{
 			instruction: String,

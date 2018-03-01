@@ -6,11 +6,15 @@ module.exports  = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER
     },
     title: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(255),
       allowNull: false
     },
     timeToComplete: {
       type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    tweet: {
+      type: DataTypes.STRING(140),
       allowNull: false
     }
   });
