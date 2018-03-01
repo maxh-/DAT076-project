@@ -1,17 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const recipeController = require('../controllers/recipeController');
 const isAuthenticated = require('../middlewares/isAuthenticated');
+const unitController = require('../controllers/unitController');
 
-router.post("/create", isAuthenticated, async (req, res, next) => {
-  const response = await recipeController.create(req.body, req.user.id);
+/* GET users. */
+router.get('/', async (req, res, next) => {
+  const response = await unitController.getAllUnits();
   res.status(response.code).json(response);
 });
 
-
-/* GET Recipe by id . */
+/* GET users. */
 router.get('/:id', async (req, res, next) => {
-  const response = await recipeController.findById(req.params.id);
+  const response = await unitController.getUnitById(req.params.id);
   res.status(response.code).json(response);
 });
 

@@ -23,15 +23,13 @@ const Login = observer(class Login extends Component {
     };
   }
 
-  // handle field changes
-  onChange = ({ target }) => {
+  onChange({ target }) {
     this.setState({
       [target.name]: target.value
     });
   }
 
-  // login
-  onSubmit = (e) => {
+  onSubmit(e) {
     e.preventDefault();
     return Auth.login(this.state.email, this.state.password)
       .then(() => {
@@ -42,51 +40,52 @@ const Login = observer(class Login extends Component {
       });
   }
   
-  render = () => {
+  render() {
     if (Auth.isLoggedIn) {
       this.props.history.push('/');
     }
     
     return (
-      <div className="login">
+        <div className="login">
         <Row>
-          <Col md={7}>
-            <h2>Logga in</h2>
-            <hr />
-            <form onSubmit={this.onSubmit.bind(this)}>
-              <FormGroup
-                controlId="email"
-                bsSize="large">
-                <ControlLabel>E-post:</ControlLabel>
-                <FormControl
-                  type="text"
-                  autoComplete="email"
-                  name="email"
-                  value={this.state.email}
-                  onChange={this.onChange.bind(this)}
-                  />
-              </FormGroup>
-              <FormGroup
-                controlId="password"
-                bsSize="large">
-                <ControlLabel>Lösenord:</ControlLabel>
-                <FormControl
-                  type="password"
-                  autoComplete="current-password"
-                  name="password"
-                  value={this.state.password}
-                  onChange={this.onChange.bind(this)}
-                  />
-              </FormGroup>
-              <Button type="submit" className="btn btn-primary btn-lg pull-right">
-                Logga in
-              </Button>
-            </form>
-          </Col>
+        <Col md={7}>
+        <h2>Logga in</h2>
+        <hr />
+        <form onSubmit={this.onSubmit.bind(this)}>
+        <FormGroup
+      controlId="email"
+      bsSize="large">
+        <ControlLabel>E-post:</ControlLabel>
+        <FormControl
+      type="text"
+      autoComplete="email"
+      name="email"
+      value={this.state.email}
+      onChange={this.onChange.bind(this)}
+        />
+        </FormGroup>
+        <FormGroup
+      controlId="password"
+      bsSize="large">
+        <ControlLabel>Lösenord:</ControlLabel>
+        <FormControl
+      type="password"
+      autoComplete="current-password"
+      name="password"
+      value={this.state.password}
+      onChange={this.onChange.bind(this)}
+        />
+        </FormGroup>
+        <Button type="submit" className="btn btn-primary btn-lg pull-right">
+        Logga in
+      </Button>
+        </form>
+        </Col>
         </Row>
-      </div>
+        </div>
     );
   }
 });
 
 export default Login;
+
