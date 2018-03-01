@@ -15,7 +15,8 @@ class Browse extends Component {
     	searchWord: '',
   		typ: '',
   		filter: [],
-      meal:""
+      meal:"", 
+      recipe:""
   	};
 
     this.handleChange = this.handleChange.bind(this);
@@ -24,13 +25,23 @@ class Browse extends Component {
   }
 
   componentDidMount() {
-    
+    let i = 1;
+    fetch('/recipe/'+i, {
+      method: 'get',
+    })
+      .then(res => res.json())
+      .then(res => {
+        this.setState({recipe: res.recipe});
+      }
+    ); 
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log("Måltid: " + this.state.meal);
-  	console.log(this.state.searchWord);
-  	console.log(this.state.filter);
+    //console.log("Måltid: " + this.state.meal);
+  	//console.log(this.state.searchWord);
+  	//console.log(this.state.filter);
+    console.log("recept: ");
+    console.log(this.state);
 	}
 
   handleChange({ target }) {
@@ -53,17 +64,20 @@ class Browse extends Component {
 			}
 		}
   }
-  dummyCols() {
+  recipeCols() {
     let dummyCols = [];
     for(let i = 0; i < 6; i++) {
       dummyCols.push(
-        <Col className="parent" xs={12} sm={6} lg={4} key={i}>
+        <Col className="parent" xs={12} sm={6} lg={4} 
+            key={this.state.recipe.id}>
           <div className="child">
           </div>
           <div className="op">
-            <span>
-              {dummySentence}
-            </span>
+            <a href={'/recipe' + this.state.recipe.id }>
+              <span>
+                {this.state.recipe.title}
+              </span>
+            </a>
           </div>
         </Col>);
     }
@@ -153,7 +167,7 @@ class Browse extends Component {
 	      <Grid className="gr">
 			    <Row  className="show-grid" >
 	          <Col >
-				    	{ this.dummyCols() }
+				    	{ this.recipeCols() }
 				    </Col>
 		      </Row>
 			  </Grid>
@@ -164,7 +178,7 @@ class Browse extends Component {
 	      <Grid className="gr">
 			    <Row  className="show-grid" >
 	          <Col >
-				    	{ this.dummyCols() }
+				    	{ this.recipeCols() }
 				    </Col>
 		      </Row>
 			  </Grid>
