@@ -10,9 +10,7 @@ import {
 import './css/ResetPass.css';
 
 export default class ResetPass extends Component {
-//constructor(props) {
-  //super(props);
-//}
+
   state = {
     password: '',
     password2: ''
@@ -26,7 +24,6 @@ onChange = ({ target }) => {
 onSubmit = (e) => {
 
   e.preventDefault();
-  console.log(this.props.match.token);
   fetch('/auth/reset/' + this.props.match.params.token, {
     headers: {
       'Accept': 'application/json',

@@ -58,7 +58,6 @@ onSubmit = (e) => {
                   value={this.state.email}
                   onChange={this.onChange.bind(this)} />
               </FormGroup>
-              <a href="/resetpass">ResetPass2(debugging)</a>
               <Button type="submit" className="btn btn-primary btn-lg pull-right">Återställ</Button>
             </form>
           </Col>
