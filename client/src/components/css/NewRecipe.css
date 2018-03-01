@@ -1,0 +1,22 @@
+#mainContainer {
+	padding: 10px 0;
+}
+#submitCol {
+	padding-left: 5px;
+}
+#noListStyle {
+	list-style-type: none; 
+	padding: 0;
+}
+#noListStyle li div{
+	margin: 0;
+}
+.noPadding {
+	padding: 0;
+}
+.fillWidth {
+	width: 100%;
+}
+textarea {
+    resize: none;
+}
