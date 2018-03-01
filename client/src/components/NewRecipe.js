@@ -8,18 +8,18 @@ class NewRecipe extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      ingr: "",
-      am: "",
-      un: "",
-      ingredients: [],
-      step: "",
-      steps: [],
-      stepIndex:1,
-      time: "0:15",
-      description: "",
       title: "",
+      time: "0:15",
+      steps: [],
+      instruction: "",
+      stepIndex:1,
+      tags: ["#fisk", "#3"],
+      ingredients: [],
+      ingredient: "",
+      amount: "",
+      unit: "",
+      description: "",
       meal: "appetizer",
-      tags: ["#fisk", "#3"]
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleObjectChange = this.handleObjectChange.bind(this);
@@ -43,12 +43,12 @@ class NewRecipe extends Component {
 
   handleObjectChange({ target }) {
     var x = this.state.steps.filter(function(obj) {
-      return obj['id'] === target.name;
+      return obj['number'] === target.name;
     });
-    x={id:parseInt(target.name,10),step:target.value};
+    x={number:parseInt(target.name,10),instruction:target.value};
     let newSteps = [];
     this.state.steps.forEach((element) => {
-      if(element.id === x.id) {
+      if(element.number === x.number) {
         newSteps.push(x);
       }
       else{
@@ -62,48 +62,70 @@ class NewRecipe extends Component {
 
   handleClick(action,key,type) {
     if(action === 'del') {
-      if(type === 'ingr') {
+      if(type === 'ingredient') {
         var filteredItems = this.state.ingredients.filter(function (item) {
-          return (item['ingr'] !== key);
+          return (item['ingredient'] !== key);
         });
         this.setState({
           ingredients: filteredItems
         });      
       }
-      else if(type==='id') {
+      else if(type==='number') {
         let filteredItems = [];
-        let stepCounter = 1;
-        this.state.steps.forEach(function(step) {
-          if(step['id'] === key ) {
+        let instructionCounter = 1;
+        this.state.steps.forEach(function(instruction) {
+          if(instruction['number'] === key ) {
           }
           else {
-            if(step.id === stepCounter) {
-              filteredItems.push(step);
+            if(instruction.number === instructionCounter) {
+              filteredItems.push(instruction);
             }else {
-              step.id = stepCounter;
-              filteredItems.push(step);
+              instruction.number = instructionCounter;
+              filteredItems.push(instruction);
             }
-            stepCounter++;
+            instructionCounter++;
           }
         });
         this.setState(prevState => ({
           steps: filteredItems,
-          stepIndex: stepCounter
+          stepIndex: instructionCounter
         }));              
       } 
     }
   }
-  handleSubmit(event) {
+  handleSubmit(e) {
+    console.log("Submit!!");
+    console.log(JSON.stringify({
+        title: this.state.title,
+        timeToComplete: this.state.time,
+        steps: this.state.steps,
+        tags: this.state.tags,
+        ingredients: this.state.ingredients
+      }));
+    /*
+    fetch('/recipe/create', {
+      method: 'POST',
+      auth: yes,
+      body: JSON.stringify({
+        title: this.state.title,
+        timeToComplete: this.state.time,
+        steps: this.state.steps,
+        tags: ******TODO*****
+        ingredients: *****TODO******
+      })
 
+    });
+    */
+    e.preventDefault();
   }
 
   addStep = (e) => {
     if(e.key === 'Enter'){
-      let id = this.state.stepIndex;
-      let step = this.stp.value;
-      if(step.length > 1) {
+      let number = this.state.stepIndex;
+      let instruction = this.stp.value;
+      if(instruction.length > 1) {
         this.setState(prevState => ({
-          steps: prevState.steps.concat({id,step}),
+          steps: prevState.steps.concat({number,instruction}),
           stepIndex: prevState.stepIndex+1,
         }));
         this.stp.value = "";
@@ -113,15 +135,15 @@ class NewRecipe extends Component {
   }
 
   addItem = (e) => {
-    var ingr  = this.ingr.value;
-    var am    = this.am.value;
-    var un    = this.un.value;
+    var ingredient  = this.ingredient.value;
+    var amount    = this.amount.value;
+    var unit    = this.unit.value;
     this.setState(prevState => ({
-      ingredients: prevState.ingredients.concat({ingr, am, un}),
+      ingredients: prevState.ingredients.concat({ingredient, amount, unit}),
     }));
-    this.ingr.value = "";
-    this.am.value = "";
-    this.am.value = "";
+    this.ingredient.value = "";
+    this.amount.value = "";
+    this.unit.value = "";
   }
 
   addTags({ target }) {
@@ -140,33 +162,33 @@ class NewRecipe extends Component {
   }
 
   createIngredients(ing) {
-    return    <ListGroupItem onClick={this.handleClick.bind(this,'del',ing['ingr'], 'ingr')} key={ing['ingr']}>
+    return    <ListGroupItem onClick={this.handleClick.bind(this,'del',ing['ingredient'], 'ingredient')} key={ing['ingredient']}>
                 <Col xs={6}>
-                  <b>{ing['ingr']} </b>
+                  <b>{ing['ingredient']} </b>
                 </Col>
                 <Col xs={2}>
-                  <small> {ing['am']}</small>
+                  <small> {ing['amount']}</small>
                 </Col>
                 <Col xs={2}>
-                  <small> {ing['un']}</small>
+                  <small> {ing['unit']}</small>
                 </Col>
               </ListGroupItem>
   }
 
   createSteps(stp) {
-    return    <li key={stp['id']}>
+    return    <li key={stp['number']}>
                 <FormGroup>
                   <InputGroup>
-                    <InputGroup.Addon>{stp['id']}</InputGroup.Addon>
+                    <InputGroup.Addon>{stp['number']}</InputGroup.Addon>
                     <FormControl type="text" 
-                      value={stp['step']}
+                      value={stp['instruction']}
                       onChange={this.handleObjectChange.bind(this)}
-                      name={stp['id']}/>
+                      name={stp['number']}/>
                     <InputGroup.Button
                       componentClass={InputGroup.Button}
                       id="input-dropdown-addon"
                       title="Action">
-                    <Button onClick={this.handleClick.bind(this, 'del', stp['id'], 'id')}>
+                    <Button onClick={this.handleClick.bind(this, 'del', stp['number'], 'number')}>
                     <Glyphicon glyph="glyphicon glyphicon-remove" />
                     </Button>
                     </InputGroup.Button>
@@ -211,7 +233,8 @@ class NewRecipe extends Component {
                 Tidsåtgång
             </Col>
             <Col sm={10}>
-                <FormControl componentClass="select" placeholder="select"
+                <FormControl componentClass="select" 
+                    placeholder="select"
                     value={this.state.time}
                     onChange={this.handleChange.bind(this)}
                     name="time"
@@ -234,7 +257,8 @@ class NewRecipe extends Component {
                 Måltid
             </Col>
             <Col sm={10}>
-                <FormControl componentClass="select" placeholder="select"
+                <FormControl componentClass="select" 
+                    placeholder="select"
                     value={this.state.meal}
                     onChange={this.handleChange.bind(this)}
                     name="meal"
@@ -252,7 +276,8 @@ class NewRecipe extends Component {
               Beskrivning
             </Col>
             <Col sm={10}>
-              <FormControl componentClass="textarea" placeholder="Beskrivning"
+              <FormControl componentClass="textarea" 
+                  placeholder="Beskrivning"
                   name="description" 
                   value={this.state.description}
                   onChange={this.handleChange.bind(this)}/>
@@ -285,19 +310,20 @@ class NewRecipe extends Component {
                 <FormControl
                   type="text"
                   placeholder="Ingrediens"
-                  inputRef={(a) => this.ingr = a} 
+                  inputRef={(a) => this.ingredient = a} 
                 />
               </Col>
               <Col xs={4} sm={2} className="noPadding">            
                 <FormControl
                   type="text"
                   placeholder="Mängd"
-                  inputRef={(b) => this.am = b} 
+                  inputRef={(b) => this.amount = b} 
                 />
               </Col>
               <Col xs={4} sm={2} className="noPadding">            
                 <FormControl componentClass="select" placeholder="Enhet"
-                    defaultValue="l" inputRef={(c) => this.un = c }>
+                    defaultValue="l" inputRef={(c) => this.unit = c }
+                    onChange={this.handleChange.bind(this)} name="unit">
                   <option value="dl">dl</option>
                   <option value="st">st</option>
                   <option value="dussin st">dussin st</option>
@@ -328,7 +354,7 @@ class NewRecipe extends Component {
               <FormControl
                 componentClass="textarea"
                 placeholder="Enter Step"
-                name="step"
+                name="instruction"
                 inputRef={(a) => this.stp = a}
                 onKeyPress={this.addStep.bind(this)}
               />
@@ -342,7 +368,7 @@ class NewRecipe extends Component {
           <Col sm={2}></Col>
           <Col id="submitCol" sm={8} xs={10}>
             <ButtonToolbar >
-              <Button bsStyle="primary" bsSize="large" disabled  /*onClick={}*/>
+              <Button bsStyle="primary" bsSize="large"  onClick={this.handleSubmit.bind(this)}>
                 Publicera  
               </Button>
               <Button bsSize="large" disabled  /*onClick={}*/>
