@@ -40,7 +40,7 @@ class RegisterForm extends Component {
   }
 
   getEmailState() {
-    if (this.state.email.length == 0) return null;
+    if (this.state.email.length === 0) return null;
 
     const isValid = EmailValidator.validate(this.state.email);
     if (isValid) {
@@ -51,7 +51,7 @@ class RegisterForm extends Component {
   }
 
   getFirstNameState() {
-    if (this.state.firstName.length == 0) return null;
+    if (this.state.firstName.length === 0) return null;
 
     if (/^[a-zA-Z]+$/.test(this.state.firstName)) {
       return 'success';
@@ -61,7 +61,7 @@ class RegisterForm extends Component {
   }
 
   getLastNameState() {
-    if (this.state.lastName.length == 0) return null;
+    if (this.state.lastName.length === 0) return null;
 
     if (/^[a-zA-Z]+$/.test(this.state.lastName)) {
       return 'success';
@@ -71,7 +71,7 @@ class RegisterForm extends Component {
   }
 
   getPasswordState () {
-    if (this.state.password.length == 0) return null;
+    if (this.state.password.length === 0) return null;
 
     if (/^[^\s]+$/.test(this.state.password) && this.state.password.length > 2) {
       return 'success';
@@ -81,9 +81,9 @@ class RegisterForm extends Component {
   }
 
   getPassword2State () {
-    if (this.state.password2.length == 0) return null;
+    if (this.state.password2.length === 0) return null;
 
-    if(this.state.password != this.state.password2) {
+    if(this.state.password !== this.state.password2) {
       return 'error';
     } else {
       return 'success';
