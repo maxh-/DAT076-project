@@ -18,14 +18,14 @@ export default class Login extends Component {
   }
 
   // handle field changes
-  onChange = ({ target }) => {
+  onChange({ target }) {
     this.setState({
       [target.name]: target.value
     });
   }
 
   // post credentials to backend
-  onSubmit = (e) => {
+  onSubmit(e) {
     e.preventDefault();
     fetch('/auth/login', {
       headers: {
@@ -46,8 +46,8 @@ export default class Login extends Component {
   handleLogin = (body)  => {
     // TODO: fix
   }
-  
-  render = () => {
+
+  render() {
     return (
       <div className="login">
         <Row>
@@ -84,6 +84,5 @@ export default class Login extends Component {
       </div>
     );
   }
-  
-}
 
+}
