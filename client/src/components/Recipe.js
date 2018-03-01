@@ -18,6 +18,15 @@ class Recipe extends Component {
       show: false
     }
   }
+
+  componentDidMount() {
+    // from the path `/inbox/messages/:id`
+    console.log(this.props.match.params.id);
+    /*
+    fetch('/recipe/')
+    */
+  }
+
   cookingMode = (e) => {
     console.log("cooking mode activated!!!");
     this.setState({ show: true });
@@ -39,7 +48,6 @@ class Recipe extends Component {
       );
       indexKey++;
     });
-    console.log(stps);
     return stps;
   }
 
@@ -98,7 +106,6 @@ class Recipe extends Component {
                 { ingrs }
               </ul>
             </Col>
-            <vr />
             <Col xs={12} md={8} id="steps" className="lists">
               <h1> 
                 Instruktioner 

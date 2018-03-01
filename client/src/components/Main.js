@@ -19,7 +19,7 @@ class Main extends Component {
         <Switch>
           <Route exact path='/' component={Home}/>
           <Route path='/browse' component={Browse}/>
-          <Route path='/recipe' component={Recipe} />
+          <Route path='/recipe/:id' component={Recipe} />
           <Route path='/register' component={Register}/>
           <Route path='/login' component={Login}/>
           <Route path='/pages' component={MyPages}/>
