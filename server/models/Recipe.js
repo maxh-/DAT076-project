@@ -31,6 +31,9 @@ module.exports  = (sequelize, DataTypes) => {
       through: models.RecipeIngredients
     });
     models.Recipe.hasMany(models.RecipeIngredients);
+    models.Recipe.belongsToMany(models.User, {
+      through: 'Likes'
+    });
   };
   return Recipe;
 };
