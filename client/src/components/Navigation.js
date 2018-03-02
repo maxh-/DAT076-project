@@ -1,20 +1,18 @@
 import React, { Component } from 'react';
-import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
+import {
+  Navbar,
+  Nav,
+  NavItem,
+  NavDropdown,
+  MenuItem,
+  Glyphicon
+} from 'react-bootstrap';
+import { observer } from 'mobx-react';
 import './css/Navigation.css';
 
-class Navigation extends Component {
+import Auth from '../util/AuthService';
 
-  constructor(props) {
-    super(props);
-    this.state = { isLoggedIn: false };
-  }
-
-  // check if user is logged in
-  componentDidMount() {
-    fetch('/auth')
-      .then(res => res.json())
-      .then(res => this.setState({ isLoggedIn: res.success }));
-  }
+const Navigation = observer(class Navigation extends Component {
 
   // render component
   render() {
@@ -30,32 +28,31 @@ class Navigation extends Component {
               Bläddra
             </NavItem>
           </Nav>
-          <Greeting isLoggedIn={this.state.isLoggedIn}/>
+          <Greeting />
         </Navbar.Collapse>
       </Navbar>
     );
   }
-}
+});
 
-function Greeting(props) {
-  if (props.isLoggedIn) {
-    return <UserGreeting />;
-  } else {
-    return <GuestGreeting />;
-  }
-}
+const Greeting = observer(() => {
+  return Auth.isLoggedIn
+    ? <UserNav />
+    : <GuestNav />;
+});
 
 // if user is logged in
-function  UserGreeting(props) {
+function  UserNav(props) {
   return (
     <Nav pullRight>
       <Navbar.Text>
-        Signed in as: <Navbar.Link href="/pages">Mark Otto</Navbar.Link>
+        Signed in as: <Navbar.Link href="/profile">{Auth.user.firstName + ' ' + Auth.user.lastName}</Navbar.Link>
       </Navbar.Text>
       <NavDropdown eventKey={2} title="Mina sidor" id="basic-nav-dropdown">
         <MenuItem eventKey={2.1} href="/new">Nytt recept</MenuItem>
         <MenuItem eventKey={2.2} href="/profile">Min profil</MenuItem>
         <MenuItem eventKey={2.3} href="/saved">Mina sparade recept</MenuItem>
+        <MenuItem onClick={Auth.logout}>Logga ut</MenuItem>
         <MenuItem divider />
       </NavDropdown>
     </Nav>
@@ -63,7 +60,7 @@ function  UserGreeting(props) {
 }
 
 // if not logged in
-function GuestGreeting(props) {
+function GuestNav(props) {
   return (
     <Nav pullRight>
       <Nav>
