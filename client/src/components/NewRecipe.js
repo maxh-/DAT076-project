@@ -13,13 +13,16 @@ class NewRecipe extends Component {
       steps: [],
       instruction: "",
       stepIndex:1,
-      tags: ["#fisk", "#3"],
+      availableTags: [],
+      tags: [],
       ingredients: [],
       ingredient: "",
+      number:1,
       amount: "",
       unit: "",
       description: "",
-      meal: "appetizer",
+      meal: 1,
+      units: []
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleObjectChange = this.handleObjectChange.bind(this);
@@ -31,9 +34,19 @@ class NewRecipe extends Component {
   }
   componentDidMount() {
     //hämta tags, units etc
+    fetch('/tag/',{
+      method: 'GET',
+    })
+    .then(res => res.json())
+    .then(res => this.setState({availableTags: res.tags}));
+    fetch('/unit/',{
+      method: 'GET',
+    })
+    .then(res => res.json())
+    .then(res => this.setState({units: res.recipe}));    
   }
   componentDidUpdate(prevProps, prevState) {
-    console.log(this.state);
+    console.log(this.state.tags);
   }
   handleChange({ target }) {
     this.setState({
@@ -66,9 +79,10 @@ class NewRecipe extends Component {
         var filteredItems = this.state.ingredients.filter(function (item) {
           return (item['ingredient'] !== key);
         });
-        this.setState({
-          ingredients: filteredItems
-        });      
+        this.setState(prevState => ({
+          ingredients: filteredItems,
+          number: prevState.number-1
+        }));      
       }
       else if(type==='number') {
         let filteredItems = [];
@@ -99,7 +113,7 @@ class NewRecipe extends Component {
         title: this.state.title,
         timeToComplete: this.state.time,
         steps: this.state.steps,
-        tags: this.state.tags,
+        tags: this.state.tags.concat(parseInt(this.state.meal)),
         ingredients: this.state.ingredients
       }));
     /*
@@ -119,6 +133,36 @@ class NewRecipe extends Component {
     e.preventDefault();
   }
 
+  makeTags() {
+    let checked = this.state.tags;
+    let tgs = [];
+    this.state.availableTags.forEach(function(tg) {
+      if(tg.id > 4){
+        tgs.push( <ToggleButton 
+                      key={tg.id} 
+                      value={tg.id}>
+                    <b>#</b>{tg.tag}
+                  </ToggleButton>
+        );
+      }
+    });
+    return tgs;
+  }
+  makeUnits() {
+    let checked = this.state.tags;
+    let uns = [];
+    this.state.units.forEach(function(un) {
+        uns.push( <option 
+                      key={un.id}
+                      value={un.id}>
+                    { un.abbreviation }
+                  </option>
+
+        );
+    });
+    return uns;  
+  }
+
   addStep = (e) => {
     if(e.key === 'Enter'){
       let number = this.state.stepIndex;
@@ -135,11 +179,13 @@ class NewRecipe extends Component {
   }
 
   addItem = (e) => {
-    var ingredient  = this.ingredient.value;
-    var amount    = this.amount.value;
-    var unit    = this.unit.value;
+    let number = this.state.number;
+    let ingredient  = this.ingredient.value;
+    let amount    = this.amount.value;
+    let unit    = this.unit.value;
     this.setState(prevState => ({
-      ingredients: prevState.ingredients.concat({ingredient, amount, unit}),
+      ingredients: prevState.ingredients.concat({number, ingredient, amount, unit}),
+      number: prevState.number+1
     }));
     this.ingredient.value = "";
     this.amount.value = "";
@@ -147,10 +193,11 @@ class NewRecipe extends Component {
   }
 
   addTags({ target }) {
+    console.log(target.value);
     if(target.value !== undefined) {
       if(!this.state.tags.includes(target.value)) {
         this.setState({
-          tags: this.state.tags.concat(target.value)
+          tags: this.state.tags.concat(parseInt(target.value))
         });
       }
       else {
@@ -262,11 +309,11 @@ class NewRecipe extends Component {
                     value={this.state.meal}
                     onChange={this.handleChange.bind(this)}
                     name="meal"
-                    defaultValue="appetizer">
-                  <option value="appetizer">Förrätt</option>
-                  <option value="main">Huvudrätt</option>
-                  <option value="dessert">Efterrätt</option>
-                  <option value="snack">Mellanmål</option>
+                    defaultValue={1}>
+                  <option value={1}>Förrätt</option>
+                  <option value={2}>Huvudrätt</option>
+                  <option value={3}>Efterrätt</option>
+                  <option value={4}>Mellanmål</option>
                 </FormControl>
             </Col>
           </FormGroup>
@@ -293,9 +340,7 @@ class NewRecipe extends Component {
                 type="checkbox"
                 value={this.state.tags}
                 onClick={this.addTags.bind(this)} >
-                <ToggleButton value={"#förrätt"}>förrätt</ToggleButton>
-                <ToggleButton value={"#fisk"}>fisk</ToggleButton>
-                <ToggleButton value={"#3"}>3</ToggleButton>
+                { this.makeTags() }
               </ToggleButtonGroup>
             </Col>
           </FormGroup>
@@ -324,10 +369,7 @@ class NewRecipe extends Component {
                 <FormControl componentClass="select" placeholder="Enhet"
                     defaultValue="l" inputRef={(c) => this.unit = c }
                     onChange={this.handleChange.bind(this)} name="unit">
-                  <option value="dl">dl</option>
-                  <option value="st">st</option>
-                  <option value="dussin st">dussin st</option>
-                  <option value="hundra st">hundra st</option>
+                  { this.makeUnits() }
                 </FormControl>
               </Col>
               <Col xs={4} sm={2} className="noPadding">
