@@ -3,37 +3,56 @@ import { Form, Col, FormGroup, ControlLabel, FormControl,
   Button, ButtonToolbar, InputGroup, Glyphicon, ToggleButton,
   ListGroup, ListGroupItem, ToggleButtonGroup,   } from 'react-bootstrap';
 import './css/NewRecipe.css';
+import Auth from '../util/AuthService';
 
 class NewRecipe extends Component {
   constructor(props) {
     super(props);
     this.state = {
       title: "",
-      time: "0:15",
+      time: 15,
       steps: [],
       instruction: "",
       stepIndex:1,
-      tags: ["#fisk", "#3"],
+      availableTags: [],
+      tags: [],
       ingredients: [],
       ingredient: "",
+      number:1,
       amount: "",
       unit: "",
       description: "",
-      meal: "appetizer",
+      meal: 1,
+      units: []
     }
+
     this.handleChange = this.handleChange.bind(this);
     this.handleObjectChange = this.handleObjectChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
-    this.addItem = this.addItem.bind(this);
+    this.addIngredient = this.addIngredient.bind(this);
     this.createIngredients = this.createIngredients.bind(this);
     this.createSteps = this.createSteps.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
+
   componentDidMount() {
     //hämta tags, units etc
+    fetch('/tag/',{
+      method: 'GET',
+    })
+    .then(res => res.json())
+    .then(res => this.setState({availableTags: res.tags}));
+    fetch('/unit/',{
+      method: 'GET',
+    })
+    .then(res => res.json())
+    .then(res => this.setState({units: res.recipe}));    
   }
   componentDidUpdate(prevProps, prevState) {
-    console.log(this.state);
+   // console.log("state: ");
+   // console.log(this.state);
+     console.log(this.state.ingredients);
+
   }
   handleChange({ target }) {
     this.setState({
@@ -63,14 +82,27 @@ class NewRecipe extends Component {
   handleClick(action,key,type) {
     if(action === 'del') {
       if(type === 'ingredient') {
-        var filteredItems = this.state.ingredients.filter(function (item) {
-          return (item['ingredient'] !== key);
+        let filteredIngredients = [];
+        let ingredientCounter = 1;
+        this.state.ingredients.forEach(function(ingredient) {
+          if(ingredient['number'] === key ) {
+          }
+          else {
+            if(ingredient.number === ingredientCounter) {
+              filteredIngredients.push(ingredient);
+            }else {
+              ingredient.number = ingredientCounter;
+              filteredIngredients.push(ingredient);
+            }
+            ingredientCounter++;
+          }
         });
-        this.setState({
-          ingredients: filteredItems
-        });      
+        this.setState(prevState => ({
+          ingredients: filteredIngredients,
+          number: ingredientCounter
+        }));                
       }
-      else if(type==='number') {
+      else if(type === 'number') {
         let filteredItems = [];
         let instructionCounter = 1;
         this.state.steps.forEach(function(instruction) {
@@ -95,13 +127,25 @@ class NewRecipe extends Component {
   }
   handleSubmit(e) {
     console.log("Submit!!");
-    console.log(JSON.stringify({
-        title: this.state.title,
-        timeToComplete: this.state.time,
-        steps: this.state.steps,
-        tags: this.state.tags,
-        ingredients: this.state.ingredients
-      }));
+    let bod = JSON.stringify({
+      title: this.state.title,
+      timeToComplete: this.state.time,
+      steps: this.state.steps,
+      tags: this.state.tags.concat(parseInt(this.state.meal,10)),
+      ingredients: this.state.ingredients
+    });
+    console.log(Auth.token);
+
+    fetch('/recipe/create', {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'JWT '+ Auth.token
+      },
+      method: 'POST',
+      body: bod
+    })
+      .then(res => res.json())
+      .then(res => console.log(res));
     /*
     fetch('/recipe/create', {
       method: 'POST',
@@ -119,13 +163,42 @@ class NewRecipe extends Component {
     e.preventDefault();
   }
 
-  addStep = (e) => {
+  makeTags() {
+    let tgs = [];
+    this.state.availableTags.forEach(function(tg) {
+      if(tg.id > 4){
+        tgs.push( <ToggleButton 
+                      key={tg.id} 
+                      value={tg.id}>
+                    <b>#</b>{tg.tag}
+                  </ToggleButton>
+        );
+      }
+    });
+    return tgs;
+  }
+
+  makeUnits() {
+    let uns = [];
+    this.state.units.forEach(function(un) {
+        uns.push( <option 
+                      key={un.id}
+                      value={un.id}>
+                    { un.abbreviation }
+                  </option>
+
+        );
+    });
+    return uns;  
+  }
+
+  addStep(e) {
     if(e.key === 'Enter'){
       let number = this.state.stepIndex;
       let instruction = this.stp.value;
       if(instruction.length > 1) {
         this.setState(prevState => ({
-          steps: prevState.steps.concat({number,instruction}),
+          steps: prevState.steps.concat({instruction, number}),
           stepIndex: prevState.stepIndex+1,
         }));
         this.stp.value = "";
@@ -134,23 +207,26 @@ class NewRecipe extends Component {
     }
   }
 
-  addItem = (e) => {
-    var ingredient  = this.ingredient.value;
-    var amount    = this.amount.value;
-    var unit    = this.unit.value;
+  addIngredient(e) {
+    let number = this.state.number;
+    let ingredient  = this.ingredient.value;
+    let amount    = this.amount.value;
+    let UnitId    = this.unit.value;
+    console.log(UnitId);
     this.setState(prevState => ({
-      ingredients: prevState.ingredients.concat({ingredient, amount, unit}),
+      ingredients: prevState.ingredients.concat({number, amount, UnitId, ingredient}),
+      number: prevState.number+1
     }));
     this.ingredient.value = "";
     this.amount.value = "";
-    this.unit.value = "";
+    this.unit.value = "1";
   }
 
   addTags({ target }) {
     if(target.value !== undefined) {
       if(!this.state.tags.includes(target.value)) {
         this.setState({
-          tags: this.state.tags.concat(target.value)
+          tags: this.state.tags.concat(parseInt(target.value,10))
         });
       }
       else {
@@ -162,7 +238,14 @@ class NewRecipe extends Component {
   }
 
   createIngredients(ing) {
-    return    <ListGroupItem onClick={this.handleClick.bind(this,'del',ing['ingredient'], 'ingredient')} key={ing['ingredient']}>
+    let targ  = this.state.units.filter(function(un){
+      return parseInt(un.id,10) === parseInt(ing.UnitId,10);
+    })
+    let un = targ[0].abbreviation;
+
+    return    <ListGroupItem 
+                  onClick={this.handleClick.bind(this,'del',parseInt(ing['number'],10), 'ingredient')} 
+                  key={ing['number']}>
                 <Col xs={6}>
                   <b>{ing['ingredient']} </b>
                 </Col>
@@ -170,7 +253,7 @@ class NewRecipe extends Component {
                   <small> {ing['amount']}</small>
                 </Col>
                 <Col xs={2}>
-                  <small> {ing['unit']}</small>
+                  <small> { un }</small>
                 </Col>
               </ListGroupItem>
   }
@@ -185,7 +268,6 @@ class NewRecipe extends Component {
                       onChange={this.handleObjectChange.bind(this)}
                       name={stp['number']}/>
                     <InputGroup.Button
-                      componentClass={InputGroup.Button}
                       id="input-dropdown-addon"
                       title="Action">
                     <Button onClick={this.handleClick.bind(this, 'del', stp['number'], 'number')}>
@@ -238,16 +320,16 @@ class NewRecipe extends Component {
                     value={this.state.time}
                     onChange={this.handleChange.bind(this)}
                     name="time"
-                    defaultValue="0:15">
-                  <option value="0:15">0:15</option>
-                  <option value="0:30">0:30</option>
-                  <option value="0:45">0:45</option>
-                  <option value="1:00">1:00</option>
-                  <option value="1:30">1:30</option>
-                  <option value="2:00">2:00</option>
-                  <option value="4:00">4:00</option>
-                  <option value="8:00">8:00</option>
-                  <option value="24:00+">24:00+</option>
+                    defaultValue={15}>
+  }               <option value={15}>0:15</option>
+                  <option value={30}>0:30</option>
+                  <option value={45}>0:45</option>
+                  <option value={60}>1:00</option>
+                  <option value={90}>1:30</option>
+                  <option value={120}>2:00</option>
+                  <option value={240}>4:00</option>
+                  <option value={480}>8:00</option>
+                  <option value={1440}>24:00+</option>
                 </FormControl>
             </Col>
           </FormGroup>
@@ -262,11 +344,11 @@ class NewRecipe extends Component {
                     value={this.state.meal}
                     onChange={this.handleChange.bind(this)}
                     name="meal"
-                    defaultValue="appetizer">
-                  <option value="appetizer">Förrätt</option>
-                  <option value="main">Huvudrätt</option>
-                  <option value="dessert">Efterrätt</option>
-                  <option value="snack">Mellanmål</option>
+                    defaultValue={1}>
+                  <option value={1}>Förrätt</option>
+                  <option value={2}>Huvudrätt</option>
+                  <option value={3}>Efterrätt</option>
+                  <option value={4}>Mellanmål</option>
                 </FormControl>
             </Col>
           </FormGroup>
@@ -293,9 +375,7 @@ class NewRecipe extends Component {
                 type="checkbox"
                 value={this.state.tags}
                 onClick={this.addTags.bind(this)} >
-                <ToggleButton value={"#förrätt"}>förrätt</ToggleButton>
-                <ToggleButton value={"#fisk"}>fisk</ToggleButton>
-                <ToggleButton value={"#3"}>3</ToggleButton>
+                { this.makeTags() }
               </ToggleButtonGroup>
             </Col>
           </FormGroup>
@@ -321,17 +401,17 @@ class NewRecipe extends Component {
                 />
               </Col>
               <Col xs={4} sm={2} className="noPadding">            
-                <FormControl componentClass="select" placeholder="Enhet"
-                    defaultValue="l" inputRef={(c) => this.unit = c }
-                    onChange={this.handleChange.bind(this)} name="unit">
-                  <option value="dl">dl</option>
-                  <option value="st">st</option>
-                  <option value="dussin st">dussin st</option>
-                  <option value="hundra st">hundra st</option>
+                <FormControl 
+                    componentClass="select"
+                    defaultValue="l" 
+                    inputRef={(c) => this.unit = c }
+                    onChange={this.handleChange.bind(this)} 
+                    name="UnitId">
+                  { this.makeUnits() }
                 </FormControl>
               </Col>
               <Col xs={4} sm={2} className="noPadding">
-                <Button onClick={this.addItem.bind(this,'in')} className="fillWidth">
+                <Button onClick={this.addIngredient.bind(this,'in')} className="fillWidth">
                   Lägg till
                 </Button>
               </Col>      
