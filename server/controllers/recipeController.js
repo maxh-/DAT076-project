@@ -30,6 +30,7 @@ exports.create = async (params, userId) => {
     UserId: userId,
     title: params.title,
     timeToComplete: params.timeToComplete,
+    tweet: params.tweet,
     Steps: params.steps
   }, {
     include: [ models.Step ]
@@ -51,16 +52,61 @@ exports.create = async (params, userId) => {
           ingredient = res[0];
         }
         ingredient.RecipeIngredients = recipeIngredient;
-        console.log(ingredient.toJSON());
         return ingredient;
 
       })
   );
-  console.log(ingredients);
   await recipe.addIngredients(ingredients);
   return {
     success: true,
     code: 201,
     recipe: recipe.toJSON()
+  };
+};
+
+exports.getLikes = async (id) => {
+  const upLikes = await models.Likes.count({where: {recipeId: id, kind: 'up'}});
+  const downLikes = await models.Likes.count({where: {recipeId: id, kind: 'down'}});
+  const total = upLikes - downLikes;
+  return {
+    success: true,
+    code: 200,
+    likes: {
+      total: total,
+      up: upLikes,
+      down: downLikes
+    }
+  };
+};
+
+exports.like = async (params, recipeId, userId) => {
+  const user = await models.User.findById(userId);
+  const recipe = await models.Recipe.findById(recipeId);
+  if(recipe === null){
+    return {
+      success: false,
+      code: 404,
+      message: "could not find recipe"
+    };
+  }
+  recipe.Likes = {
+    kind: params.kind
+  };
+
+  await user.addLike(recipe, {as: 'likes'});
+
+  return {
+    success: true,
+    code: 201,
+    message: "recipe has been " + params.kind + "liked"
+  };
+};
+
+exports.removeLike = async (recipeId, userId) => {
+  await models.Likes.destroy({where: {userId: userId, recipeId: recipeId}});
+  return {
+    success: true,
+    code: 200,
+    message: "like has been removed"
   };
 };
