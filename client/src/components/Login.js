@@ -39,50 +39,51 @@ const Login = observer(class Login extends Component {
         console.log('login failed');
       });
   }
-  
   render() {
     if (Auth.isLoggedIn) {
       this.props.history.push('/');
     }
     
     return (
-        <div className="login">
+      <div className="login">
         <Row>
-        <Col md={7}>
-        <h2>Logga in</h2>
-        <hr />
-        <form onSubmit={this.onSubmit.bind(this)}>
-        <FormGroup
-      controlId="email"
-      bsSize="large">
-        <ControlLabel>E-post:</ControlLabel>
-        <FormControl
-      type="text"
-      autoComplete="email"
-      name="email"
-      value={this.state.email}
-      onChange={this.onChange.bind(this)}
-        />
-        </FormGroup>
-        <FormGroup
-      controlId="password"
-      bsSize="large">
-        <ControlLabel>Lösenord:</ControlLabel>
-        <FormControl
-      type="password"
-      autoComplete="current-password"
-      name="password"
-      value={this.state.password}
-      onChange={this.onChange.bind(this)}
-        />
-        </FormGroup>
-        <Button type="submit" className="btn btn-primary btn-lg pull-right">
-        Logga in
-      </Button>
-        </form>
-        </Col>
+          <Col md={7}>
+            <h2>Logga in</h2>
+            <hr />
+            <form onSubmit={this.onSubmit.bind(this)}>
+              <FormGroup
+                controlId="email"
+                bsSize="large">
+                <ControlLabel>E-post:</ControlLabel>
+                <FormControl
+                  type="text"
+                  autoComplete="email"
+                  name="email"
+                  value={this.state.email}
+                  onChange={this.onChange.bind(this)}
+                  />
+              </FormGroup>
+              <FormGroup
+                controlId="password"
+                bsSize="large">
+                <ControlLabel>Lösenord:</ControlLabel>
+                <FormControl
+                  type="password"
+                  autoComplete="current-password"
+                  name="password"
+                  value={this.state.password}
+                  onChange={this.onChange.bind(this)}
+                  />
+              </FormGroup>
+              <Button type="submit" className="btn btn-primary btn-lg pull-right">
+                Logga in
+              </Button>
+              <a href="/forgotpass" >Glömt lösenord</a>
+
+            </form>
+          </Col>
         </Row>
-        </div>
+      </div>
     );
   }
 });
