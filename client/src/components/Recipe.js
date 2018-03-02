@@ -21,7 +21,7 @@ class Recipe extends Component {
   }
 
   componentDidMount() {
-    let id = this.props.match.params.id;
+    const id = this.props.match.params.id;
     fetch('/recipe/'+id, {
       method: 'GET',
     }).then(res => res.json())
