@@ -60,6 +60,11 @@ module.exports  = (sequelize, DataTypes) => {
   // associations
   User.associate = function(models){
     models.User.hasMany(models.Recipe);
+    models.User.belongsToMany(models.Recipe, {
+      through: 'Likes',
+      as: 'likes',
+      foreignKey: 'userId'
+    });
   };
 
   return User;
