@@ -115,7 +115,7 @@ async onPassword2Change(e) {
     console.log(this.state);
   }
 
-  onSubmit = (e) => {
+  onSubmit(e) {
     e.preventDefault();
     //console.log(this.state);
     fetch('/auth/register', {
