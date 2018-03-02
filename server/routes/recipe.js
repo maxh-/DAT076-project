@@ -15,4 +15,10 @@ router.get('/:id', async (req, res, next) => {
   res.status(response.code).json(response);
 });
 
+/* GET Recipe by id . */
+router.put('/:id', isAuthenticated, async (req, res, next) => {
+  const response = await recipeController.update(req.body, req.params.id, req.user.id);
+  res.status(response.code).json(response);
+});
+
 module.exports = router;
