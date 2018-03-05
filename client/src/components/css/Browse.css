@@ -1,9 +1,14 @@
-.content{
+.content {
+	position: relative;
 	padding: 10px 0;
+
+
 }
 .gr {
 	width: 100%;
 	padding: 0;
+	z-index: -100;
+
 }
 .show-grid {
 	width: 100%;
@@ -11,7 +16,7 @@
 	padding: 10px 0;
 }
 .parent {
-	padding: 0;
+	padding: 4px;
 	height: 300px;
     overflow: hidden;
     position: relative;
@@ -19,7 +24,8 @@
     display: flex;
 }
 .container {
-	width: 99%;
+	width: 90%;
+
 }
 .child {
 	width: 100%;
@@ -42,6 +48,7 @@
 }
 .btn-toolbar {
 	margin: 0;
+	background-color: #EEEE;
 }
 .col-xs-3 {
 	padding: 0;
@@ -128,11 +135,12 @@
 	margin: 0;
 	width: 52px;
 }
-
-.content {
-	background-color: #79e0bd
-}
-
 .child {
 	background-color: #FFFF;
+}
+
+.gr .show-grid {
+	position: relative;
+	z-index: 100;
+
 }
