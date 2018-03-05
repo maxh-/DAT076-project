@@ -3,6 +3,13 @@ const router = express.Router();
 const recipeController = require('../controllers/recipeController');
 const isAuthenticated = require('../middlewares/isAuthenticated');
 
+
+/* GET Recipe by id . */
+router.get('/', async (req, res, next) => {
+  const response = await recipeController.findAll();
+  res.status(response.code).json(response);
+});
+
 router.post('/', isAuthenticated, async (req, res, next) => {
   const response = await recipeController.create(req.body, req.user.id);
   res.status(response.code).json(response);

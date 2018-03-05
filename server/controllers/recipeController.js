@@ -25,6 +25,31 @@ exports.findById = async (id) => {
   }
 };
 
+exports.findAll = async (id) => {
+  const recipes = await models.Recipe.findAll({
+    include: [
+      models.Step,
+      models.Tag,
+      {
+        model: models.RecipeIngredients,
+        include: [models.Ingredient, models.Unit]
+      }]
+  });
+  if(recipes){
+    return {
+      success: true,
+      code: 200,
+      recipe: recipes
+    };
+  } else {
+    return {
+      success: false,
+      code: 404,
+      message: "recipe not found"
+    };
+  }
+};
+
 exports.create = async (params, userId) => {
   const recipe = await models.Recipe.create({
     UserId: userId,
