@@ -64,7 +64,12 @@ class Browse extends Component {
 			}
 		}
   }
+<<<<<<< HEAD
   recipeCols() {
+=======
+  
+  dummyCols() {
+>>>>>>> develop
     let dummyCols = [];
     for(let i = 0; i < 6; i++) {
       dummyCols.push(

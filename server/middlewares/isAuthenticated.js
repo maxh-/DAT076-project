@@ -1,6 +1,7 @@
 const passport = require("passport");
 const cfg = require("../config/jwtConfig");
 // check if the user is authenticated
+
 const isAuthenticated = (req, res, next)=> {
     passport.authenticate("jwt", cfg.jwtSession, (err, user, info) => {
       if (err) {
@@ -18,5 +19,6 @@ const isAuthenticated = (req, res, next)=> {
       next();
     })(req, res, next);
 }
+
 
 module.exports = isAuthenticated;

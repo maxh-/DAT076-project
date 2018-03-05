@@ -9,10 +9,12 @@ import MySavedRecipes from './MySavedRecipes';
 import Recipe from './Recipe';
 import Register from './Register';
 import Login from './Login';
+import ForgotPass from './ForgotPass';
+import ResetPass from './ResetPass';
+
+import PrivateRoute from '../util/PrivateRoute';
 
 class Main extends Component {
-  
-  // render component
   render() {
     return (
       <main>
@@ -22,11 +24,14 @@ class Main extends Component {
           <Route path='/recipe' component={Recipe} />
           <Route path='/register' component={Register}/>
           <Route path='/login' component={Login}/>
-          <Route path='/pages' component={MyPages}/>
-          <Route path='/new' component={NewRecipe}/>
-          <Route path='/profile' component={MyProfile}/>
-          <Route path='/saved' component={MySavedRecipes}/>
-        </Switch>
+	  <Route exact path='/' component={Home}/>
+	  <PrivateRoute path='/pages' component={MyPages}/>
+	  <PrivateRoute path='/new' component={NewRecipe}/>
+	  <PrivateRoute path='/profile' component={MyProfile}/>
+	  <PrivateRoute path='/saved' component={MySavedRecipes}/>
+          <Route path='/forgotpass' component={ForgotPass}/>
+          <Route path='/resetpass/:token' component={ResetPass}/>
+    		</Switch>
       </main>
     );
   }

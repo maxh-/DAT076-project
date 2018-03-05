@@ -4,6 +4,8 @@ const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const jwt = require('jwt-simple');
 const cfg = require('../config/jwtConfig');
+const env = process.env.NODE_ENV || 'development';
+const config = require('../config/config')[env];
 
 exports.getToken = async (params) => {
   if (params.email && params.password) {
@@ -125,7 +127,7 @@ exports.forgotPassword = async (email, host) => {
     subject: 'Receptappen Password Reset',
     text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
       'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-      'http://' + host + '/auth/reset/' + token + '\n\n' +
+      'http://' + config.clientLocation + '/resetpass/' + token + '\n\n' +
       'If you did not request this, please ignore this email and your password will remain unchanged.\n'
   };
   await smtpTransport.sendMail(mailOptions);
