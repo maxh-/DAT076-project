@@ -53,7 +53,7 @@ class Browse extends Component {
 			}
 		}
   }
-  
+
   dummyCols() {
     let dummyCols = [];
     for(let i = 0; i < 6; i++) {
@@ -95,7 +95,7 @@ class Browse extends Component {
 		  		</form>
           <ButtonToolbar>
             <Col xs={3}>
-              <DropdownButton title="Måltid" class="btn-danger" >
+              <DropdownButton title="Måltid" >
     			      <ToggleButtonGroup type="radio" name="meal"
           						onClick={this.handleChange.bind(this)}>
     				      <ToggleButton className="dropdownItem" value={'#förrätt'}>Förrätt</ToggleButton>

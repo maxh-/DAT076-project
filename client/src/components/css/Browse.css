@@ -47,7 +47,7 @@
 }
 .btn-toolbar {
 	margin: 0;
-	background-color: #EEEE;
+	background-color: inherit;
 }
 .col-xs-3 {
 	padding: 0;
@@ -140,5 +140,6 @@
 
 .gr .show-grid {
 	position: relative;
+	background-color: inherit;
 
 }
