@@ -53,6 +53,7 @@ class Browse extends Component {
 			}
 		}
   }
+  
   dummyCols() {
     let dummyCols = [];
     for(let i = 0; i < 6; i++) {

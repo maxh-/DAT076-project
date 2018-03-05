@@ -17,6 +17,7 @@ ootmappen.
 {
 	title: String,
 	timeToComplete: Integer,
+    tweet: String,
 	steps: [
 		{
 			instruction: String,
@@ -45,6 +46,27 @@ ootmappen.
 **Method**: Get  
 **RequiresAuth**: NO  
 **Beskrivning**: Hämtar ett recept
+
+**Path**: /recipe/:id/like  
+**Method**: Get  
+**RequiresAuth**: NO  
+**Beskrivning**: Hämtar up/downlikes för ett recept
+
+**Path**: /recipe/:id/like  
+**Method**: POST  
+**RequiresAuth**: YES  
+**JSON**: 
+```
+{
+   kind: 'up' || 'down'
+}
+```
+**Beskrivning**: Skicka en up/downlike, finns en redan så uppdateras den till nuvarande.
+
+**Path**: /recipe/:id/like  
+**Method**: DELETE  
+**RequiresAuth**: YES  
+**Beskrivning**: Ta bort up/downlike för receptet.
 
 ## User
 

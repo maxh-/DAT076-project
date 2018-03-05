@@ -8,12 +8,30 @@ router.post('/', isAuthenticated, async (req, res, next) => {
   res.status(response.code).json(response);
 });
 
+/* POST uplike/downlike recipe */ 
+router.get("/:id/like",  async (req, res, next) => {
+  const response = await recipeController.getLikes(req.params.id);
+  res.status(response.code).json(response);
+});
+
+/* POST uplike/downlike recipe */ 
+router.post("/:id/like", isAuthenticated, async (req, res, next) => {
+  const response = await recipeController.like(req.body, req.params.id, req.user.id);
+  res.status(response.code).json(response);
+});
+
+/* POST uplike/downlike recipe */ 
+router.delete("/:id/like", isAuthenticated, async (req, res, next) => {
+  const response = await recipeController.removeLike(req.params.id, req.user.id);
+  res.status(response.code).json(response);
+});
 
 /* GET Recipe by id . */
 router.get('/:id', async (req, res, next) => {
   const response = await recipeController.findById(req.params.id);
   res.status(response.code).json(response);
 });
+
 
 /* GET Recipe by id . */
 router.put('/:id', isAuthenticated, async (req, res, next) => {
