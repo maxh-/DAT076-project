@@ -10,16 +10,19 @@ import {
 import './css/ResetPass.css';
 
 export default class ForgotPass extends Component {
-  state = {
+constructor(props) {
+  super(props);
+  this.state = {
     email: ''
-  }
+  };
+}
 
   async onChange(e) {
     await this.setState({ email: e.target.value });
     console.log(this.state);
   }
 
-onSubmit = (e) => {
+onSubmit(e) {
   e.preventDefault();
 
   fetch('/auth/forgot', {
@@ -39,7 +42,7 @@ onSubmit = (e) => {
   alert("Ett mail har skickats till " + this.state.email + " med mer information. ")
 }
 
-  render = () => {
+  render() {
     return (
       <div className="forgotpass">
         <Row>
