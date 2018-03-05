@@ -42,7 +42,7 @@ const Greeting = observer(() => {
 });
 
 // if user is logged in
-function  UserNav(props) {
+const UserNav = observer((props) => {
   return (
     <Nav pullRight>
       <Navbar.Text>
@@ -57,7 +57,7 @@ function  UserNav(props) {
       </NavDropdown>
     </Nav>
   );
-}
+});
 
 // if not logged in
 function GuestNav(props) {
