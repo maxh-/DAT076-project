@@ -1,47 +1,36 @@
 import React, { Component } from 'react';
+import { observer } from 'mobx-react';
 import { Glyphicon, Grid, Row, Col, Button, InputGroup,
 	FormControl, DropdownButton, 
 	ToggleButtonGroup, ToggleButton,
 	PageHeader, ButtonToolbar } from 'react-bootstrap';
 import './css/Browse.css';
+import RecipeStore from '../util/recipeStore';
 
-  const dummySentence = 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit';
 
-class Browse extends Component {
+const Browse = observer(class Browse extends Component {
 	
 	constructor(props) {
     super(props);
     this.state = {
     	searchWord: '',
-  		typ: '',
   		filter: [],
       meal:"", 
-      recipe:""
+      recipes: [],
+      availableTags: []
   	};
-
+    RecipeStore.getAll();
+    RecipeStore.getTags();
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.addFilter = this.addFilter.bind(this);
   }
-
   componentDidMount() {
-    let i = 1;
-    fetch('/recipe/'+i, {
-      method: 'get',
-    })
-      .then(res => res.json())
-      .then(res => {
-        this.setState({recipe: res.recipe});
-      }
-    ); 
   }
-
   componentDidUpdate(prevProps, prevState) {
     //console.log("Måltid: " + this.state.meal);
   	//console.log(this.state.searchWord);
-  	//console.log(this.state.filter);
-    console.log("recept: ");
-    console.log(this.state);
+    console.log(this.state.filter);
 	}
 
   handleChange({ target }) {
@@ -51,46 +40,60 @@ class Browse extends Component {
   }
 
   addFilter({ target }) {
+    console.log(target.value);
 		if(target.value !== undefined) {
-			if(!this.state.filter.includes(target.value)) {
+			if(!this.state.filter.includes(parseInt(target.value,10))) {
 	  		this.setState({
-		  		filter: this.state.filter.concat(target.value)
+		  		filter: this.state.filter.concat(parseInt(target.value,10))
 		  	});
 			}
 			else {
 				this.setState({
-					filter: this.state.filter.filter(word => word !== target.value)
+					filter: this.state.filter.filter(word => word !== parseInt(target.value,10))
 				});
 			}
 		}
   }
-<<<<<<< HEAD
-  recipeCols() {
-=======
-  
-  dummyCols() {
->>>>>>> develop
+  showRecipeCols() {
     let dummyCols = [];
-    for(let i = 0; i < 6; i++) {
+    RecipeStore.recipes.forEach(function(recipe) {
       dummyCols.push(
         <Col className="parent" xs={12} sm={6} lg={4} 
-            key={this.state.recipe.id}>
+            key={recipe.id}>
           <div className="child">
           </div>
           <div className="op">
-            <a href={'/recipe' + this.state.recipe.id }>
+            <a href={'/recipe/' + recipe.id }>
               <span>
-                {this.state.recipe.title}
+                { recipe.title }
               </span>
             </a>
           </div>
-        </Col>);
-    }
+        </Col>   
+      );
+    });
     return dummyCols;
   }
 
+  showTags() {
+    RecipeStore.tags.forEach(function(tag) {
+
+    });
+
+  }
+  searchTerm() {
+    return(
+      <div>
+        <h2>{ this.state.searchWord } </h2>
+        <h3>{ this.state.meal } </h3>
+        <h4>{ this.state.filter } </h4>
+      </div>
+    );
+  }
+
   handleSubmit(event) {
-    alert('Searched for: ' + this.state.searchWord);
+    alert('Searched for: ' + this.state.searchWord + 
+      "\nFilters: " + this.state.filter);
     event.preventDefault();
   }
 
@@ -113,57 +116,63 @@ class Browse extends Component {
 		  		</form>
           <ButtonToolbar>
             <Col xs={3}>
-              <DropdownButton title="Måltid">
-    			      <ToggleButtonGroup type="radio" name="meal"  
-          						onClick={this.handleChange.bind(this)}>
-    				      <ToggleButton className="dropdownItem" value={'#förrätt'}>Förrätt</ToggleButton>
-    				      <ToggleButton className="dropdownItem" value={'#huvudrätt'}>Huvudrätt</ToggleButton>
-    				      <ToggleButton className="dropdownItem" value={'#efterrätt'}>Efterrätt</ToggleButton>
-    				      <ToggleButton className="dropdownItem" value={'#mellanmål'}>Mellanmål</ToggleButton>
+              <DropdownButton title="Måltid" id="1">
+    			      <ToggleButtonGroup type="radio" name="meal"
+                    value={this.state.meal}
+        						onClick={this.handleChange.bind(this)}>
+    				      <ToggleButton className="dropdownItem" value={"1"}>Förrätt</ToggleButton>
+    				      <ToggleButton className="dropdownItem" value={"2"}>Huvudrätt</ToggleButton>
+    				      <ToggleButton className="dropdownItem" value={"3"}>Efterrätt</ToggleButton>
+    				      <ToggleButton className="dropdownItem" value={"4"}>Mellanmål</ToggleButton>
                 </ToggleButtonGroup>
               </DropdownButton>
             </Col>
             <Col xs={3}>
-             	<DropdownButton title="Rättyp">
+             	<DropdownButton title="Rättyp" id="2">
   		          <ToggleButtonGroup type="radio" name="filter" 
                       value={this.state.filter}
                       onClick={this.addFilter.bind(this)} >
-      			      <ToggleButton className="dropdownItem" value={'#pizza'}>Pizza</ToggleButton>
-      			      <ToggleButton className="dropdownItem" value={'#pasta'}>Pasta</ToggleButton>
-                  <ToggleButton className="dropdownItem" value={'#burgare'}>Burgare</ToggleButton>
+      			      <ToggleButton className="dropdownItem" value={5}>Nattamat</ToggleButton>
+      			      <ToggleButton className="dropdownItem" value={6}>Bakismat</ToggleButton>
+                  <ToggleButton className="dropdownItem" value={7}>Veganskt</ToggleButton>
   				      </ToggleButtonGroup>
               </DropdownButton>
             </Col>
             <Col xs={3}>
-              <DropdownButton title="Ingrediens">
+              <DropdownButton title="Ingrediens" id="3">
   		          <ToggleButtonGroup type="radio" name="filter"
   		      					value={this.state.filter}
           						onClick={this.addFilter.bind(this)}>
-      			      <ToggleButton className="dropdownItem" value={'#fisk'}>Fisk</ToggleButton>
-      			      <ToggleButton className="dropdownItem" value={'#grönsaker'}>Grönsaker</ToggleButton>
-      			      <ToggleButton className="dropdownItem" value={'#kött'}>Kött</ToggleButton>
+                  <ToggleButton className="dropdownItem" value={11}>Pizza</ToggleButton>
+                  <ToggleButton className="dropdownItem" value={12}>Pasta</ToggleButton>
+                  <ToggleButton className="dropdownItem" value={13}>Burgare</ToggleButton>
+                  <ToggleButton className="dropdownItem" value={14}>Fisk</ToggleButton>
+                  <ToggleButton className="dropdownItem" value={15}>Grönsaker</ToggleButton>
+                  <ToggleButton className="dropdownItem" value={16}>Kött</ToggleButton>
                 </ToggleButtonGroup>
               </DropdownButton>
             </Col>
             <Col xs={3}>
-              <DropdownButton title="Sepcialkost">
+              <DropdownButton title="Sepcialkost" id="4">
                 <ToggleButtonGroup type="radio" name="filter" 
-  		      					value={this.state.filter}
-          						onClick={this.addFilter.bind(this)}>
-      			      <ToggleButton className="dropdownItem" value={'#glutenfritt'}>Glutenfritt</ToggleButton>
-      			      <ToggleButton className="dropdownItem" value={'#veganskt'}>Veganskt</ToggleButton>
-      			      <ToggleButton className="dropdownItem" value={'#laktosfritt'}>Laktosfritt</ToggleButton>
+                      value={this.state.filter}
+                      onClick={this.addFilter.bind(this)}>
+      			      <ToggleButton className="dropdownItem" value={8}>lakto-vegetarianskt</ToggleButton>
+      			      <ToggleButton className="dropdownItem" value={9}>lakto-ovo-vegetarianskt</ToggleButton>
+      			      <ToggleButton className="dropdownItem" value={10}>ovo-vegetarianskt</ToggleButton>
+                  <ToggleButton className="dropdownItem" value={17}>Glutenfritt</ToggleButton>
+
                 </ToggleButtonGroup>  
               </DropdownButton>
             </Col>
 				  </ButtonToolbar>
 				</div>
-
+        {this.showTags()}
 				<div>
 	      	<br/>
-	      	testing purposes from here
+	      	testing purposes:
 	      	<br/>
-	      	{ this.state.searchWord }
+	      	{ this.searchTerm() }
 	      </div>
 				<PageHeader>
 					Topplista
@@ -172,24 +181,13 @@ class Browse extends Component {
 	      <Grid className="gr">
 			    <Row  className="show-grid" >
 	          <Col >
-				    	{ this.recipeCols() }
-				    </Col>
-		      </Row>
-			  </Grid>
-			  <PageHeader>
-					Senast visat
-					<small> - filtreras allteftersom man väljer kategorier</small>
-				</PageHeader>
-	      <Grid className="gr">
-			    <Row  className="show-grid" >
-	          <Col >
-				    	{ this.recipeCols() }
+				    	{ this.showRecipeCols() }
 				    </Col>
 		      </Row>
 			  </Grid>
 			</div>
     );
   }
-}
+});
 
 export default Browse;
