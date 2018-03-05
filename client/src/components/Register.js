@@ -18,7 +18,7 @@ export default class Register extends Component {
   render() {
     return (
       <div className="register">
-        <h2>Registrering</h2>
+        <h2 id="regPos">Registrering</h2>
         <hr />
         <RegisterForm />
       </div>
