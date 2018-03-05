@@ -9,7 +9,7 @@ ootmappen.
 # Routes
 
 ## Recipe
-**Path**: /recipe/create  
+**Path**: /recipe/  
 **Method**: POST  
 **RequiresAuth**: YES  
 **JSON**: 
@@ -70,7 +70,7 @@ ootmappen.
 
 ## User
 
-**Path**: /user/all  
+**Path**: /user/  
 **Method**: GET  
 **RequiresAuth**: NO  
 **Beskrivning**: Hämtar publik info om alla användare
@@ -85,7 +85,20 @@ ootmappen.
 **RequiresAuth**: YES  
 **Beskrivning**: Hämtar infon om den inloggade användaren
 
-**Path**: /user/me/changePassword  
+**Path**: /user/me/  
+**Method**: POST  
+**RequiresAuth**: YES  
+**JSON**: 
+```
+{
+  firstName: String,
+  lastName: String
+
+}
+```
+*Beskrivning**: ändrar uppgifter på den inloggade användaren. firstName och lastName får inte vara tomma! 
+
+**Path**: /user/me/change-password  
 **Method**: POST  
 **RequiresAuth**: YES  
 **JSON**: 
@@ -98,18 +111,7 @@ ootmappen.
 ```
 *Beskrivning**: ändrar lösenord på den inloggade användaren.
 
-**Path**: /user/me/update  
-**Method**: POST  
-**RequiresAuth**: YES  
-**JSON**: 
-```
-{
-  firstName: String,
-  lastName: String
 
-}
-```
-*Beskrivning**: ändrar uppgifter på den inloggade användaren. firstName och lastName får inte vara tomma! 
 
 ## Auth
 **Path**: /auth/  
