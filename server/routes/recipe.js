@@ -3,7 +3,7 @@ const router = express.Router();
 const recipeController = require('../controllers/recipeController');
 const isAuthenticated = require('../middlewares/isAuthenticated');
 
-router.post("/create", isAuthenticated, async (req, res, next) => {
+router.post('/', isAuthenticated, async (req, res, next) => {
   const response = await recipeController.create(req.body, req.user.id);
   res.status(response.code).json(response);
 });
@@ -33,5 +33,10 @@ router.get('/:id', async (req, res, next) => {
 });
 
 
+/* GET Recipe by id . */
+router.put('/:id', isAuthenticated, async (req, res, next) => {
+  const response = await recipeController.update(req.body, req.params.id, req.user.id);
+  res.status(response.code).json(response);
+});
 
 module.exports = router;
