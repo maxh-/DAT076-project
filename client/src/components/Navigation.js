@@ -60,21 +60,19 @@ function  UserNav(props) {
 }
 
 // if not logged in
-class GuestNav extends Component {
-  render() {
-    return (
-      <Nav pullRight>
-        <Nav>
-          <NavItem href="/login">
-            Logga in
-          </NavItem>
-          <NavItem href="/register">
-            Registrera
-          </NavItem>
-        </Nav>
+function GuestNav(props) {
+  return (
+    <Nav pullRight>
+      <Nav>
+        <NavItem href="/login">
+          Logga in
+        </NavItem>
+        <NavItem href="/register">
+          Registrera
+        </NavItem>
       </Nav>
-    );
-  }
+    </Nav>
+  );
 }
 
 export default Navigation;
