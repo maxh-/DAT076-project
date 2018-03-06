@@ -45,19 +45,20 @@ const Browse = observer(class Browse extends Component {
     }
   }
 
-  addFilter({ target }) {
-		if(target.value !== undefined) {
+  async addFilter({ target }) {
+	 if(target.value !== undefined) {
 			if(!this.state.filter.includes(parseInt(target.value,10))) {
-	  		this.setState({
+	  		await this.setState({
 		  		filter: this.state.filter.concat(parseInt(target.value,10))
 		  	});
 			}
 			else {
-				this.setState({
+				await this.setState({
 					filter: this.state.filter.filter(word => word !== parseInt(target.value,10))
 				});
 			}
 		}
+    RecipeStore.searchFor(this.state.filter, this.state.searchWord);
   }
   showRecipeCols() {
     let dummyCols = [];
@@ -185,9 +186,6 @@ const Browse = observer(class Browse extends Component {
 				</div>
         {this.showTags()}
 				<div>
-	      	<br/>
-	      	testing purposes:
-	      	<br/>
 	      	{ this.searchTerm() }
 	      </div>
 				<PageHeader>
