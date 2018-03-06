@@ -32,6 +32,8 @@ class RecipeStore {
         }
       });
   }
+      
+
 }
 const Store = new RecipeStore();
 export default Store;

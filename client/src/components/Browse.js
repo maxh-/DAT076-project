@@ -28,8 +28,7 @@ const Browse = observer(class Browse extends Component {
   componentDidMount() {
   }
   componentDidUpdate(prevProps, prevState) {
-    //console.log("Måltid: " + this.state.meal);
-  	//console.log(this.state.searchWord);
+    console.log("Måltid: " + this.state.meal);
     console.log(this.state.filter);
 	}
 
@@ -40,7 +39,6 @@ const Browse = observer(class Browse extends Component {
   }
 
   addFilter({ target }) {
-    console.log(target.value);
 		if(target.value !== undefined) {
 			if(!this.state.filter.includes(parseInt(target.value,10))) {
 	  		this.setState({
@@ -57,10 +55,14 @@ const Browse = observer(class Browse extends Component {
   showRecipeCols() {
     let dummyCols = [];
     RecipeStore.recipes.forEach(function(recipe) {
+      let imgUrl = "/img/bild.jpg" /* +recipe.id+'.jpg'*/;
+      let bgStyle = {
+        backgroundImage: 'url(' + '/img/bild.jpg' + ')'
+      };
       dummyCols.push(
         <Col className="parent" xs={12} sm={6} lg={4} 
             key={recipe.id}>
-          <div className="child">
+          <div className="child" style={bgStyle} >
           </div>
           <div className="op">
             <a href={'/recipe/' + recipe.id }>
