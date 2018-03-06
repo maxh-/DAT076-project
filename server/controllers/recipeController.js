@@ -231,35 +231,6 @@ exports.removeLike = async (recipeId, userId) => {
   };
 };
 
-
-exports.favorite = async (recipeId, userId) => {
-  const user = await models.User.findById(userId);
-  const recipe = await models.Recipe.findById(recipeId);
-  if(recipe === null){
-    return {
-      success: false,
-      code: 404,
-      message: "could not find recipe"
-    };
-  }
-  await user.addFavorite(recipe, {as: 'favorites'});
-
-  return {
-    success: true,
-    code: 201,
-    message: "recipe has been favorited"
-  };
-};
-
-exports.removeFavorite = async (recipeId, userId) => {
-  await models.Favorites.destroy({where: {userId: userId, recipeId: recipeId}});
-  return {
-    success: true,
-    code: 200,
-    message: "favorite has been removed"
-  };
-};
-
 /*** HELPER FUNCTIONS ***/
 
 const ingredientsFromJSON = async(ingredients) => {
