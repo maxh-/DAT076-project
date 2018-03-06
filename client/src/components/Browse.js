@@ -76,6 +76,7 @@ const Browse = observer(class Browse extends Component {
             <a href={'/recipe/' + recipe.id }>
               <span>
                 { recipe.title }
+                ({ recipe.Likes })
               </span>
             </a>
           </div>
