@@ -2,12 +2,22 @@
 	padding: 10px 0;
 	width: 100%;
 
+
 }
-#mainContainer .container {
-	width: 100%;
+#mainContainer {
+	margin: 0 auto;
+	max-width: 1400px;
 }
 #glyph-space {
 	padding-left: 30px;
+}
+#mainContainer .container {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+}
+#title-div {
+	width: 100%;
 }
 .jumbotron {
 	margin: 0;
@@ -34,6 +44,19 @@
 .itemInList {
 	text-align: justify;
 }
+.itemInList p {
+	margin: 2px;
+}
+.tag-label {
+	margin: 5px;
+	font-size: 20px;
+}
+#show-tags span {
+	display: inline-block;
+}
+#no-text-decoration {
+	text-decoration: none;
+}
 #modal .modal-dialog {
 	width: 90%;
 }
@@ -49,6 +72,7 @@
 .carouselItem {
 	padding: 30px;
 	min-height: 300px;
+	text-align: center;
 }
 #pic {
 	background: #FFF;
@@ -61,11 +85,16 @@
 	padding: 0;
 	width: 100%;
 	margin: 0 auto;
-	height: auto;
+	max-height: 450px;
 	object-fit: cover;
 }
 /* TODO */
 #ingrs {
 }
+#ingredients-list  {
+}
 #steps {
+}
+#steps-list {
+
 }
