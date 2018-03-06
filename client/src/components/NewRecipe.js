@@ -46,7 +46,7 @@ class NewRecipe extends Component {
       method: 'GET',
     })
     .then(res => res.json())
-    .then(res => this.setState({units: res.recipe}));    
+    .then(res => this.setState({units: res.recipe}));
   }
   componentDidUpdate(prevProps, prevState) {
    // console.log("state: ");
@@ -100,7 +100,7 @@ class NewRecipe extends Component {
         this.setState(prevState => ({
           ingredients: filteredIngredients,
           number: ingredientCounter
-        }));                
+        }));
       }
       else if(type === 'number') {
         let filteredItems = [];
@@ -121,8 +121,8 @@ class NewRecipe extends Component {
         this.setState(prevState => ({
           steps: filteredItems,
           stepIndex: instructionCounter
-        }));              
-      } 
+        }));
+      }
     }
   }
   handleSubmit(e) {
@@ -130,13 +130,14 @@ class NewRecipe extends Component {
     let bod = JSON.stringify({
       title: this.state.title,
       timeToComplete: this.state.time,
+      tweet : this.state.description,
       steps: this.state.steps,
       tags: this.state.tags.concat(parseInt(this.state.meal,10)),
       ingredients: this.state.ingredients
     });
     console.log(Auth.token);
 
-    fetch('/recipe/create', {
+    fetch('/recipe/', {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'JWT '+ Auth.token
@@ -145,7 +146,17 @@ class NewRecipe extends Component {
       body: bod
     })
       .then(res => res.json())
-      .then(res => console.log(res));
+      .then(function(res) {
+        console.log(res);
+        const isSuccess = res.success;
+        if(isSuccess === true) {
+          alert("Ditt recept är skapat!");
+          window.location = '/saved';
+        } else {
+          alert("Något gick fel.");
+        }
+    })
+      //.then(res => console.log(res));
     /*
     fetch('/recipe/create', {
       method: 'POST',
@@ -167,9 +178,10 @@ class NewRecipe extends Component {
     let tgs = [];
     this.state.availableTags.forEach(function(tg) {
       if(tg.id > 4){
-        tgs.push( <ToggleButton 
-                      key={tg.id} 
-                      value={tg.id}>
+        tgs.push( <ToggleButton
+                      key={tg.id}
+                      value={tg.id}
+                      id="tagSpace">
                     <b>#</b>{tg.tag}
                   </ToggleButton>
         );
@@ -181,7 +193,7 @@ class NewRecipe extends Component {
   makeUnits() {
     let uns = [];
     this.state.units.forEach(function(un) {
-        uns.push( <option 
+        uns.push( <option
                       key={un.id}
                       value={un.id}>
                     { un.abbreviation }
@@ -189,7 +201,7 @@ class NewRecipe extends Component {
 
         );
     });
-    return uns;  
+    return uns;
   }
 
   addStep(e) {
@@ -237,14 +249,15 @@ class NewRecipe extends Component {
     }
   }
 
+
   createIngredients(ing) {
     let targ  = this.state.units.filter(function(un){
       return parseInt(un.id,10) === parseInt(ing.UnitId,10);
     })
     let un = targ[0].abbreviation;
 
-    return    <ListGroupItem 
-                  onClick={this.handleClick.bind(this,'del',parseInt(ing['number'],10), 'ingredient')} 
+    return    <ListGroupItem
+                  onClick={this.handleClick.bind(this,'del',parseInt(ing['number'],10), 'ingredient')}
                   key={ing['number']}>
                 <Col xs={6}>
                   <b>{ing['ingredient']} </b>
@@ -263,7 +276,7 @@ class NewRecipe extends Component {
                 <FormGroup>
                   <InputGroup>
                     <InputGroup.Addon>{stp['number']}</InputGroup.Addon>
-                    <FormControl type="text" 
+                    <FormControl type="text"
                       value={stp['instruction']}
                       onChange={this.handleObjectChange.bind(this)}
                       name={stp['number']}/>
@@ -305,17 +318,17 @@ class NewRecipe extends Component {
             <Col componentClass={ControlLabel} sm={2}>
               Bild
             </Col>
-            <Col sm={10}>            
+            <Col sm={10}>
               <FormControl label="File" type="file" />
             </Col>
           </FormGroup>
-          
+
           <FormGroup controlId="formControlsSelect">
-            <Col sm={2} componentClass={ControlLabel}>            
+            <Col sm={2} componentClass={ControlLabel}>
                 Tidsåtgång
             </Col>
             <Col sm={10}>
-                <FormControl componentClass="select" 
+                <FormControl componentClass="select"
                     placeholder="select"
                     value={this.state.time}
                     onChange={this.handleChange.bind(this)}
@@ -335,11 +348,11 @@ class NewRecipe extends Component {
           </FormGroup>
 
           <FormGroup controlId="formControlsSelect">
-            <Col sm={2} componentClass={ControlLabel}>            
+            <Col sm={2} componentClass={ControlLabel}>
                 Måltid
             </Col>
             <Col sm={10}>
-                <FormControl componentClass="select" 
+                <FormControl componentClass="select"
                     placeholder="select"
                     value={this.state.meal}
                     onChange={this.handleChange.bind(this)}
@@ -358,16 +371,16 @@ class NewRecipe extends Component {
               Beskrivning
             </Col>
             <Col sm={10}>
-              <FormControl componentClass="textarea" 
+              <FormControl componentClass="textarea"
                   placeholder="Beskrivning"
-                  name="description" 
+                  name="description"
                   value={this.state.description}
                   onChange={this.handleChange.bind(this)}/>
             </Col>
           </FormGroup>
 
           <FormGroup>
-            <Col sm={2} componentClass={ControlLabel}>            
+            <Col sm={2} componentClass={ControlLabel}>
               Taggar
             </Col>
             <Col sm={10}>
@@ -379,33 +392,33 @@ class NewRecipe extends Component {
               </ToggleButtonGroup>
             </Col>
           </FormGroup>
-          
+
           <FormGroup
             controlId="formBasicText">
             <Col xs={12} componentClass={ControlLabel} sm={2}>
                 Ingredienser
             </Col>
-            <Col xs={12} sm={10}>            
+            <Col xs={12} sm={10}>
               <Col sm={6} className="noPadding">
                 <FormControl
                   type="text"
                   placeholder="Ingrediens"
-                  inputRef={(a) => this.ingredient = a} 
+                  inputRef={(a) => this.ingredient = a}
                 />
               </Col>
-              <Col xs={4} sm={2} className="noPadding">            
+              <Col xs={4} sm={2} className="noPadding">
                 <FormControl
                   type="text"
                   placeholder="Mängd"
-                  inputRef={(b) => this.amount = b} 
+                  inputRef={(b) => this.amount = b}
                 />
               </Col>
-              <Col xs={4} sm={2} className="noPadding">            
-                <FormControl 
+              <Col xs={4} sm={2} className="noPadding">
+                <FormControl
                     componentClass="select"
-                    defaultValue="l" 
+                    defaultValue="l"
                     inputRef={(c) => this.unit = c }
-                    onChange={this.handleChange.bind(this)} 
+                    onChange={this.handleChange.bind(this)}
                     name="UnitId">
                   { this.makeUnits() }
                 </FormControl>
@@ -414,15 +427,15 @@ class NewRecipe extends Component {
                 <Button onClick={this.addIngredient.bind(this,'in')} className="fillWidth">
                   Lägg till
                 </Button>
-              </Col>      
-            </Col>      
+              </Col>
+            </Col>
 
             <Col sm={2}> </Col>
 
-            <Col sm={10}> 
+            <Col sm={10}>
               <ListGroup>
                 { ingrsItems }
-              </ListGroup>           
+              </ListGroup>
             </Col>
           </FormGroup>
 
@@ -430,7 +443,7 @@ class NewRecipe extends Component {
             <Col componentClass={ControlLabel} sm={2}>
                 Steg
             </Col>
-            <Col sm={10}>            
+            <Col sm={10}>
               <FormControl
                 componentClass="textarea"
                 placeholder="Enter Step"
@@ -441,15 +454,15 @@ class NewRecipe extends Component {
             </Col>
             <Col sm={2}> </Col>
 
-            <Col sm={10}> 
-              <ol id="noListStyle"> { stpsItems } </ol>      
+            <Col sm={10}>
+              <ol id="noListStyle"> { stpsItems } </ol>
             </Col>
           </FormGroup>
           <Col sm={2}></Col>
           <Col id="submitCol" sm={8} xs={10}>
             <ButtonToolbar >
               <Button bsStyle="primary" bsSize="large"  onClick={this.handleSubmit.bind(this)}>
-                Publicera  
+                Publicera
               </Button>
               <Button bsSize="large" disabled  /*onClick={}*/>
                 Spara utkast
