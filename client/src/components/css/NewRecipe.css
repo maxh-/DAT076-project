@@ -5,7 +5,7 @@
 	padding-left: 5px;
 }
 #noListStyle {
-	list-style-type: none; 
+	list-style-type: none;
 	padding: 0;
 }
 #noListStyle li div{
@@ -19,4 +19,11 @@
 }
 textarea {
     resize: none;
+}
+.col-sm-10 {
+	padding: 2px;
+}
+#tagSpace {
+		margin: 3px;
+		border-radius: 0px;
 }

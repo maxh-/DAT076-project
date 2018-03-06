@@ -1,4 +1,5 @@
 const models = require('../models');
+const recipeController = require('../controllers/recipeController');
 
 exports.fill = async () => {
   // Users
@@ -70,5 +71,300 @@ exports.fill = async () => {
   await models.Ingredient.create({name: "Lök"});
   await models.Ingredient.create({name: "Vitlök"});
 
+  // recipes
+  const recipes = [
+    {
+      "userId": 1,
+      "title": "New recipe",
+      "timeToComplete": 200230023,
+      "tweet": "A great recipe for the whole family",
+      "steps": [
+        {
+          "instruction": "do the stuff",
+          "number": 1
+        },{
+          "instruction": "do the other stuff",
+          "number": 2
+        },{
+          "instruction": "do the last stuff",
+          "number": 3
+        }
+      ],
+      "tags": [ 1,2,3,4,5,6,7,8,9,10],
+      "ingredients": [
+        {
+          "number": 1,
+          "amount": 2,
+          "UnitId": 1,
+          "ingredient": "Pankoflingor"
+        },{
+          "number": 2,
+          "amount": 2,
+          "UnitId": 1,
+          "ingredient": "Bostongurka"
+        },{
+          "number": 3,
+          "amount": 2,
+          "UnitId": 1,
+          "IngredientId": 1
+        }
+      ]
+    },
+    {
+      "userId": 5,
+      "title": "Newer recipe",
+      "timeToComplete": 123,
+      "tweet": "A great recipe for the whole family",
+      "steps": [
+        {
+          "instruction": "do the stuff",
+          "number": 1
+        },{
+          "instruction": "do the other stuff",
+          "number": 2
+        },{
+          "instruction": "do the last stuff",
+          "number": 3
+        }
+      ],
+      "tags": [ 1,2,3],
+      "ingredients": [
+        {
+          "number": 1,
+          "amount": 2,
+          "UnitId": 5,
+          "IngredientId": 4
+        },{
+          "number": 2,
+          "amount": 2,
+          "UnitId": 4,
+          "IngredientId": 3
+        },{
+          "number": 3,
+          "amount": 2,
+          "UnitId": 1,
+          "IngredientId": 1
+        }
+      ]
+    },
+    {
+      "userId": 4,
+      "title": "Pasta Bolognese",
+      "timeToComplete": 300,
+      "tweet": "A great recipe for the whole family",
+      "steps": [
+        {
+          "instruction": "do the stuff",
+          "number": 1
+        },{
+          "instruction": "do the other stuff",
+          "number": 2
+        },{
+          "instruction": "do the last stuff",
+          "number": 3
+        }
+      ],
+      "tags": [ 18, 17,16],
+      "ingredients": [
+        {
+          "number": 1,
+          "amount": 2,
+          "UnitId": 6,
+          "IngredientId": 10
+        },{
+          "number": 2,
+          "amount": 2,
+          "UnitId": 7,
+          "IngredientId": 18
+        },{
+          "number": 3,
+          "amount": 2,
+          "UnitId": 8,
+          "IngredientId": 19
+        }
+      ]
+    },
+    {
+      "userId": 3,
+      "title": "Pasta Pesto",
+      "timeToComplete": 200230023,
+      "tweet": "A great recipe for the whole family",
+      "steps": [
+        {
+          "instruction": "do the stuff",
+          "number": 1
+        },{
+          "instruction": "do the other stuff",
+          "number": 2
+        },{
+          "instruction": "do the last stuff",
+          "number": 3
+        }
+      ],
+      "tags": [ 18, 16, 13, 7, 8],
+      "ingredients": [
+        {
+          "number": 1,
+          "amount": 2,
+          "UnitId": 2,
+          "IngredientId": 28
+        },{
+          "number": 2,
+          "amount": 2,
+          "UnitId": 3,
+          "IngredientId": 23
+        },{
+          "number": 3,
+          "amount": 2,
+          "UnitId": 4,
+          "IngredientId": 19
+        }
+      ]
+    },
+    {
+      "userId": 2,
+      "title": "Pasta la Dente",
+      "timeToComplete": 12,
+      "tweet": "A great recipe for the whole family",
+      "steps": [
+        {
+          "instruction": "do the stuff",
+          "number": 1
+        },{
+          "instruction": "do the other stuff",
+          "number": 2
+        },{
+          "instruction": "do the last stuff",
+          "number": 3
+        }
+      ],
+      "tags": [ 15],
+      "ingredients": [
+        {
+          "number": 1,
+          "amount": 2,
+          "UnitId": 1,
+          "IngredientId": 16
+        },{
+          "number": 2,
+          "amount": 2,
+          "UnitId": 1,
+          "ingredient": "pasta"
+        },{
+          "number": 3,
+          "amount": 2,
+          "UnitId": 1,
+          "IngredientId": 7
+        }
+      ]
+    },
+    {
+      "userId": 1,
+      "title": "Magnum Isglass",
+      "timeToComplete": 200230023,
+      "tweet": "A great recipe for the whole family",
+      "steps": [
+        {
+          "instruction": "do the stuff",
+          "number": 1
+        },{
+          "instruction": "do the other stuff",
+          "number": 2
+        },{
+          "instruction": "do the last stuff",
+          "number": 3
+        }
+      ],
+      "tags": [ 1,2,3,4,5,6,7,8,9,10],
+      "ingredients": [
+        {
+          "number": 1,
+          "amount": 2,
+          "UnitId": 1,
+          "ingredient": "Pankoflingor"
+        },{
+          "number": 2,
+          "amount": 2,
+          "UnitId": 1,
+          "ingredient": "Bostongurka"
+        },{
+          "number": 3,
+          "amount": 2,
+          "UnitId": 1,
+          "IngredientId": 1
+        }
+      ]
+    },
+    {
+      "userId": 1,
+      "title": "Jamie Olivers Oliver",
+      "timeToComplete": 200230023,
+      "tweet": "A great recipe for the whole family",
+      "steps": [
+        {
+          "instruction": "do the stuff",
+          "number": 1
+        },{
+          "instruction": "do the other stuff",
+          "number": 2
+        },{
+          "instruction": "do the last stuff",
+          "number": 3
+        }
+      ],
+      "tags": [ 1,2,3,4,5,6,7,8,9,10],
+      "ingredients": [
+        {
+          "number": 1,
+          "amount": 2,
+          "UnitId": 1,
+          "ingredient": "Oliver"
+        }
+      ]
+    },
+    {
+      "userId": 1,
+      "title": "Gordon Ramsay's Ramminnen",
+      "timeToComplete": 200230023,
+      "tweet": "A great recipe for the whole family",
+      "steps": [
+        {
+          "instruction": "do the stuff",
+          "number": 1
+        },{
+          "instruction": "do the other stuff",
+          "number": 2
+        },{
+          "instruction": "do the last stuff",
+          "number": 3
+        }
+      ],
+      "tags": [ 18,2,3,4,5,6,7,8,9,10],
+      "ingredients": [
+        {
+          "number": 1,
+          "amount": 2,
+          "UnitId": 1,
+          "ingredient": "Pankoflingor"
+        },{
+          "number": 2,
+          "amount": 2,
+          "UnitId": 1,
+          "ingredient": "Bostongurka"
+        },{
+          "number": 3,
+          "amount": 2,
+          "UnitId": 1,
+          "IngredientId": 1
+        }
+      ]
+    }
+  ];
+  for(let i = 0; i < recipes.length; i++){
+    await recipeController.create(recipes[i], recipes[i].userId);
+  }
+
   return true;
 };
+
+

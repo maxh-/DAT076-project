@@ -51,6 +51,11 @@ ootmappen.
 **RequiresAuth**: NO  
 **Beskrivning**: Hämtar alla recept
 
+**Path**: /recipe/search?tags=A&q=B  
+**Method**: Get  
+**RequiresAuth**: NO  
+**Beskrivning**: söker på ett recept. A är kommaseparerade ids ex 1,2,3. B är en sträng. För att bara söka på ena av dem så strunda i att inkludera den andra.
+
 ## User
 
 **Path**: /user/all  
