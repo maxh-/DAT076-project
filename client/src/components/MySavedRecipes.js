@@ -3,7 +3,8 @@ import { Form, Col, FormGroup, ControlLabel, FormControl,
   Button, ButtonToolbar, InputGroup, Glyphicon, ToggleButton,
   ListGroup, ListGroupItem, ToggleButtonGroup,   } from 'react-bootstrap';
 
-  import './css/MySavedRecipes.css';
+import Auth from '../util/AuthService';
+import './css/MySavedRecipes.css';
 
 class MySavedRecipes extends Component {
 
@@ -17,6 +18,16 @@ class MySavedRecipes extends Component {
   }
 
 componentDidMount() {
+
+  fetch('/user/me/favorite', {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'JWT '+ Auth.token
+    },
+    method: 'GET'
+  })
+    .then(res => res.json())
+    .then(res => console.log(res));
   //Hämta sparade recept
 }
 
