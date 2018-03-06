@@ -9,7 +9,7 @@ ootmappen.
 # Routes
 
 ## Recipe
-**Path**: /recipe/  
+**Path**: /recipe/create  
 **Method**: POST  
 **RequiresAuth**: YES  
 **JSON**: 
@@ -17,7 +17,6 @@ ootmappen.
 {
 	title: String,
 	timeToComplete: Integer,
-    tweet: String,
 	steps: [
 		{
 			instruction: String,
@@ -47,30 +46,19 @@ ootmappen.
 **RequiresAuth**: NO  
 **Beskrivning**: Hämtar ett recept
 
-**Path**: /recipe/:id/like  
+**Path**: /recipe/  
 **Method**: Get  
 **RequiresAuth**: NO  
-**Beskrivning**: Hämtar up/downlikes för ett recept
+**Beskrivning**: Hämtar alla recept
 
-**Path**: /recipe/:id/like  
-**Method**: POST  
-**RequiresAuth**: YES  
-**JSON**: 
-```
-{
-   kind: 'up' || 'down'
-}
-```
-**Beskrivning**: Skicka en up/downlike, finns en redan så uppdateras den till nuvarande.
-
-**Path**: /recipe/:id/like  
-**Method**: DELETE  
-**RequiresAuth**: YES  
-**Beskrivning**: Ta bort up/downlike för receptet.
+**Path**: /recipe/search?tags=A&q=B  
+**Method**: Get  
+**RequiresAuth**: NO  
+**Beskrivning**: söker på ett recept. A är kommaseparerade ids ex 1,2,3. B är en sträng. För att bara söka på ena av dem så strunda i att inkludera den andra.
 
 ## User
 
-**Path**: /user/  
+**Path**: /user/all  
 **Method**: GET  
 **RequiresAuth**: NO  
 **Beskrivning**: Hämtar publik info om alla användare
@@ -85,20 +73,7 @@ ootmappen.
 **RequiresAuth**: YES  
 **Beskrivning**: Hämtar infon om den inloggade användaren
 
-**Path**: /user/me/  
-**Method**: POST  
-**RequiresAuth**: YES  
-**JSON**: 
-```
-{
-  firstName: String,
-  lastName: String
-
-}
-```
-*Beskrivning**: ändrar uppgifter på den inloggade användaren. firstName och lastName får inte vara tomma! 
-
-**Path**: /user/me/change-password  
+**Path**: /user/me/changePassword  
 **Method**: POST  
 **RequiresAuth**: YES  
 **JSON**: 
@@ -111,7 +86,18 @@ ootmappen.
 ```
 *Beskrivning**: ändrar lösenord på den inloggade användaren.
 
+**Path**: /user/me/update  
+**Method**: POST  
+**RequiresAuth**: YES  
+**JSON**: 
+```
+{
+  firstName: String,
+  lastName: String
 
+}
+```
+*Beskrivning**: ändrar uppgifter på den inloggade användaren. firstName och lastName får inte vara tomma! 
 
 ## Auth
 **Path**: /auth/  

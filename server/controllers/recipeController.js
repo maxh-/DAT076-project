@@ -1,4 +1,5 @@
 const models = require('../models');
+const FuzzySearch = require('fuzzy-search');
 
 exports.findById = async (id) => {
   const recipe = await models.Recipe.findById(id, {
@@ -138,27 +139,49 @@ exports.update = async (params, recipeId, userId) => {
 
 };
 
-
-
-/*** HELPER FUNCTIONS ***/
-
-const ingredientsFromJSON = async(ingredients) => {
-  return await Promise.all(
-    ingredients.map(
-      async (recipeIngredient) => {
-        let ingredient = {};
-        if(recipeIngredient.IngredientId !== undefined){
-          ingredient = await models.Ingredient.findById(recipeIngredient.IngredientId);
-        }else{
-          var res = await models.Ingredient.findOrCreate(
-            {where: {name: recipeIngredient.ingredient}
-            });
-          ingredient = res[0];
-        }
-        ingredient.RecipeIngredients = recipeIngredient;
-        return ingredient;
-      })
-  );
+exports.fuzzyFind = async (params) => {
+  const query = params.q;
+  const tags = params.tags;
+  // if there are tags use them as condition if not use no condition
+  let condition = {};
+  if(tags != '' && tags != undefined){
+    condition  = {
+      '$Tags.id$': { $in: tags.split(',') }
+    };
+  }
+  // get recipes that contain some or all tags
+  const recipes = await models.Recipe.findAll(
+    {
+      where: condition,
+      include: [
+      models.Step,
+      {
+        model: models.Tag,
+        required: true
+      },
+      {
+        model: models.RecipeIngredients,
+        include: [models.Ingredient, models.Unit]
+      }]
+    });
+  // filter all recipes that dont match all the tags
+  let filteredRecipes = recipes;
+  if(tags != '' && tags != undefined){
+    filteredRecipes= recipes.filter((recipe) => {
+      return recipe.Tags.length == tags.split(',').length;
+    });
+  }
+  // Fuzzy search the relevant recipes
+  let result = filteredRecipes;
+  if(query != '' &&  query != undefined){
+    const searcher = new FuzzySearch(filteredRecipes, ['title']);
+    result = searcher.search(query);
+  }
+  return {
+    success: true,
+    code: 200,
+    recipes: result
+  };
 };
 
 exports.getLikes = async (id) => {
@@ -206,4 +229,26 @@ exports.removeLike = async (recipeId, userId) => {
     code: 200,
     message: "like has been removed"
   };
+};
+
+
+/*** HELPER FUNCTIONS ***/
+
+const ingredientsFromJSON = async(ingredients) => {
+  return await Promise.all(
+    ingredients.map(
+      async (recipeIngredient) => {
+        let ingredient = {};
+        if(recipeIngredient.IngredientId !== undefined){
+          ingredient = await models.Ingredient.findById(recipeIngredient.IngredientId);
+        }else{
+          var res = await models.Ingredient.findOrCreate(
+            {where: {name: recipeIngredient.ingredient}
+            });
+          ingredient = res[0];
+        }
+        ingredient.RecipeIngredients = recipeIngredient;
+        return ingredient;
+      })
+  );
 };
