@@ -11,7 +11,8 @@ class MySavedRecipes extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      favourites: ["recept 1 " , "recept 2 ", "recept 3 ", "recept 4 " , "recept 5 ", "recept 6 "]
+      favourites: ["recept1" , "recept2", "recept3" , "recept4", "recept 5"],
+      id: ""
     }
 
     this.handleClick = this.handleClick.bind(this);
@@ -27,8 +28,10 @@ componentDidMount() {
     method: 'GET'
   })
     .then(res => res.json())
-    .then(res => console.log(res));
+    .then(res => console.log(res.favorites));
+    //.then(res => this.setState({favourites: res.favorites.title}));
   //Hämta sparade recept
+
 }
 
 handleClick() {
@@ -41,6 +44,26 @@ async removeFav(index) {
       })
     });
    console.log(this.state.favourites);
+
+   /*fetch('/user/me/favorite', {
+     headers: {
+       'Content-Type': 'application/json',
+       'Authorization': 'JWT '+ Auth.token
+     },
+     method: 'DELETE',
+     body: JSON.stringify({
+       recipeId: this.state.id
+     })
+   })
+     .then(res => res.json())
+     .then(res => console.log(res));
+     */console.log(Auth.token);
+  }
+
+  removeAll() {
+    this.setState ({
+      favourites: []
+    });
   }
 
 
@@ -61,6 +84,7 @@ getFavourites() {
 
   // render component
   render() {
+    console.log(Auth.token);
     var favs = this.state.favourites;
     return (
       <div className="MySavedRecipes">
@@ -68,6 +92,7 @@ getFavourites() {
         <ListGroup>
           {this.getFavourites()}
 
+          <Button class="btn btn-danger" onClick={this.removeAll.bind(this)}>Ta bort alla recept</Button>
         </ListGroup>
 
       </div>
