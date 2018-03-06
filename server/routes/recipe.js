@@ -14,7 +14,11 @@ router.post('/', isAuthenticated, async (req, res, next) => {
   const response = await recipeController.create(req.body, req.user.id);
   res.status(response.code).json(response);
 });
-
+/* GET Recipe by id . */
+router.get('/search', async (req, res, next) => {
+  const response = await recipeController.fuzzyFind(req.query);
+  res.status(response.code).json(response);
+});
 /* POST uplike/downlike recipe */ 
 router.get("/:id/like",  async (req, res, next) => {
   const response = await recipeController.getLikes(req.params.id);
