@@ -180,7 +180,8 @@ class NewRecipe extends Component {
       if(tg.id > 4){
         tgs.push( <ToggleButton
                       key={tg.id}
-                      value={tg.id}>
+                      value={tg.id}
+                      id="tagSpace">
                     <b>#</b>{tg.tag}
                   </ToggleButton>
         );
@@ -235,18 +236,19 @@ class NewRecipe extends Component {
 
   addTags({ target }) {
     if(target.value !== undefined) {
-      if(!this.state.tags.includes(target.value)) {
+      if(!this.state.tags.includes(parseInt(target.value,10))) {
         this.setState({
           tags: this.state.tags.concat(parseInt(target.value,10))
         });
       }
       else {
         this.setState({
-          tags: this.state.tags.filter(word => word !== target.value)
+          tags: this.state.tags.filter(word => word !== parseInt(target.value,10))
         });
       }
     }
   }
+
 
   createIngredients(ing) {
     let targ  = this.state.units.filter(function(un){
