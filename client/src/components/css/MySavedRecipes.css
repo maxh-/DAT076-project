@@ -1,0 +1,7 @@
+list-group > a > .glyphicon:hover{
+color: orange;
+}
+
+.glyphicon:hover{
+  color:red !important;
+}
