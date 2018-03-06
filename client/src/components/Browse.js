@@ -17,25 +17,32 @@ const Browse = observer(class Browse extends Component {
   		filter: [],
       meal:"", 
       recipes: [],
-      availableTags: []
+      availableTags: [],
+      searchHeader: ""
   	};
     RecipeStore.getAll();
     RecipeStore.getTags();
-    this.handleChange = this.handleChange.bind(this);
+    this.handleChangeSearch = this.handleChangeSearch.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.addFilter = this.addFilter.bind(this);
   }
   componentDidMount() {
+    this.setState({searchHeader:"Topplista"});
   }
   componentDidUpdate(prevProps, prevState) {
-    console.log("Måltid: " + this.state.meal);
     console.log(this.state.filter);
 	}
 
-  handleChange({ target }) {
+  handleChangeSearch({ target }) {
     this.setState({
       [target.name]: target.value
     });
+    if(target.value.length === 0) {
+      RecipeStore.searchFor(this.state.filter, "");
+      if(this.state.filter.length===0){
+        this.setState({searchHeader:"Topplista"});
+      }
+    }
   }
 
   addFilter({ target }) {
@@ -88,14 +95,21 @@ const Browse = observer(class Browse extends Component {
       <div>
         <h2>{ this.state.searchWord } </h2>
         <h3>{ this.state.meal } </h3>
-        <h4>{ this.state.filter } </h4>
+        <h4>{ RecipeStore.getMyTags(this.state.filter) } </h4>
       </div>
     );
   }
 
   handleSubmit(event) {
-    alert('Searched for: ' + this.state.searchWord + 
-      "\nFilters: " + this.state.filter);
+    if(this.state.searchWord.length>0 || this.state.filter.length>0) {
+      RecipeStore.searchFor(this.state.filter, this.state.searchWord);
+      this.setState({
+        searchHeader: 'Sökresultat:'
+      });
+    }
+    else{
+
+    }
     event.preventDefault();
   }
 
@@ -108,7 +122,7 @@ const Browse = observer(class Browse extends Component {
 			      <InputGroup className="gr">
 				      <FormControl bsSize="large" id="fc" type="text"  
 				        placeholder="Sök recept" name="searchWord" 
-				        onChange={this.handleChange.bind(this)} />
+				        onChange={this.handleChangeSearch.bind(this)} />
 				      <InputGroup.Addon id="addon" >
 					  		<Button id="subBtn" type="submit" bsSize="large">        		
 					  			<Glyphicon glyph="search" />
@@ -120,12 +134,12 @@ const Browse = observer(class Browse extends Component {
             <Col xs={3}>
               <DropdownButton title="Måltid" id="1">
     			      <ToggleButtonGroup type="radio" name="meal"
-                    value={this.state.meal}
-        						onClick={this.handleChange.bind(this)}>
-    				      <ToggleButton className="dropdownItem" value={"1"}>Förrätt</ToggleButton>
-    				      <ToggleButton className="dropdownItem" value={"2"}>Huvudrätt</ToggleButton>
-    				      <ToggleButton className="dropdownItem" value={"3"}>Efterrätt</ToggleButton>
-    				      <ToggleButton className="dropdownItem" value={"4"}>Mellanmål</ToggleButton>
+                    value={this.state.filter}
+        						onClick={this.addFilter.bind(this)}>
+    				      <ToggleButton className="dropdownItem" value={1}>Förrätt</ToggleButton>
+    				      <ToggleButton className="dropdownItem" value={2}>Huvudrätt</ToggleButton>
+    				      <ToggleButton className="dropdownItem" value={3}>Efterrätt</ToggleButton>
+    				      <ToggleButton className="dropdownItem" value={4}>Mellanmål</ToggleButton>
                 </ToggleButtonGroup>
               </DropdownButton>
             </Col>
@@ -177,13 +191,12 @@ const Browse = observer(class Browse extends Component {
 	      	{ this.searchTerm() }
 	      </div>
 				<PageHeader>
-					Topplista
-					<small> - filtreras allteftersom man väljer kategorier eller omgenereras vid sökning</small>
+					{this.state.searchHeader}
 				</PageHeader>
 	      <Grid className="gr">
 			    <Row  className="show-grid" >
 	          <Col >
-				    	{ this.showRecipeCols() }
+                { this.showRecipeCols() }
 				    </Col>
 		      </Row>
 			  </Grid>
