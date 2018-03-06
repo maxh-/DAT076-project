@@ -17,5 +17,11 @@ class App extends Component {
     );
   }
 }
+/*
+Färger som ska användas ifrån flat ui-palette:
+  -Bakgrund: grå (CLOUDS)
+  -Accent: grön(EMERALD) och mörkgrön vid hoover (NEPHRITIS)
+
+*/
 
 export default App;
