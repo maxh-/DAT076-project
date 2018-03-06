@@ -3,7 +3,7 @@ const router = express.Router();
 const userController = require('../controllers/userController');
 
 /* GET all users */
-router.get('/all', async (req, res, next) => {
+router.get('/', async (req, res, next) => {
   const response = await userController.findAll();
   res.status(response.code).json(response);
 });

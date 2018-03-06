@@ -65,7 +65,7 @@ exports.update = async (params, id) => {
   return{
     success: true,
     code: 200,
-    message: "user updated"
+    user: user.toJSON()
   };
 };
 
