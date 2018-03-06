@@ -51,7 +51,7 @@ class NewRecipe extends Component {
   componentDidUpdate(prevProps, prevState) {
    // console.log("state: ");
    // console.log(this.state);
-     console.log(this.state.ingredients);
+     console.log(this.state.tags);
 
   }
   handleChange({ target }) {
