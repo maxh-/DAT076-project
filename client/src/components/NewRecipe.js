@@ -51,7 +51,7 @@ class NewRecipe extends Component {
   componentDidUpdate(prevProps, prevState) {
    // console.log("state: ");
    // console.log(this.state);
-     console.log(this.state.ingredients);
+     console.log(this.state.tags);
 
   }
   handleChange({ target }) {
@@ -224,14 +224,14 @@ class NewRecipe extends Component {
 
   addTags({ target }) {
     if(target.value !== undefined) {
-      if(!this.state.tags.includes(target.value)) {
+      if(!this.state.tags.includes(parseInt(target.value,10))) {
         this.setState({
           tags: this.state.tags.concat(parseInt(target.value,10))
         });
       }
       else {
         this.setState({
-          tags: this.state.tags.filter(word => word !== target.value)
+          tags: this.state.tags.filter(word => word !== parseInt(target.value,10))
         });
       }
     }
