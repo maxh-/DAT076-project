@@ -212,21 +212,25 @@ exports.fuzzyFind = async (params) => {
 };
 
 const getLikes = async (id) => {
-  const upLikes = await models.Likes.count({where: {recipeId: id, kind: 'up'}});
-  const downLikes = await models.Likes.count({where: {recipeId: id, kind: 'down'}});
-  const total = upLikes - downLikes;
+  const likes = await models.Likes.count({where: {recipeId: id}});
+
   return {
     success: true,
     code: 200,
-    likes: {
-      total: total,
-      up: upLikes,
-      down: downLikes
-    }
+    likes: likes
   };
 };
 
 exports.like = async (recipeId, userId) => {
+  const like = await models.Likes.find({where: {userId: userId, recipeId: recipeId}});
+  if(like != null){
+    return {
+      success: false,
+      code: 406,
+      message: "recipe already liked"
+    };
+  }
+
   const user = await models.User.findById(userId);
   const recipe = await models.Recipe.findById(recipeId);
   if(recipe === null){
@@ -236,7 +240,6 @@ exports.like = async (recipeId, userId) => {
       message: "could not find recipe"
     };
   }
-
   await user.addLike(recipe, {as: 'likes'});
 
   return {
