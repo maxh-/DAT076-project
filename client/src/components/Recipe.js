@@ -216,7 +216,7 @@ const Recipe = observer( class Recipe extends Component {
   }
 });
 
-class RecipeImage extends Component {
+const RecipeImage = observer(class RecipeImage extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -247,6 +247,6 @@ class RecipeImage extends Component {
   render() {
     return <div style={this.state.style}></div>;
   }
-}
+});
 
 export default Recipe;
