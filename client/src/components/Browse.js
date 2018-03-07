@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Glyphicon, Grid, Row, Col, Button, InputGroup,
-	FormControl, DropdownButton, 
+	FormControl, DropdownButton,
 	ToggleButtonGroup, ToggleButton,
 	PageHeader, ButtonToolbar } from 'react-bootstrap';
 import './css/Browse.css';
@@ -8,7 +8,7 @@ import './css/Browse.css';
   const dummySentence = 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit';
 
 class Browse extends Component {
-	
+
 	constructor(props) {
     super(props);
     this.state = {
@@ -24,7 +24,7 @@ class Browse extends Component {
   }
 
   componentDidMount() {
-    
+
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -53,7 +53,7 @@ class Browse extends Component {
 			}
 		}
   }
-  
+
   dummyCols() {
     let dummyCols = [];
     for(let i = 0; i < 6; i++) {
@@ -83,20 +83,20 @@ class Browse extends Component {
     		<div id="search" >
 		      <form onSubmit={this.handleSubmit}>
 			      <InputGroup className="gr">
-				      <FormControl bsSize="large" id="fc" type="text"  
-				        placeholder="Sök recept" name="searchWord" 
+				      <FormControl bsSize="large" id="fc" type="text"
+				        placeholder="Sök recept" name="searchWord"
 				        onChange={this.handleChange.bind(this)} />
 				      <InputGroup.Addon id="addon" >
-					  		<Button id="subBtn" type="submit" bsSize="large">        		
+					  		<Button id="subBtn" type="submit" bsSize="large">
 					  			<Glyphicon glyph="search" />
-								</Button>			      
+								</Button>
 							</InputGroup.Addon>
 				    </InputGroup>
 		  		</form>
           <ButtonToolbar>
             <Col xs={3}>
               <DropdownButton title="Måltid">
-    			      <ToggleButtonGroup type="radio" name="meal"  
+    			      <ToggleButtonGroup type="radio" name="meal"
           						onClick={this.handleChange.bind(this)}>
     				      <ToggleButton className="dropdownItem" value={'#förrätt'}>Förrätt</ToggleButton>
     				      <ToggleButton className="dropdownItem" value={'#huvudrätt'}>Huvudrätt</ToggleButton>
@@ -107,7 +107,7 @@ class Browse extends Component {
             </Col>
             <Col xs={3}>
              	<DropdownButton title="Rättyp">
-  		          <ToggleButtonGroup type="radio" name="filter" 
+  		          <ToggleButtonGroup type="radio" name="filter"
                       value={this.state.filter}
                       onClick={this.addFilter.bind(this)} >
       			      <ToggleButton className="dropdownItem" value={'#pizza'}>Pizza</ToggleButton>
@@ -129,13 +129,13 @@ class Browse extends Component {
             </Col>
             <Col xs={3}>
               <DropdownButton title="Sepcialkost">
-                <ToggleButtonGroup type="radio" name="filter" 
+                <ToggleButtonGroup type="radio" name="filter"
   		      					value={this.state.filter}
           						onClick={this.addFilter.bind(this)}>
       			      <ToggleButton className="dropdownItem" value={'#glutenfritt'}>Glutenfritt</ToggleButton>
       			      <ToggleButton className="dropdownItem" value={'#veganskt'}>Veganskt</ToggleButton>
       			      <ToggleButton className="dropdownItem" value={'#laktosfritt'}>Laktosfritt</ToggleButton>
-                </ToggleButtonGroup>  
+                </ToggleButtonGroup>
               </DropdownButton>
             </Col>
 				  </ButtonToolbar>
