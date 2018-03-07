@@ -90,7 +90,7 @@ const Browse = observer(class Browse extends Component {
 
               <span style={spanRightStyle}>
                    { recipe.Likes }
-                <img src="img/oven-like.svg"  style={imgStyle} className="pl"/>
+                <img src="/img/oven-like.svg"  style={imgStyle} className="pl"/>
               </span>
             </a>
           </div>

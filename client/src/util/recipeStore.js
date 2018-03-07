@@ -4,10 +4,41 @@ class RecipeStore {
   constructor() {    
     extendObservable(this, {
       recipes: [],
+      recipe: [],
       tags: [],
       filter: "",
       authorId: ""
     });
+  }
+  getOne(id) {
+    fetch('/recipe/'+id, {
+      method: 'GET',
+    })
+      .then(res => res.json())
+      .then((body) => {
+        if(body.success && body.recipe) {
+          this.recipe = body.recipe;
+        }
+      });
+  }
+  like(id,token) {
+    fetch('/recipe/'+id+'/like', {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'JWT '+ token
+        },
+        method: 'POST',
+        body: JSON.stringify({
+          kind : "up" 
+        })
+    })
+    .then((body) => {
+      if(body.ok) {
+        this.getOne(id);
+        return this.recipe.Likes;
+      }
+    })
+    .catch(error => console.log(error));
   }
   getAll() {
     fetch('/recipe/', {
@@ -17,7 +48,6 @@ class RecipeStore {
       .then((body) => {
         if(body.success && body.recipe) {
           this.recipes = body.recipe;
-          //console.log(body.recipe);
         }
       });
   }
