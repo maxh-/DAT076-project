@@ -93,7 +93,6 @@ class RecipeStore {
   getMyTags(tgs){
     let ts="";
     let tags = this.tags;
-    console.log(tags);
     tgs.forEach(function(tg){
       ts += "#"+(tags.find(function(tag){ return tag.id===tg; })).tag
     });
