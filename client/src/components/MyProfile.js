@@ -10,11 +10,13 @@ import {
   ControlLabel,
   FormControl,
   HelpBlock,
-  Glyphicon
+  Glyphicon,
+  Table
 } from 'react-bootstrap';
 import LoadingSpinner from './LoadingSpinner';
 
 import Auth from '../util/AuthService';
+import UserRecipeStore from '../util/userRecipeStore';
 
 const MyProfile = observer(class MyProfile extends Component {
 
@@ -45,14 +47,16 @@ const MyProfile = observer(class MyProfile extends Component {
           <Col md={10} className="aboutUser">
             <Row>
               <Col>
-                <h2>{Auth.user.firstName} {Auth.user.lastName}</h2>
+                <h2>{Auth.user.firstName} {Auth.user.lastName}<a className="btn btn-default pull-right" onClick={this.handleShowModal}>Ändra</a></h2>
                 <hr />
                 <strong>E-post:</strong> { Auth.user.email }
-                <a className="btn btn-default pull-right" onClick={this.handleShowModal}><Glyphicon glyph="pencil" /> Redigera profil</a>
+                <br />
+                <MyRecipes />
               </Col>
             </Row>
           </Col>
         </Row>
+
         <div className="modal-container" style={{ height: 200 }}>
           <Modal
             show={this.state.showEditModal}
@@ -147,6 +151,45 @@ const MyProfile = observer(class MyProfile extends Component {
     } else {
       this.setState({ fail: true });
     }
+  }
+});
+
+const MyRecipes = observer(class MyRecipes extends Component {
+  constructor(props) {
+    super(props);
+    this.store = new UserRecipeStore(Auth.user.id);
+  }
+
+  componentDidMount() {
+    this.store.update();
+  }
+
+  render() {
+    return (
+      <div className="myRecipes">
+        <h3>Mina Recept</h3>
+        <Table striped hover>
+          <tbody className="recipeName">
+            { this.showRecipes() }
+          </tbody>
+        </Table>
+      </div>
+    )
+  }
+
+  showRecipes() {
+    return this.store.recipes.map(recipe => {
+      return (
+        <tr>
+          <td>
+            <a className="btn btn-default btn-sm editButton pull-right" href={`/recipe/${recipe.id}/edit`}>
+              <Glyphicon glyph="pencil" />
+            </a>
+            {recipe.title}
+            </td>
+          </tr>
+      );
+    });
   }
 });
 
