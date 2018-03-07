@@ -63,7 +63,7 @@ ootmappen.
 
 ## User
 
-**Path**: /user/all  
+**Path**: /user/  
 **Method**: GET  
 **RequiresAuth**: NO  
 **Beskrivning**: Hämtar publik info om alla användare
@@ -72,6 +72,11 @@ ootmappen.
 **Method**: GET  
 **RequiresAuth**: NO  
 **Beskrivning**: hämtar publik info om en specifik användare
+
+**Path**: /user/:id/recipes  
+**Method**: GET  
+**RequiresAuth**: NO  
+**Beskrivning**: hämtar recept som en användare har skapat
 
 **Path**: /user/me/  
 **Method**: GET  
