@@ -51,6 +51,11 @@ ootmappen.
 **RequiresAuth**: NO  
 **Beskrivning**: Hämtar alla recept
 
+**Path**: /recipe/search?tags=A&q=B  
+**Method**: Get  
+**RequiresAuth**: NO  
+**Beskrivning**: söker på ett recept. A är kommaseparerade ids ex 1,2,3. B är en sträng. För att bara söka på ena av dem så strunda i att inkludera den andra.
+
 ## User
 
 **Path**: /user/all  
@@ -94,6 +99,38 @@ ootmappen.
 ```
 *Beskrivning**: ändrar uppgifter på den inloggade användaren. firstName och lastName får inte vara tomma! 
 
+**Path**: /user/me/favorite  
+**Method**: GET  
+**RequiresAuth**: YES  
+  *Beskrivning**: hämtar alla favoriter till en användare
+
+
+**Path**: /user/me/favorite  
+**Method**: POST  
+**RequiresAuth**: YES  
+**JSON**: 
+```
+{
+  recipeId: String
+
+}
+```
+  *Beskrivning**: Lägger till ett recept till favoriter för den inloggade användaren
+
+
+**Path**: /user/me/favorite  
+**Method**: DELETE  
+**RequiresAuth**: YES  
+**JSON**: 
+```
+{
+  recipeId: String
+
+}
+```
+  *Beskrivning**: Tar bort ett recept från favoriter för en inloggad användare
+  
+  
 ## Auth
 **Path**: /auth/  
 **Method**: GET  
