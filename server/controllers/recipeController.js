@@ -211,7 +211,7 @@ exports.fuzzyFind = async (params) => {
   };
 };
 
-const getLikes = async (id) => {
+exports.getLikes = async (id) => {
   const likes = await models.Likes.count({where: {recipeId: id}});
 
   return {
@@ -279,4 +279,3 @@ const ingredientsFromJSON = async(ingredients) => {
   );
 };
 
-module.exports.getLikes = getLikes;
