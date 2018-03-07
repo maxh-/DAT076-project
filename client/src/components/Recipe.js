@@ -207,9 +207,11 @@ const Recipe = observer( class Recipe extends Component {
             <div>
               <h1>{this.state.step.number}</h1>
               <hr/>
-              <b>
-                {this.state.step.instruction}
-              </b>
+              <p>
+                <b>
+                  {this.state.step.instruction}
+                </b>
+              </p>
             </div>
           </Modal.Body>
           <Modal.Footer>
