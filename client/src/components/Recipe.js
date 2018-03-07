@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { get } from 'axios';
 import { Jumbotron, Grid, Row, Col, Glyphicon, Button,
   Modal, Carousel, Label } from 'react-bootstrap';
 import './css/Recipe.css';
@@ -49,9 +50,9 @@ const Recipe = observer( class Recipe extends Component {
         description: error,
         exists: false
       })
-
     });
   }
+
   handleLike() {
     RecipeStore.like(this.state.id,Auth.token);
     this.setState({ upVotes: RecipeStore.recipe.Likes });
@@ -164,12 +165,11 @@ const Recipe = observer( class Recipe extends Component {
     return ingrs;
   }
 
-
   render() {
     return (
       <div id="mainContainer">
         <div id="title-div">
-          <img src="/img/bild.jpg" id="pic" alt="bild"/>
+          <RecipeImage id={this.props.match.params.id} />
           <Jumbotron>
             <h1> { this.state.title } </h1>
             { this.showJumbotron() }
@@ -211,6 +211,39 @@ const Recipe = observer( class Recipe extends Component {
         </Modal>
       </div>
     );
+  }
+});
+
+const RecipeImage = observer(class RecipeImage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      style: {
+        background: "url('/img/food.png')", // default image
+        maxHeight: "400px",
+        minHeight: "400px",
+        backgroundAttachment: "fixed"
+      }
+    }
+  }
+
+  async componentDidMount() {
+    // load recipe image & update styles if it exists
+    const image = `/img/${this.props.id}.jpg`;
+    const res = await fetch(image);
+    if (res.ok) this.setState({ 
+      style: {
+        ...this.state.style,
+        background: "url(" + image + ")",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
+        backgroundSize: "cover"
+      }
+    })
+  }
+
+  render() {
+    return <div style={this.state.style}></div>;
   }
 });
 
