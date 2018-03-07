@@ -2,11 +2,16 @@ import React, { Component } from 'react';
 import { Jumbotron, Grid, Row, Col, Glyphicon, Button,
   Modal, Carousel, Label } from 'react-bootstrap';
 import './css/Recipe.css';
+import Auth from '../util/AuthService';
+import RecipeStore from '../util/recipeStore';
+import { observer } from 'mobx-react';
 
-class Recipe extends Component {
+
+const Recipe = observer( class Recipe extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      recipe:[],
       title: "",
       upVotes: "1",
       downVotes: "5421",
@@ -16,24 +21,27 @@ class Recipe extends Component {
       steps: [],
       show: false,
       tags: [],
-      exists: false
+      exists: false,
+      id: ""
     }
+    RecipeStore.getOne(this.props.match.params.id);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     let id = this.props.match.params.id;
     fetch('/recipe/'+id, {
       method: 'GET',
     }).then(res => res.json())
     .then(res => {
-      console.log(res.recipe.Tags);
       this.setState({
-        title: res.recipe.title,
-        time: res.recipe.timeToComplete,
-        steps: res.recipe.Steps,
-        ingredients: res.recipe.RecipeIngredients,
-        tags: res.recipe.Tags,
-        exists: true
+        id: RecipeStore.recipe.id,
+        title: RecipeStore.recipe.title,
+        upVotes: RecipeStore.recipe.Likes,
+        time: RecipeStore.recipe.timeToComplete,
+        steps: RecipeStore.recipe.Steps,
+        ingredients: RecipeStore.recipe.RecipeIngredients,
+        tags: RecipeStore.recipe.Tags,
+        exists: true,
       });
     })
     .catch(error => { 
@@ -45,6 +53,13 @@ class Recipe extends Component {
       })
 
     });
+  }
+  handleLike() {
+    RecipeStore.like(this.state.id,Auth.token);
+    this.setState({ upVotes: RecipeStore.recipe.Likes });
+  }
+  componentDidUpdate() {
+    //console.log(RecipeStore.recipe.Likes);
   }
 
   cookingMode(e){
@@ -71,19 +86,26 @@ class Recipe extends Component {
 
   showJumbotron() {
     if(this.state.exists) {
-      return  (
+      let imgStyle = {
+        height:"32px",
+        paddingBottom:"6px",
+        marginLeft:"3px"
+      };
+      return (
         <div>
           <p>
-            <Glyphicon glyph=" glyphicon glyphicon-thumbs-up "  />
-            <small>({ this.state.upVotes })</small>
-            <Glyphicon glyph=" glyphicon glyphicon-thumbs-down "  />
-            <small>({ this.state.downVotes })</small>
+            <span onClick={this.handleLike.bind(this)}>
+              <small>{ RecipeStore.recipe.Likes }</small>
+              <img
+                  src="/img/oven-like.svg" 
+                  style={imgStyle}/>
+            </span>
             <Glyphicon glyph=" glyphicon glyphicon glyphicon-time " id="glyph-space" />
             <small> {this.state.time} minuter </small>
 
           </p>
           <p>
-           { this.state.description }
+           { RecipeStore.recipe.tweet }
           </p>
         </div>
       );
@@ -94,7 +116,7 @@ class Recipe extends Component {
     let tgs = [];
     this.state.tags.forEach(function(tag) { 
       tgs.push(
-        <Label className="tag-label" >
+        <Label key={tag.id} className="tag-label" >
           <b># </b>{ tag.tag }
         </Label>
       );
@@ -105,7 +127,7 @@ class Recipe extends Component {
     let stps = [];
     if(this.state.exists) {
       stps.push(  
-        <h1> 
+        <h1 key={0}> 
           Instruktioner 
           <Button bsStyle="success" className="pad" 
               onClick={ this.cookingMode.bind(this) }>
@@ -130,7 +152,7 @@ class Recipe extends Component {
     let ingrs = [];
     if(this.state.exists) {
       ingrs.push(  
-        <h1> Ingredienser </h1>
+        <h1 key={0}> Ingredienser </h1>
       );
       this.state.ingredients.forEach(function(ingr) {
         ingrs.push(
@@ -192,6 +214,6 @@ class Recipe extends Component {
       </div>
     );
   }
-}
+});
 
 export default Recipe;

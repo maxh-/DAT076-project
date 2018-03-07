@@ -301,7 +301,6 @@ exports.removeLike = async (recipeId, userId) => {
   };
 };
 
-
 /*** HELPER FUNCTIONS ***/
 
 const ingredientsFromJSON = async(ingredients) => {

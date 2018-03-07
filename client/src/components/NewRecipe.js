@@ -23,9 +23,9 @@ class NewRecipe extends Component {
       unit: "",
       description: "",
       meal: 1,
-      units: []
+      units: []      
     }
-
+    window.submit = this.submitImage;
     this.handleChange = this.handleChange.bind(this);
     this.handleObjectChange = this.handleObjectChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -126,6 +126,7 @@ class NewRecipe extends Component {
     }
   }
   handleSubmit(e) {
+    e.preventDefault();
     console.log("Submit!!");
     let bod = JSON.stringify({
       title: this.state.title,
@@ -146,32 +147,47 @@ class NewRecipe extends Component {
       body: bod
     })
       .then(res => res.json())
-      .then(function(res) {
+      .then(async (res) => {
         console.log(res);
-        const isSuccess = res.success;
+        let isSuccess = res.success;
+        if (!isSuccess) return false;
+        if (!this.state.image) return isSuccess;
+        console.log('uploading image...');
+        isSuccess = await this.submitImage(this.state.image, res.recipe.id);
+        console.log(isSuccess);
+        isSuccess = isSuccess.success;
+        return isSuccess;
+      })
+      .then(isSuccess => {
         if(isSuccess === true) {
           alert("Ditt recept är skapat!");
           window.location = '/saved';
         } else {
           alert("Något gick fel.");
         }
-    })
-      //.then(res => console.log(res));
-    /*
-    fetch('/recipe/create', {
-      method: 'POST',
-      auth: yes,
-      body: JSON.stringify({
-        title: this.state.title,
-        timeToComplete: this.state.time,
-        steps: this.state.steps,
-        tags: ******TODO*****
-        ingredients: *****TODO******
-      })
+      });
+  }
 
+  async submitImage(image, id) {
+    const data = new FormData();
+    await data.append('file', image);
+    await data.append('name', id + '.jpg'); // add extension so backend doesn't complain
+    console.log('submitting data:', data);
+    return fetch('/upload', {
+      method: 'POST',
+      body: data
+    })
+      .then(res => res.json())
+      .then(body => body)
+      .catch(e => e);
+}
+
+  async storeImage({ target }) {
+    await this.setState({
+      image: target.files[0]
     });
-    */
-    e.preventDefault();
+    window.image = this.state.image;
+    console.log(this.state);
   }
 
   makeTags() {
@@ -319,7 +335,7 @@ class NewRecipe extends Component {
               Bild
             </Col>
             <Col sm={10}>
-              <FormControl label="File" type="file" />
+              <FormControl label="File" type="file" onChange={this.storeImage.bind(this)}/>
             </Col>
           </FormGroup>
 
@@ -479,3 +495,4 @@ class NewRecipe extends Component {
 }
 
 export default NewRecipe;
+
