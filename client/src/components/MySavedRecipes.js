@@ -20,10 +20,14 @@ class MySavedRecipes extends Component {
       Obj: []
     }
 
-    this.handleClick = this.handleClick.bind(this);
-  }
 
+  }
+handleClick(i){
+  let id = this.state.id;
+  window.location = "recipe/ " + id[i];
+}
 async componentDidMount() {
+
 let tempArray = [];
 let favArray = [];
 let idArray = [];
@@ -49,7 +53,9 @@ console.log(favArray);
 console.log(tempArray);
 console.log(idArray);
 console.log(timeArray);
-this.setState({favourites: favArray, id: idArray, time: timeArray, favArray: favArray, timeArray:timeArray, Obj: tempArray })
+await this.setState({favourites: favArray, id: idArray, time: timeArray, favArray: favArray, timeArray:timeArray, Obj: tempArray })
+
+this.sortByTime();
 }
 
 async handleChange({target}) {
@@ -100,12 +106,8 @@ if(target.value === "Nam") {
      timeArray[i] = fav[i].timeToComplete;
    }
 
-   return this.setState({favourites: titleArray, id: idArray, time: timeArray})
- }
-handleClick() {
-
+  this.setState({favourites: titleArray, id: idArray, time: timeArray})
 }
-
 async fillFavorites() {
   for(var f=1; f<=8; f++) {
 await fetch('/user/me/favorite', {
@@ -123,13 +125,10 @@ await fetch('/user/me/favorite', {
     }
 }
 
-async removeFav(index) {
+async removeFav(index, e) {
+  e.stopPropagation();
   let removeItem = this.state.id[index];
-  await this.setState({
-        favourites: this.state.favourites.filter(function (e, i) {
-        return i !== index;
-      })
-    });
+
    console.log(this.state.favourites);
    console.log();
 
@@ -144,11 +143,17 @@ async removeFav(index) {
      })
    })
      .then(res => res.json())
-     .then(res => console.log(res));
-
+     .then(res => console.log(res))
+     .then(async () => {
+      await this.setState({
+        favourites: this.state.favourites.filter((function (e, i) {
+          return i !== index;
+        }))
+      })
+    });
   }
 
-  async removeAll() {
+async removeAll() {
 for(var k =0; k<this.state.favourites.length; k++) {
   let removeItem = this.state.id[k];
     fetch('/user/me/favorite', {
@@ -174,14 +179,15 @@ for(var k =0; k<this.state.favourites.length; k++) {
 getFavourites() {
   var favs = this.state.favourites;
   var time = this.state.time;
+  var id = this.state.id;
   let favItems = [];
   let timeItems = [];
 
   for(var i = 0; i<favs.length; i++) {
     favItems.push(<ListGroupItem key={i}
-      onClick={this.handleClick.bind(this)}
+      onClick={this.handleClick.bind(this, i)}
       href="#">{favs[i]}<p>Tidsåtgång: {time[i]} minuter</p>
-      <span id="kryss" class="glyphicon glyphicon glyphicon-remove" onClick={this.removeFav.bind(this, i)}></span>
+      <span  class="glyphicon glyphicon glyphicon-remove" onClick={this.removeFav.bind(this, i)}></span>
       </ListGroupItem>)
   }
   return <div>{favItems}</div>;
@@ -190,7 +196,7 @@ getFavourites() {
 
   // render component
   render() {
-    console.log(Auth.token);
+
     var favs = this.state.favourites;
     return (
       <div classNtimeame="MySavedRecipes">
@@ -215,7 +221,6 @@ getFavourites() {
         <br/>
         <ListGroup>
           {this.getFavourites()}
-          {this.sortByTime()}
           <Button class="btn btn-danger" onClick={this.removeAll.bind(this)}>Ta bort alla recept</Button>
         </ListGroup>
 
