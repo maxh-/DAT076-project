@@ -3,13 +3,22 @@ const FuzzySearch = require('fuzzy-search');
 
 exports.findById = async (id) => {
   const recipe = await models.Recipe.findById(id, {
+    attributes:{
+      include: [[models.sequelize.fn("COUNT", models.sequelize.col("likes.id")), "Likes"]]
+    },
     include: [
       models.Step,
       models.Tag,
       {
+        model: models.User,
+        as: 'likes',
+        attributes: []
+      },
+      {
         model: models.RecipeIngredients,
         include: [models.Ingredient, models.Unit]
-      }]
+      }],
+    group: ['Steps.id', 'Tags.id', 'likes.id', 'RecipeIngredients.id']
   });
   if(recipe){
     return {
@@ -28,13 +37,22 @@ exports.findById = async (id) => {
 
 exports.findAll = async (id) => {
   const recipes = await models.Recipe.findAll({
+    attributes:{
+      include: [[models.sequelize.fn("COUNT", models.sequelize.col("likes.id")), "Likes"]]
+    },
     include: [
       models.Step,
       models.Tag,
       {
+        model: models.User,
+        as: 'likes',
+        attributes: []
+      },
+      {
         model: models.RecipeIngredients,
         include: [models.Ingredient, models.Unit]
-      }]
+      }],
+    group: ['id','Steps.id', 'Tags.id', 'likes.id', 'RecipeIngredients.id']
   });
   if(recipes){
     return {
@@ -153,16 +171,25 @@ exports.fuzzyFind = async (params) => {
   const recipes = await models.Recipe.findAll(
     {
       where: condition,
-      include: [
-      models.Step,
-      {
-        model: models.Tag,
-        required: true
+      attributes:{
+        include: [[models.sequelize.fn("COUNT", models.sequelize.col("likes.id")), "Likes"]]
       },
-      {
-        model: models.RecipeIngredients,
-        include: [models.Ingredient, models.Unit]
-      }]
+      include: [
+        models.Step,
+        {
+          model: models.Tag,
+          required: true
+        },
+        {
+          model: models.User,
+          as: 'likes',
+          attributes: []
+        },
+        {
+          model: models.RecipeIngredients,
+          include: [models.Ingredient, models.Unit]
+        }],
+      group: ['id', 'Steps.id', 'Tags.id', 'likes.id', 'RecipeIngredients.id']
     });
   // filter all recipes that dont match all the tags
   let filteredRecipes = recipes;
@@ -184,7 +211,7 @@ exports.fuzzyFind = async (params) => {
   };
 };
 
-exports.getLikes = async (id) => {
+const getLikes = async (id) => {
   const upLikes = await models.Likes.count({where: {recipeId: id, kind: 'up'}});
   const downLikes = await models.Likes.count({where: {recipeId: id, kind: 'down'}});
   const total = upLikes - downLikes;
@@ -251,3 +278,5 @@ const ingredientsFromJSON = async(ingredients) => {
       })
   );
 };
+
+module.exports.getLikes = getLikes;

@@ -1,5 +1,10 @@
 module.exports  = (sequelize, DataTypes) => {
   const RecipeIngredients = sequelize.define('RecipeIngredients', {
+    id: {
+      autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.INTEGER
+    },
     number: {
       type: DataTypes.INTEGER,
       allowNull: false
