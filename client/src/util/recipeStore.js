@@ -7,7 +7,8 @@ class RecipeStore {
       recipe: [],
       tags: [],
       filter: "",
-      authorId: ""
+      authorId: "",
+      image: ""
     });
   }
   getOne(id) {
