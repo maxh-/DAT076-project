@@ -41,6 +41,7 @@ const Browse = observer(class Browse extends Component {
       RecipeStore.searchFor(this.state.filter, "");
       if(this.state.filter.length===0){
         this.setState({searchHeader:"Topplista"});
+        RecipeStore.getAll();
       }
     }
   }
@@ -60,8 +61,16 @@ const Browse = observer(class Browse extends Component {
 		}
     if(this.state.filter.length>0) {
       this.setState({ searchHeader:"Sökresultat" });
+      RecipeStore.searchFor(this.state.filter, this.state.searchWord);
     }
-    RecipeStore.searchFor(this.state.filter, this.state.searchWord);
+    else if(this.state.filter.length === 0 && this.state.searchWord.length===0) {
+      this.setState({ searchHeader:"Topplista" });
+      RecipeStore.getAll();
+    }
+    else {
+      this.setState({ searchHeader:"Sökresultat" });
+      RecipeStore.searchFor([], this.state.searchWord);      
+    }
   }
   showRecipeCols() {
     let dummyCols = [];
@@ -100,17 +109,9 @@ const Browse = observer(class Browse extends Component {
     return dummyCols;
   }
 
-  showTags() {
-    RecipeStore.tags.forEach(function(tag) {
-
-    });
-
-  }
   searchTerm() {
     return(
       <div>
-        <h2>{ this.state.searchWord } </h2>
-        <h3>{ this.state.meal } </h3>
         <h4>{ RecipeStore.getMyTags(this.state.filter) } </h4>
       </div>
     );
@@ -185,7 +186,7 @@ const Browse = observer(class Browse extends Component {
               </DropdownButton>
             </Col>
             <Col xs={3}>
-              <DropdownButton title="Sepcialkost" id="4">
+              <DropdownButton title="Specialkost" id="4">
                 <ToggleButtonGroup type="radio" name="filter" 
                       value={this.state.filter}
                       onClick={this.addFilter.bind(this)}>
@@ -198,10 +199,9 @@ const Browse = observer(class Browse extends Component {
               </DropdownButton>
             </Col>
 				  </ButtonToolbar>
-				</div>
-        {this.showTags()}
-				<div>
 	      	{ this.searchTerm() }
+        </div>
+        <div>
 	      </div>
 				<PageHeader>
 					{this.state.searchHeader}
