@@ -59,6 +59,3 @@ typings/
 
 # package lock
 package-lock.json
-
-# macos bs file
-.DS_Store
