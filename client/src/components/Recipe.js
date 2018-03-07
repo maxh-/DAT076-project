@@ -13,8 +13,6 @@ const Recipe = observer( class Recipe extends Component {
     this.state = {
       recipe:[],
       title: "",
-      upVotes: "1",
-      downVotes: "5421",
       time: "",
       description:"",
       ingredients: [],
