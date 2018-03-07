@@ -58,6 +58,9 @@ const Browse = observer(class Browse extends Component {
 				});
 			}
 		}
+    if(this.state.filter.length>0) {
+      this.setState({ searchHeader:"Sökresultat" });
+    }
     RecipeStore.searchFor(this.state.filter, this.state.searchWord);
   }
   showRecipeCols() {
@@ -67,16 +70,27 @@ const Browse = observer(class Browse extends Component {
       let bgStyle = {
         backgroundImage: 'url(' + '/img/bild.jpg' + ')'
       };
+      let imgStyle = {
+        height:"32px",
+        paddingBottom:"5px",
+      };
+      let spanRightStyle = {
+        marginLeft:"20px"
+      };
       dummyCols.push(
         <Col className="parent" xs={12} sm={6} lg={4} 
             key={recipe.id}>
           <div className="child" style={bgStyle} >
           </div>
           <div className="op">
-            <a href={'/recipe/' + recipe.id }>
+            <a href={'/recipe/' + recipe.id } >
               <span>
                 { recipe.title }
-                ({ recipe.Likes })
+              </span>
+
+              <span style={spanRightStyle}>
+                   { recipe.Likes }
+                <img src="img/oven-like.svg"  style={imgStyle} className="pl"/>
               </span>
             </a>
           </div>
