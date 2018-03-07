@@ -40,6 +40,11 @@ module.exports  = (sequelize, DataTypes) => {
       as: 'likes',
       foreignKey: 'recipeId'
     });
+    models.Recipe.belongsToMany(models.User, {
+      through: 'Favorites',
+      as: 'favorites',
+      foreignKey: 'recipeId'
+    });
   };
   return Recipe;
 };
