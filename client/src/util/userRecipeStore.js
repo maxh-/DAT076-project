@@ -4,13 +4,14 @@ import { get } from 'axios';
 class UserRecipeStore {
   constructor(authorId) {
     extendObservable(this, {
-      author: props.authorId,
       recipes: [],
-      fetchRecipes: action(async () => {
+      id: authorId,
+      update: action(async () => {
+        const id = this.id;
         this.recipes = [];
-        //this.recipes = get(`/user/${this.authorId}/recipes`);
-        const res = await get(`/user/${this.authorId}/recipes`);
-        console.log(res);
+        this.recipes = await get(`/user/${id}/recipes`).then(res => {
+          return res.data.message
+        })
       })
     })
   }
