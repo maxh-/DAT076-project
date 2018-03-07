@@ -72,8 +72,10 @@ exports.findAll = async (id) => {
 exports.top = async (params) => {
   let limit = params.limit;
   console.log(limit);
-  if(limit != undefined){
-      /[0-9]+/.test(limit) ? limit = parseInt(limit) : limit = 12;
+  if(limit != undefined && /[0-9]+/.test(limit)){
+    limit = parseInt(limit);
+  }else{
+    limit = 12;
   }
   const recipes = await models.Recipe.findAll({
     attributes:{
@@ -92,16 +94,15 @@ exports.top = async (params) => {
         include: [models.Ingredient, models.Unit]
       }],
     group: ['id','Steps.id', 'Tags.id', 'likes.id', 'RecipeIngredients.id'],
-    order: [[models.sequelize.fn("COUNT", models.sequelize.col("likes.id")), 'DESC']],
-    limit: limit,
-    distinct: true,
-    subQuery: false
+    order: [[models.sequelize.fn("COUNT", models.sequelize.col("likes.id")), 'DESC']]
   });
+
+  const limitedRecipes = recipes.slice(0, limit);
   if(recipes){
     return {
       success: true,
       code: 200,
-      recipe: recipes
+      recipe: limitedRecipes
     };
   } else {
     return {
