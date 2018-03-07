@@ -226,7 +226,7 @@ const getLikes = async (id) => {
   };
 };
 
-exports.like = async (params, recipeId, userId) => {
+exports.like = async (recipeId, userId) => {
   const user = await models.User.findById(userId);
   const recipe = await models.Recipe.findById(recipeId);
   if(recipe === null){
@@ -236,16 +236,13 @@ exports.like = async (params, recipeId, userId) => {
       message: "could not find recipe"
     };
   }
-  recipe.Likes = {
-    kind: params.kind
-  };
 
   await user.addLike(recipe, {as: 'likes'});
 
   return {
     success: true,
     code: 201,
-    message: "recipe has been " + params.kind + "liked"
+    message: "recipe has been liked"
   };
 };
 

@@ -27,7 +27,7 @@ router.get("/:id/like",  async (req, res, next) => {
 
 /* POST uplike/downlike recipe */ 
 router.post("/:id/like", isAuthenticated, async (req, res, next) => {
-  const response = await recipeController.like(req.body, req.params.id, req.user.id);
+  const response = await recipeController.like(req.params.id, req.user.id);
   res.status(response.code).json(response);
 });
 
