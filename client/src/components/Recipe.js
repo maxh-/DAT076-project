@@ -71,7 +71,7 @@ const Recipe = observer( class Recipe extends Component {
   }
   switchItem(e){
     if(e.key === " "){
-      const nextIndex = (this.state.stepIndex%3)+1;
+      const nextIndex = (this.state.stepIndex%RecipeStore.recipe.Steps.length)+1;
       this.setState(prevState => ({
         step: RecipeStore.recipe.Steps.find(function(instr) {
           return instr.number===nextIndex
@@ -215,7 +215,7 @@ const Recipe = observer( class Recipe extends Component {
             </div>
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={this.closeCookingMode.bind(this)}>Close</Button>
+            <Button onClick={this.closeCookingMode.bind(this)}>Stäng</Button>
           </Modal.Footer>
         </Modal>
       </div>
