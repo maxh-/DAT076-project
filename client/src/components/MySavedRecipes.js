@@ -49,10 +49,10 @@ await  fetch('/user/me/favorite', {
     idArray[j] = tempArray[j].id;
     timeArray[j] = tempArray[j].timeToComplete;
   }
-console.log(favArray);
-console.log(tempArray);
-console.log(idArray);
-console.log(timeArray);
+//console.log(favArray);
+//console.log(tempArray);
+//console.log(idArray);
+//console.log(timeArray);
 await this.setState({favourites: favArray, id: idArray, time: timeArray, favArray: favArray, timeArray:timeArray, Obj: tempArray })
 
 this.sortByTime();
@@ -82,7 +82,7 @@ if(target.value === "Nam") {
      let textB = b.title.toUpperCase();
      return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
    });
-   console.log(fav);
+   //console.log(fav);
    for(var i=0; i<fav.length; i++) {
      titleArray[i] = fav[i].title;
      idArray[i] = fav[i].id;
@@ -127,12 +127,13 @@ await fetch('/user/me/favorite', {
 
 async removeFav(index, e) {
   e.stopPropagation();
-  let removeItem = this.state.id[index];
+  let obj = this.state.Obj;
+  let removeItem = obj[index].id;
 
    console.log(this.state.favourites);
    console.log();
 
-   fetch('/user/me/favorite', {
+  await fetch('/user/me/favorite', {
      headers: {
        'Content-Type': 'application/json',
        'Authorization': 'JWT '+ Auth.token
@@ -146,11 +147,12 @@ async removeFav(index, e) {
      .then(res => console.log(res))
      .then(async () => {
       await this.setState({
-        favourites: this.state.favourites.filter((function (e, i) {
+        favourites: this.state.favourites.filter(function (e, i) {
           return i !== index;
-        }))
+        })
       })
     });
+
   }
 
 async removeAll() {
@@ -177,6 +179,8 @@ for(var k =0; k<this.state.favourites.length; k++) {
 
 
 getFavourites() {
+  let titleAndId = this.state.Obj;
+  console.log(titleAndId);
   var favs = this.state.favourites;
   var time = this.state.time;
   var id = this.state.id;
@@ -186,10 +190,11 @@ getFavourites() {
   for(var i = 0; i<favs.length; i++) {
     favItems.push(<ListGroupItem key={i}
       onClick={this.handleClick.bind(this, i)}
-      href="#">{favs[i]}<p>Tidsåtgång: {time[i]} minuter</p>
+      href="#">{titleAndId[i].title}<p>Tidsåtgång: {titleAndId[i].timeToComplete} minuter</p>
       <span  class="glyphicon glyphicon glyphicon-remove" onClick={this.removeFav.bind(this, i)}></span>
       </ListGroupItem>)
   }
+
   return <div>{favItems}</div>;
 
 }
