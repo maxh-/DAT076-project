@@ -238,7 +238,8 @@ const RecipeImage = observer(class RecipeImage extends Component {
         ...this.state.style,
         background: "url(" + image + ")",
         backgroundRepeat: "no-repeat",
-        backgroundPosition: "center"
+        backgroundPosition: "center",
+        backgroundSize: "cover"
       }
     })
   }
