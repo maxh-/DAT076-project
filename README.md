@@ -56,6 +56,11 @@ ootmappen.
 **RequiresAuth**: NO  
 **Beskrivning**: söker på ett recept. A är kommaseparerade ids ex 1,2,3. B är en sträng. För att bara söka på ena av dem så strunda i att inkludera den andra.
 
+**Path**: /recipe/top?limit=A  
+**Method**: Get  
+**RequiresAuth**: NO  
+**Beskrivning**: Hämtar top mest gillade recept. Ifall en limit är skickad så får man de antalet recept annars får man 12.
+
 ## User
 
 **Path**: /user/all  

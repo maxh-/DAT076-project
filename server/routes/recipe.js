@@ -10,16 +10,25 @@ router.get('/', async (req, res, next) => {
   res.status(response.code).json(response);
 });
 
+/* POST create a recipe*/
 router.post('/', isAuthenticated, async (req, res, next) => {
   const response = await recipeController.create(req.body, req.user.id);
   res.status(response.code).json(response);
 });
+
+/* GET top recipes */
+router.get('/top', async (req, res, next) => {
+  const response = await recipeController.top(req.query);
+  res.status(response.code).json(response);
+});
+
 /* GET Recipe by id . */
 router.get('/search', async (req, res, next) => {
   const response = await recipeController.fuzzyFind(req.query);
   res.status(response.code).json(response);
 });
-/* POST uplike/downlike recipe */ 
+
+/* GET get uplikes/downlikes for arecipe */ 
 router.get("/:id/like",  async (req, res, next) => {
   const response = await recipeController.getLikes(req.params.id);
   res.status(response.code).json(response);
@@ -31,7 +40,7 @@ router.post("/:id/like", isAuthenticated, async (req, res, next) => {
   res.status(response.code).json(response);
 });
 
-/* POST uplike/downlike recipe */ 
+/* POST remove uplike/downlike from a recipe */ 
 router.delete("/:id/like", isAuthenticated, async (req, res, next) => {
   const response = await recipeController.removeLike(req.params.id, req.user.id);
   res.status(response.code).json(response);
