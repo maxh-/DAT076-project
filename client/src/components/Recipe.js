@@ -171,7 +171,7 @@ const Recipe = observer( class Recipe extends Component {
     return (
       <div id="mainContainer">
         <div id="title-div">
-          <RecipeImage image={this.state.image} />
+          <RecipeImage id={this.props.match.params.id} />
           <Jumbotron>
             <h1> { this.state.title } </h1>
             { this.showJumbotron() }
@@ -231,7 +231,7 @@ const RecipeImage = observer(class RecipeImage extends Component {
 
   async componentDidMount() {
     // load recipe image & update styles if it exists
-    const image = `/img/${this.state.id}.jpg`;
+    const image = `/img/${this.props.id}.jpg`;
     const res = await fetch(image);
     if (res.ok) this.setState({ 
       style: {
@@ -241,7 +241,6 @@ const RecipeImage = observer(class RecipeImage extends Component {
         backgroundPosition: "center"
       }
     })
-    console.log('Found image:', image);
   }
 
   render() {
