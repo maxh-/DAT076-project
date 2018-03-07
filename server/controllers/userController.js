@@ -107,6 +107,20 @@ exports.findAll = async () => {
   }
 };
 
+exports.getLikes = async (id) => {
+  const user = await models.User.findById(id, {
+    include: [{
+      model: models.Recipe,
+      as: 'likes'
+    }]
+  });
+  return {
+    success: true,
+    code: 200,
+    likes: user.likes
+  };
+};
+
 exports.getFavorites = async (id) => {
   const user = await models.User.findById(id, {
     include: [{

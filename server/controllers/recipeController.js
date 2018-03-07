@@ -255,22 +255,26 @@ exports.fuzzyFind = async (params) => {
   };
 };
 
-const getLikes = async (id) => {
-  const upLikes = await models.Likes.count({where: {recipeId: id, kind: 'up'}});
-  const downLikes = await models.Likes.count({where: {recipeId: id, kind: 'down'}});
-  const total = upLikes - downLikes;
+exports.getLikes = async (id) => {
+  const likes = await models.Likes.count({where: {recipeId: id}});
+
   return {
     success: true,
     code: 200,
-    likes: {
-      total: total,
-      up: upLikes,
-      down: downLikes
-    }
+    likes: likes
   };
 };
 
-exports.like = async (params, recipeId, userId) => {
+exports.like = async (recipeId, userId) => {
+  const like = await models.Likes.find({where: {userId: userId, recipeId: recipeId}});
+  if(like != null){
+    return {
+      success: false,
+      code: 406,
+      message: "recipe already liked"
+    };
+  }
+
   const user = await models.User.findById(userId);
   const recipe = await models.Recipe.findById(recipeId);
   if(recipe === null){
@@ -280,16 +284,12 @@ exports.like = async (params, recipeId, userId) => {
       message: "could not find recipe"
     };
   }
-  recipe.Likes = {
-    kind: params.kind
-  };
-
   await user.addLike(recipe, {as: 'likes'});
 
   return {
     success: true,
     code: 201,
-    message: "recipe has been " + params.kind + "liked"
+    message: "recipe has been liked"
   };
 };
 
@@ -323,4 +323,3 @@ const ingredientsFromJSON = async(ingredients) => {
   );
 };
 
-module.exports.getLikes = getLikes;
