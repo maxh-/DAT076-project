@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
+const { checkSchema, validationResult } = require('express-validator/check');
+const userSchema = require('../validation-schemas/user');
 
 /* GET self */
 router.get('/', async (req, res, next) => {
@@ -9,7 +11,7 @@ router.get('/', async (req, res, next) => {
 });
 
 /* POST change user settings */
-router.post('/', async (req, res, next) => {
+router.post('/', checkSchema(userSchema.update), async (req, res, next) => {
   const response = await userController.update(req.body, req.user.id);
   res.status(response.code).json(response);
 });

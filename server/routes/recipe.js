@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const recipeController = require('../controllers/recipeController');
 const isAuthenticated = require('../middlewares/isAuthenticated');
-const { checkSchema, check, oneOf, validationResult } = require('express-validator/check');
+const { checkSchema, check, oneOf} = require('express-validator/check');
+const validate = require('../middlewares/validate');
 const recipeSchema = require('../validation-schemas/recipe');
 
 
@@ -16,15 +17,7 @@ router.get('/', async (req, res, next) => {
 router.post('/', isAuthenticated, checkSchema(recipeSchema.create), oneOf([
   check('ingredients.*.ingredient').exists().not().isEmpty().matches(/^[a-zåäöA-ZÅÄÖ\s]*$/),
   check('ingredients.*.IngredientId').exists().isInt()
-]), async (req, res, next) => {
-  const validation = validationResult(req);
-  if(!validation.isEmpty()){
-    res.status(400).json({
-      success: false,
-      code: 400,
-      validationErrors: validation.array()
-    });
-  }
+]), validate, async (req, res, next) => {
   const response = await recipeController.create(req.body, req.user.id);
   res.status(response.code).json(response);
 });

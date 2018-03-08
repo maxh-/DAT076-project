@@ -115,4 +115,4 @@ exports.reset = {
       errorMessage: "must be atleast 3 characters long"
     }
   }
-}
+};

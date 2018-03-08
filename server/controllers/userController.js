@@ -49,14 +49,6 @@ exports.updatePassword = async (params, id) => {
 };
 
 exports.update = async (params, id) => {
-  if(params.firstName == "" || params.firstName == null ||
-     params.lastName == "" || params.lastName == null){
-    return {
-      success: false,
-      code: 401,
-      message: "firstname or lastname cant be empty"
-    };
-  }
   const user = await models.User.findById(id);
   user.firstName = params.firstName;
   user.lastName = params.lastName;

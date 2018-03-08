@@ -84,7 +84,7 @@ exports.register = async (params) => {
     }else{
       return {
         success: false,
-        code: 304,
+        code: 400,
         message: "user already exists"
       };
     }
