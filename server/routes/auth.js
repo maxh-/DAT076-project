@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const isAuthenticated = require('../middlewares/isAuthenticated');
 const authController = require('../controllers/authController');
+const { checkSchema, validationResult } = require('express-validator/check');
+const authSchema = require('../validation-schemas/auth');
 
 /* GET users. */
 router.get('/', isAuthenticated, async (req, res, next) => {
@@ -16,15 +18,32 @@ router.post('/login', async (req, res, next) => {
 });
 
 /* POST register user */
-router.post('/register', async (req, res, next) => {
+router.post('/register', checkSchema(authSchema.register), async (req, res, next) => {
+  const validation = validationResult(req);
+  if(!validation.isEmpty()){
+    res.status(400).json({
+      success: false,
+      code: 400,
+      validationErrors: validation.array()
+    });
+  }
   const response = await authController.register(req.body);
   res.status(response.code).json(response);
 });
 
 /* POST forgot password */
-router.post('/forgot', async (req, res, next) => {
-  const response = await authController.forgotPassword(req.body.email, req.headers.host);
+router.post('/forgot', checkSchema(authSchema.forgot), async (req, res, next) => {
+  const validation = validationResult(req);
+  if(!validation.isEmpty()){
+    res.status(400).json({
+      success: false,
+      code: 400,
+      validationErrors: validation.array()
+    });
+  }
+  const response = await authController.forgotPassword(req.body.email);
   res.status(response.code).json(response);
+
 });
 
 /* GET reset password page */
@@ -34,7 +53,15 @@ router.get('/reset/:token', async (req, res, next) => {
 });
 
 /* POST reset password */
-router.post('/reset/:token', async (req, res, next) => {
+router.post('/reset/:token', checkSchema(authSchema.reset), async (req, res, next) => {
+  const validation = validationResult(req);
+  if(!validation.isEmpty()){
+    res.status(400).json({
+      success: false,
+      code: 400,
+      validationErrors: validation.array()
+    });
+  }
   const response = await authController.resetPassword(req.body, req.params.token);
   res.status(response.code).json(response);
 });

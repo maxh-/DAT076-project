@@ -175,7 +175,7 @@ exports.getRecipes = async (id) => {
       success: false,
       code: 400,
       message: "user does not exist"
-    }
+    };
   }
   return {
     success: true,
