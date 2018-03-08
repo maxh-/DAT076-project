@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { get } from 'axios';
 import { Jumbotron, Grid, Row, Col, Glyphicon, Button,
-  Modal, Carousel, Label } from 'react-bootstrap';
+  Modal, Label } from 'react-bootstrap';
 import './css/Recipe.css';
 import Auth from '../util/AuthService';
 import RecipeStore from '../util/recipeStore';
@@ -36,10 +36,6 @@ const Recipe = observer( class Recipe extends Component {
       this.setState({
         id: id,
         title: RecipeStore.recipe.title,
-        upVotes: RecipeStore.recipe.Likes,
-        time: RecipeStore.recipe.timeToComplete,
-        steps: RecipeStore.recipe.Steps,
-        ingredients: RecipeStore.recipe.RecipeIngredients,
         tags: RecipeStore.recipe.Tags,
         step: RecipeStore.recipe.Steps.find(function(instr){return instr.number===1}),
         stepIndex: 1,
@@ -50,15 +46,17 @@ const Recipe = observer( class Recipe extends Component {
       console.log(error);
       this.setState({
         title:"404: Receptet kunde inte hittas",
-        description: error,
-        exists: false
+        description: error
       })
     });
   }
 
   handleLike() {
-    RecipeStore.like(this.state.id,Auth.token);
-    this.setState({ upVotes: RecipeStore.recipe.Likes });
+    if(Auth.isLoggedIn){
+      RecipeStore.like(this.state.id,Auth.token);
+    } else {
+      window.location = '/login';
+    }
   }
   componentDidUpdate() {
   }
@@ -98,7 +96,7 @@ const Recipe = observer( class Recipe extends Component {
                   style={imgStyle}/>
             </span>
             <Glyphicon glyph=" glyphicon glyphicon glyphicon-time " id="glyph-space" />
-            <small> {this.state.time} minuter </small>
+            <small> { RecipeStore.recipe.timeToComplete } minuter </small>
 
           </p>
           <p>
@@ -127,7 +125,7 @@ const Recipe = observer( class Recipe extends Component {
       ingrs.push(  
         <h1 key={0}> Ingredienser </h1>
       );
-      this.state.ingredients.forEach(function(ingr) {
+      RecipeStore.recipe.RecipeIngredients.forEach(function(ingr) {
         ingrs.push(
           <li key={ingr.number}> 
             <b>{ ingr.Ingredient.name } </b>
@@ -150,7 +148,7 @@ const Recipe = observer( class Recipe extends Component {
           </Button>
         </h1>
       );
-      this.state.steps.forEach(function(stp) {
+      RecipeStore.recipe.Steps.forEach(function(stp) {
         stps.push(
           <li key={stp.number} className="itemInList"> 
             <p>

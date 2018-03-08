@@ -34,9 +34,21 @@ class RecipeStore {
         })
     })
     .then((body) => {
+      console.log(body);
       if(body.ok) {
         this.getOne(id);
-        return this.recipe.Likes;
+      }
+      else {
+        fetch('/recipe/'+id+'/like', {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'JWT '+ token
+          },
+          method: 'DELETE',
+        })
+        .then(body =>  {
+          this.getOne(id);
+        });
       }
     })
     .catch(error => console.log(error));
