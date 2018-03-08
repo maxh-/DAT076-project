@@ -34,7 +34,6 @@ class RecipeStore {
         })
     })
     .then((body) => {
-      console.log(body);
       if(body.ok) {
         this.getOne(id);
       }
@@ -48,10 +47,11 @@ class RecipeStore {
         })
         .then(body =>  {
           this.getOne(id);
-        });
+        })
+        .catch(error => console.log("Kunde inte ogilla"));
       }
     })
-    .catch(error => console.log(error));
+    .catch(error => console.log("Kunde inte gilla"));
   }
   getAll() {
     fetch('/recipe/top?limit=12', {
