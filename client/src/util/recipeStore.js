@@ -1,7 +1,7 @@
 import { extendObservable } from 'mobx';
 
 class RecipeStore {
-  constructor() {    
+  constructor() {
     extendObservable(this, {
       recipes: [],
       recipe: [],
@@ -30,7 +30,7 @@ class RecipeStore {
         },
         method: 'POST',
         body: JSON.stringify({
-          kind : "up" 
+          kind : "up"
         })
     })
     .then((body) => {
@@ -70,14 +70,14 @@ class RecipeStore {
 
     if(tags.length === 0) {
       tag = "";
-    } 
+    }
     else {
       tag = "tags="+tags.join();
 
     }
     if(searchTerm.length === 0) {
       term = "";
-    } 
+    }
     else {
       term = '&q=' + searchTerm;
     }
@@ -110,7 +110,7 @@ class RecipeStore {
     });
     return ts;
   }
-      
+
 
 }
 const Store = new RecipeStore();
