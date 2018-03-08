@@ -8,19 +8,15 @@ import './css/Browse.css';
 import RecipeStore from '../util/recipeStore';
 
 
-<<<<<<< HEAD
-class Browse extends Component {
 
-=======
+
 const Browse = observer(class Browse extends Component {
-	
->>>>>>> f33/imgs
 	constructor(props) {
     super(props);
     this.state = {
     	searchWord: '',
   		filter: [],
-      meal:"", 
+      meal:"",
       recipes: [],
       availableTags: [],
       searchHeader: ""
@@ -32,11 +28,7 @@ const Browse = observer(class Browse extends Component {
     this.addFilter = this.addFilter.bind(this);
   }
   componentDidMount() {
-<<<<<<< HEAD
-
-=======
-    this.setState({searchHeader:"Topplista"});
->>>>>>> f33/imgs
+		this.setState({searchHeader:"Topplista"});
   }
   componentDidUpdate(prevProps, prevState) {
     console.log(this.state.filter);
@@ -78,15 +70,10 @@ const Browse = observer(class Browse extends Component {
     }
     else {
       this.setState({ searchHeader:"Sökresultat" });
-      RecipeStore.searchFor([], this.state.searchWord);      
+      RecipeStore.searchFor([], this.state.searchWord);
     }
   }
-<<<<<<< HEAD
-
-  dummyCols() {
-=======
   showRecipeCols() {
->>>>>>> f33/imgs
     let dummyCols = [];
     RecipeStore.recipes.forEach(function(recipe) {
       let bgStyle = {
@@ -100,7 +87,7 @@ const Browse = observer(class Browse extends Component {
         marginLeft:"20px"
       };
       dummyCols.push(
-        <Col className="parent" xs={12} sm={6} lg={4} 
+        <Col className="parent" xs={12} sm={6} lg={4}
             key={recipe.id}>
           <div className="child" style={bgStyle} >
           </div>
@@ -116,7 +103,7 @@ const Browse = observer(class Browse extends Component {
               </span>
             </a>
           </div>
-        </Col>   
+        </Col>
       );
     });
     return dummyCols;
@@ -150,15 +137,9 @@ const Browse = observer(class Browse extends Component {
     		<div id="search" >
 		      <form onSubmit={this.handleSubmit}>
 			      <InputGroup className="gr">
-<<<<<<< HEAD
 				      <FormControl bsSize="large" id="fc" type="text"
 				        placeholder="Sök recept" name="searchWord"
-				        onChange={this.handleChange.bind(this)} />
-=======
-				      <FormControl bsSize="large" id="fc" type="text"  
-				        placeholder="Sök recept" name="searchWord" 
 				        onChange={this.handleChangeSearch.bind(this)} />
->>>>>>> f33/imgs
 				      <InputGroup.Addon id="addon" >
 					  		<Button id="subBtn" type="submit" bsSize="large">
 					  			<Glyphicon glyph="search" />
@@ -168,15 +149,6 @@ const Browse = observer(class Browse extends Component {
 		  		</form>
           <ButtonToolbar>
             <Col xs={3}>
-<<<<<<< HEAD
-              <DropdownButton title="Måltid">
-    			      <ToggleButtonGroup type="radio" name="meal"
-          						onClick={this.handleChange.bind(this)}>
-    				      <ToggleButton className="dropdownItem" value={'#förrätt'}>Förrätt</ToggleButton>
-    				      <ToggleButton className="dropdownItem" value={'#huvudrätt'}>Huvudrätt</ToggleButton>
-    				      <ToggleButton className="dropdownItem" value={'#efterrätt'}>Efterrätt</ToggleButton>
-    				      <ToggleButton className="dropdownItem" value={'#mellanmål'}>Mellanmål</ToggleButton>
-=======
               <DropdownButton title="Måltid" id="1">
     			      <ToggleButtonGroup type="radio" name="meal"
                     value={this.state.filter}
@@ -185,18 +157,12 @@ const Browse = observer(class Browse extends Component {
     				      <ToggleButton className="dropdownItem" value={2}>Huvudrätt</ToggleButton>
     				      <ToggleButton className="dropdownItem" value={3}>Efterrätt</ToggleButton>
     				      <ToggleButton className="dropdownItem" value={4}>Mellanmål</ToggleButton>
->>>>>>> f33/imgs
                 </ToggleButtonGroup>
               </DropdownButton>
             </Col>
             <Col xs={3}>
-<<<<<<< HEAD
-             	<DropdownButton title="Rättyp">
-  		          <ToggleButtonGroup type="radio" name="filter"
-=======
              	<DropdownButton title="Rättyp" id="2">
-  		          <ToggleButtonGroup type="radio" name="filter" 
->>>>>>> f33/imgs
+  		          <ToggleButtonGroup type="radio" name="filter"
                       value={this.state.filter}
                       onClick={this.addFilter.bind(this)} >
       			      <ToggleButton className="dropdownItem" value={5}>Nattamat</ToggleButton>
@@ -220,18 +186,8 @@ const Browse = observer(class Browse extends Component {
               </DropdownButton>
             </Col>
             <Col xs={3}>
-<<<<<<< HEAD
-              <DropdownButton title="Sepcialkost">
-                <ToggleButtonGroup type="radio" name="filter"
-  		      					value={this.state.filter}
-          						onClick={this.addFilter.bind(this)}>
-      			      <ToggleButton className="dropdownItem" value={'#glutenfritt'}>Glutenfritt</ToggleButton>
-      			      <ToggleButton className="dropdownItem" value={'#veganskt'}>Veganskt</ToggleButton>
-      			      <ToggleButton className="dropdownItem" value={'#laktosfritt'}>Laktosfritt</ToggleButton>
-                </ToggleButtonGroup>
-=======
               <DropdownButton title="Specialkost" id="4">
-                <ToggleButtonGroup type="radio" name="filter" 
+                <ToggleButtonGroup type="radio" name="filter"
                       value={this.state.filter}
                       onClick={this.addFilter.bind(this)}>
       			      <ToggleButton className="dropdownItem" value={8}>lakto-vegetarianskt</ToggleButton>
@@ -239,8 +195,7 @@ const Browse = observer(class Browse extends Component {
       			      <ToggleButton className="dropdownItem" value={10}>ovo-vegetarianskt</ToggleButton>
                   <ToggleButton className="dropdownItem" value={17}>Glutenfritt</ToggleButton>
 
-                </ToggleButtonGroup>  
->>>>>>> f33/imgs
+                </ToggleButtonGroup>
               </DropdownButton>
             </Col>
 				  </ButtonToolbar>
