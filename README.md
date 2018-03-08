@@ -9,8 +9,40 @@ ootmappen.
 # Routes
 
 ## Recipe
-**Path**: /recipe/create  
+**Path**: /recipe/  
 **Method**: POST  
+**RequiresAuth**: YES  
+**JSON**: 
+```
+{
+	title: String,
+	timeToComplete: Integer,
+	steps: [
+		{
+			instruction: String,
+			number: Integer
+		}
+		],
+	tags: [ tagid ],
+	ingredients: [
+		{
+			number: Integer,
+			amount: Integer,
+			UnitId: Integer,
+			ingredient: String
+		},{
+			number: Integer,
+			amount: Integer,
+			UnitId: Integer,
+			IngredientId: Integer
+		}
+	]
+}
+```
+**Beskrivning**: Skapa recept, lyckas den så skickas code 201 tillbaka samt receptet. Man kan skicka både ingrediensens namn (Om den inte finns i databasen så skapas en ny då!) eller ingrediensens Id).
+
+**Path**: /recipe/:id  
+**Method**: PUT  
 **RequiresAuth**: YES  
 **JSON**: 
 ```
@@ -60,6 +92,22 @@ ootmappen.
 **Method**: Get  
 **RequiresAuth**: NO  
 **Beskrivning**: Hämtar top mest gillade recept. Ifall en limit är skickad så får man de antalet recept annars får man 12.
+
+**Path**: /recipe/:id/like  
+**Method**: Get  
+**RequiresAuth**: NO  
+**Beskrivning**: Hämtar likes för ett recept
+
+**Path**: /recipe/:id/like  
+**Method**: POST  
+**RequiresAuth**: YES  
+**Beskrivning**: Likear ett recept
+
+**Path**: /recipe/:id/like  
+**Method**: DELETE  
+**RequiresAuth**: YES  
+**Beskrivning**: Tar bort like från ett recept
+
 
 ## User
 
