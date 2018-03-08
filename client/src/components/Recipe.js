@@ -46,7 +46,7 @@ const Recipe = observer( class Recipe extends Component {
         exists: true,
       });
     })
-    .catch(error => { 
+    .catch(error => {
       console.log(error);
       this.setState({
         title:"404: Receptet kunde inte hittas",
@@ -80,7 +80,9 @@ const Recipe = observer( class Recipe extends Component {
       }));
     }
   }
-
+  getUser() {
+    return RecipeStore.recipe.UserId
+  }
   showJumbotron() {
     if(this.state.exists) {
       let imgStyle = {
@@ -88,18 +90,24 @@ const Recipe = observer( class Recipe extends Component {
         paddingBottom:"6px",
         marginLeft:"3px"
       };
+      const link = "/publicprofile/" + RecipeStore.recipe.UserId;
       return (
         <div>
           <p>
             <span onClick={this.handleLike.bind(this)}>
               <small>{ RecipeStore.recipe.Likes }</small>
               <img
-                  src="/img/oven-like.svg" 
+                  src="/img/oven-like.svg"
                   style={imgStyle}/>
             </span>
-            <Glyphicon glyph=" glyphicon glyphicon glyphicon-time " id="glyph-space" />
-            <small> {this.state.time} minuter </small>
-
+            <span>
+              <Glyphicon glyph=" glyphicon glyphicon-time " id="glyph-space" />
+              <small> {this.state.time} minuter </small>
+            </span>
+            <span>
+              <Glyphicon glyph=" glyphicon glyphicon-user " id="glyph-space" />
+              <small><a href={link}>{ this.getUser() }</a></small>
+            </span>
           </p>
           <p>
            { RecipeStore.recipe.tweet }
@@ -111,7 +119,7 @@ const Recipe = observer( class Recipe extends Component {
 
   showTags() {
     let tgs = [];
-    this.state.tags.forEach(function(tag) { 
+    this.state.tags.forEach(function(tag) {
       tgs.push(
         <Label key={tag.id} className="tag-label" >
           <b># </b>{ tag.tag }
@@ -124,12 +132,12 @@ const Recipe = observer( class Recipe extends Component {
   showIngredients() {
     let ingrs = [];
     if(this.state.exists) {
-      ingrs.push(  
+      ingrs.push(
         <h1 key={0}> Ingredienser </h1>
       );
       this.state.ingredients.forEach(function(ingr) {
         ingrs.push(
-          <li key={ingr.number}> 
+          <li key={ingr.number}>
             <b>{ ingr.Ingredient.name } </b>
             <small> { ingr.amount } { ingr.Unit.name }</small>
           </li>
@@ -141,23 +149,23 @@ const Recipe = observer( class Recipe extends Component {
   showSteps() {
     let stps = [];
     if(this.state.exists) {
-      stps.push(  
-        <h1 key={0}> 
-          Instruktioner 
-          <Button bsStyle="success" className="pad" 
+      stps.push(
+        <h1 key={0}>
+          Instruktioner
+          <Button bsStyle="success" className="pad"
               onClick={ this.cookingMode.bind(this) }>
-            <b>Börja laga</b>  
+            <b>Börja laga</b>
           </Button>
         </h1>
       );
       this.state.steps.forEach(function(stp) {
         stps.push(
-          <li key={stp.number} className="itemInList"> 
+          <li key={stp.number} className="itemInList">
             <p>
-              { stp.instruction } 
+              { stp.instruction }
             </p>
           </li>
-        );    
+        );
       });
     }
     return stps;
@@ -208,9 +216,9 @@ const Recipe = observer( class Recipe extends Component {
           </Col>
         </Row>
 
-        <Modal 
-            id="modal" 
-            show={this.state.show} 
+        <Modal
+            id="modal"
+            show={this.state.show}
             onKeyPress={this.switchItem.bind(this)}
             onHide={this.closeCookingMode.bind(this)}>
           <Modal.Header closeButton>
@@ -254,7 +262,7 @@ const RecipeImage = observer(class RecipeImage extends Component {
     // load recipe image & update styles if it exists
     const image = `/img/${this.props.id}.jpg`;
     const res = await fetch(image);
-    if (res.ok) this.setState({ 
+    if (res.ok) this.setState({
       style: {
         ...this.state.style,
         background: "url(" + image + ")",
