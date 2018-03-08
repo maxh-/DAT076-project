@@ -28,10 +28,10 @@ class Main extends Component {
           <Route path='/forgotpass' component={ForgotPass}/>
           <Route path='/resetpass/:token' component={ResetPass}/>
           <PrivateRoute path='/recipe/:id/edit' component={EditRecipe} />
-	  <PrivateRoute path='/pages' component={MyPages}/>
-	  <PrivateRoute path='/new' component={NewRecipe}/>
-	  <PrivateRoute path='/profile' component={MyProfile}/>
-	  <PrivateRoute path='/saved' component={MySavedRecipes}/>
+      	  <PrivateRoute path='/pages' component={MyPages}/>
+      	  <PrivateRoute path='/new' component={NewRecipe}/>
+      	  <PrivateRoute path='/profile' component={MyProfile}/>
+      	  <PrivateRoute path='/saved' component={MySavedRecipes}/>
     		</Switch>
       </main>
     );
