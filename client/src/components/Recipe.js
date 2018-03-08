@@ -68,6 +68,13 @@ const Recipe = observer( class Recipe extends Component {
         description: error
       })
     });
+    fetch('/user/'+RecipeStore.recipe.UserId, {
+      method: 'GET'
+    })
+    .then(res => res.json())
+    .then(res => this.setState({
+      author: res.user.firstName + " " + res.user.lastName
+    }));
   }
 
   handleLike() {
@@ -124,11 +131,11 @@ const Recipe = observer( class Recipe extends Component {
             </span>
             <span>
               <Glyphicon glyph=" glyphicon glyphicon-time " id="glyph-space" />
-              <small> {this.state.time} minuter </small>
+              <small> { RecipeStore.recipe.timeToComplete } minuter </small>
             </span>
             <span>
               <Glyphicon glyph=" glyphicon glyphicon-user " id="glyph-space" />
-              <small><a href={link}>{ this.getUser() }</a></small>
+              <small><a href={link}>{ this.state.author }</a></small>
             </span>
           </p>
           <p>
