@@ -12,18 +12,20 @@ import  {get} from 'axios';
 const PublicProfile = observer(class PublicProfile extends Component {
 
   constructor(props) {
+
     super(props);
+    this.id = this.props.match.params.id;
     this.state = {
       recipes:[],
       user:[],
       firstName:"",
-      lastName:""
+      lastName:"",
     };
   }
 
 async getUser() {
   let usr = [];
-  await  fetch('/user/3' , {
+  await  fetch('/user/' + this.id , {
        headers: {
          'Content-Type': 'application/json'
        },
@@ -32,21 +34,16 @@ async getUser() {
        .then(res => res.json())
        .then(res => usr.push(res.user));
 
-     this.setState({user: usr, firstName: usr[0].firstName, lastName: usr[0].lastName   })
-       console.log(usr);
-       console.log(this.state.user[0].firstName);
+     this.setState({user: usr, firstName: usr[0].firstName, lastName: usr[0].lastName, id: usr[0].id  })
 
 }
 
  async componentDidMount() {
    this.getUser();
+   let recipes = [];
 
-  console.log(this.props.match.params);
 
-  let recipes = [];
-  let tempArray = [];
-
-  await fetch('/user/3/recipes', {
+  await fetch('/user/'+this.id+'/recipes', {
          headers: {
            'Content-Type': 'application/json'
          },
@@ -56,10 +53,6 @@ async getUser() {
          .then(res => res.message.forEach((value) => {
            recipes.push(value)
          }));
-
-
-            console.log(recipes);
-
              this.setState({
                  recipes: recipes, userId: this.props.match.params.id
                });
@@ -67,7 +60,6 @@ async getUser() {
 }
 
   showRecipes() {
-    let tempArray =[];
     let grid = [];
     let recipes =this.state.recipes;
 
