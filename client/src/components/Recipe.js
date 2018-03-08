@@ -319,20 +319,3 @@ const RecipeImage = observer(class RecipeImage extends Component {
 });
 
 export default Recipe;
-
-class LikeButton extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      liked: false
-    }
-  }
-
-  render() {
-    return(
-      <Button>
-
-      </Button>
-    );
-  }
-}
