@@ -17,6 +17,7 @@ ootmappen.
 {
 	title: String,
 	timeToComplete: Integer,
+    tweet: String,
 	steps: [
 		{
 			instruction: String,
@@ -47,8 +48,9 @@ ootmappen.
 **JSON**: 
 ```
 {
-	title: String,
-	timeToComplete: Integer,
+	title: String (OPTIONAL),
+	timeToComplete: Integer (OPTIONAL),
+    tweet: String (OPTIONAL)
 	steps: [
 		{
 			instruction: String,
@@ -144,7 +146,7 @@ ootmappen.
 ```
 *Beskrivning**: ändrar lösenord på den inloggade användaren.
 
-**Path**: /user/me/update  
+**Path**: /user/me/  
 **Method**: POST  
 **RequiresAuth**: YES  
 **JSON**: 
@@ -156,6 +158,11 @@ ootmappen.
 }
 ```
 *Beskrivning**: ändrar uppgifter på den inloggade användaren. firstName och lastName får inte vara tomma! 
+
+**Path**: /user/me/likes  
+**Method**: GET  
+**RequiresAuth**: YES  
+  *Beskrivning**: hämtar recept som användaren har likeat
 
 **Path**: /user/me/favorite  
 **Method**: GET  
@@ -222,11 +229,6 @@ ootmappen.
 ```
 **Beskrivning**: Loggar in användaren. Får användaren som user i response.
 
-**Path**: /auth/logout  
-**Method**: GET  
-**RequiresAuth**: NO/  
-**Beskrivning**: Loggar in användaren. Får användaren som user i response.
-
 **Path**: /auth/forgot  
 **Method**: POST  
 **RequiresAuth**: NO  
@@ -254,4 +256,56 @@ ootmappen.
 }
 ```
 **Beskrivning**: Skickar mail till användaren ifall det fungerade. code: 200 ifall det fungerade i response;
+
+
+
+## Ingredient
+**Path**: /ingredient/  
+**Method**: GET  
+**RequiresAuth**: NO  
+**Beskrivning**: hämtar alla ingredienser
+
+**Path**: /ingredient/:id  
+**Method**: GET  
+**RequiresAuth**: NO  
+**Beskrivning**: hämta ingrediens med id 
+
+## Tag
+**Path**: /tag/  
+**Method**: GET  
+**RequiresAuth**: NO  
+**Beskrivning**: hämtar alla taggar
+
+**Path**: /tag/:id  
+**Method**: GET  
+**RequiresAuth**: NO  
+**Beskrivning**: hämta tag med id
+
+## Unit
+**Path**: /unit/  
+**Method**: GET  
+**RequiresAuth**: NO  
+**Beskrivning**: hämtar alla units
+
+**Path**: /tag/:id  
+**Method**: GET  
+**RequiresAuth**: NO  
+**Beskrivning**: hämta unit med id
+
+## Upload
+**Path**: /upload/  
+**Method**: POST  
+**RequiresAuth**: NO  
+**FormData**:
+```
+file: File,
+name: String
+```
+**Beskrivning***: laddar upp bilder 
+
+## Welcome
+**Path**: /welcome/  
+**Method**: GET  
+**RequiresAuth**: NO  
+**Beskrivning**: Svara med en JSON med navia tidiga positiva tankar om framtiden för projektet.
 
