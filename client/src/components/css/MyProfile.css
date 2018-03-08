@@ -25,3 +25,19 @@
 form {
   text-align: left;
 }
+
+.recipeContainerShadow {
+  box-shadow: 0 4px 6px -3px green;
+  margin-left: 250px;
+  width: 400px;
+  border-radius: 0px;
+
+}
+
+.recipeContainerBorder {
+  margin-left: 250px;
+  width: 400px;
+  border-color: green;
+  border-width: thin;
+  border-style: solid;
+}

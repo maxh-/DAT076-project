@@ -10,7 +10,9 @@ import {
   ControlLabel,
   FormControl,
   HelpBlock,
-  Glyphicon
+  Glyphicon,
+  ListGroup,
+  ListGroupItem
 } from 'react-bootstrap';
 import LoadingSpinner from './LoadingSpinner';
 
@@ -26,7 +28,9 @@ const MyProfile = observer(class MyProfile extends Component {
       editedLastName: Auth.user.lastName,
       loading: false,
       done: false,
-      fail: false
+      fail: false,
+      id: [],
+      recipes:[]
     };
     this.handleShowModal = this.handleShowModal.bind(this);
     this.handleCloseModal = this.handleCloseModal.bind(this);
@@ -36,6 +40,7 @@ const MyProfile = observer(class MyProfile extends Component {
 
   // render component
   render() {
+    console.log(Auth.user.id);
     return (
       <div className="MyProfile">
         <Row>
@@ -92,7 +97,7 @@ const MyProfile = observer(class MyProfile extends Component {
                   <Button className="btn btn-primary"
                           onClick={this.handleSubmit}>
                     Spara
-                  </Button>                  
+                  </Button>
                 </div>
                 <LoadingSpinner
                   className="pull-left"
@@ -103,9 +108,59 @@ const MyProfile = observer(class MyProfile extends Component {
               </Modal.Footer>
             </form>
           </Modal>
+          {this.showRecipes()}
         </div>
+
       </div>
     );
+  }
+
+  async componentDidMount() {
+    let recipes = [];
+  await fetch('/user/1/recipes', {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        method: 'GET'
+      })
+        .then(res => res.json())
+        //.then(res => console.log(res))
+        .then(res => res.message.forEach((value) => {
+          recipes.push(value)
+        }));
+      await this.setState({recipes: recipes});
+
+  }
+
+  showRecipes() {
+    let Recipes = this.state.recipes;
+    let recipeItem = [];
+    if(Recipes.length !== 0){
+    for(var i=0; i<Recipes.length; i++) {
+      recipeItem.push(<ListGroupItem key={i}
+                      onClick={this.handleClick.bind(this, i)}
+                      href="#">
+                      {Recipes[i].title} </ListGroupItem>)
+    }
+    return (<div className="recipeContainerShadow">
+    <h2>Mina recept</h2>
+    {recipeItem}
+    </div>);
+  } else {
+
+    return (<div className="recipeContainer"><h2>Du har inga recept</h2> <button class="btn btn-success" onClick={this.buttonClick.bind(this)}>Skapa recept</button> </div>);
+
+
+
+    }
+  }
+
+  async handleClick(i) {
+     window.location = "recipe/ " + this.state.recipes[i].id;
+  }
+
+  buttonClick() {
+    window.location = "/new"
   }
 
   handleShowModal() {
@@ -128,8 +183,8 @@ const MyProfile = observer(class MyProfile extends Component {
     await this.setState({
       [target.name]: target.value
     });
-    console.log(this.state);
-  }  
+    //console.log(this.state);
+  }
 
   async handleSubmit() {
     // show loading icon
@@ -159,5 +214,7 @@ const FieldGroup = ({ id, label, help, ...props }) => {
     </FormGroup>
   );
 };
+
+
 
 export default MyProfile;

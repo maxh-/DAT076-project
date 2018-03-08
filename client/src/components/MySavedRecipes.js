@@ -40,6 +40,7 @@ await  fetch('/user/me/favorite', {
     method: 'GET'
   })
     .then(res => res.json())
+    //.then(res => console.log(res))
     .then(res => res.favorites.forEach((value) => {
       tempArray.push(value)
     }));
@@ -50,7 +51,7 @@ await  fetch('/user/me/favorite', {
     timeArray[j] = tempArray[j].timeToComplete;
   }
 //console.log(favArray);
-//console.log(tempArray);
+console.log(tempArray);
 //console.log(idArray);
 //console.log(timeArray);
 await this.setState({favourites: favArray, id: idArray, time: timeArray, favArray: favArray, timeArray:timeArray, Obj: tempArray })
