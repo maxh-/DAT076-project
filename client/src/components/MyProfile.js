@@ -40,7 +40,6 @@ const MyProfile = observer(class MyProfile extends Component {
 
   // render component
   render() {
-    console.log(Auth.user.id);
     return (
       <div className="MyProfile">
         <Row>
@@ -83,6 +82,7 @@ const MyProfile = observer(class MyProfile extends Component {
                   id="editedLastName"
                   name="editedLastName"
                   type="text"
+
                   label="Förnamn"
                   placeholder={Auth.user.lastName}
                   value={this.state.editedLastName}
@@ -117,14 +117,13 @@ const MyProfile = observer(class MyProfile extends Component {
 
   async componentDidMount() {
     let recipes = [];
-  await fetch('/user/1/recipes', {
+  await fetch('/user/ '+ Auth.token.id +'/recipes', {
         headers: {
           'Content-Type': 'application/json'
         },
         method: 'GET'
       })
         .then(res => res.json())
-        //.then(res => console.log(res))
         .then(res => res.message.forEach((value) => {
           recipes.push(value)
         }));
@@ -148,7 +147,7 @@ const MyProfile = observer(class MyProfile extends Component {
     </div>);
   } else {
 
-    return (<div className="recipeContainer"><h2>Du har inga recept</h2> <button class="btn btn-success" onClick={this.buttonClick.bind(this)}>Skapa recept</button> </div>);
+    return (<div className="recipeContainerShadow"><h2>Du har inga recept</h2> <button class="btn btn-success" onClick={this.buttonClick.bind(this)}>Skapa recept</button> </div>);
 
 
 
