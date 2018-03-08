@@ -123,7 +123,7 @@ ootmappen.
 **JSON**: 
 ```
 {
-  recipeId: String
+  recipeId: Integer
 
 }
 ```
@@ -136,7 +136,7 @@ ootmappen.
 **JSON**: 
 ```
 {
-  recipeId: String
+  recipeId: Integer
 
 }
 ```
