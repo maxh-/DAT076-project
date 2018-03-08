@@ -11,12 +11,11 @@ import {
   FormControl,
   HelpBlock,
   Glyphicon,
-<<<<<<< HEAD
+
   ListGroup,
-  ListGroupItem
-=======
+  ListGroupItem,
   Table
->>>>>>> f26
+
 } from 'react-bootstrap';
 import LoadingSpinner from './LoadingSpinner';
 

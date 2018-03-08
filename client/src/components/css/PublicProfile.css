@@ -1,0 +1,36 @@
+.parent {
+	padding: 0;
+	height: 200px;
+    overflow: hidden;
+    position: relative;
+	  cursor: pointer;
+    display: flex;
+    padding: 3px
+}
+.child {
+
+}
+
+.gr .show-grid {
+  background-color: inherit;
+}
+.gr {
+  width: 600px;
+}
+
+.op span {
+	opacity: 1;
+ 	color: white;
+ 	font-size: 17px;
+ }
+
+ .child {
+ 	width: 100%;
+ 	background-position: center;
+     background-size: cover;
+     background-repeat: no-repeat;
+     -webkit-transition: all .0s;
+     -moz-transition: all .0s;
+     -o-transition: all .0s;
+     transition: all .0s;
+ }
