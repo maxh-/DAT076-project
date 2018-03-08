@@ -249,7 +249,13 @@ const Recipe = observer( class Recipe extends Component {
         </Grid>
 
         <hr />
-
+        <Row>
+          <Col lg={12}>
+            <Disqus.CommentCount shortname={disqusShortname} config={disqusConfig}>
+            </Disqus.CommentCount>
+            <Disqus.DiscussionEmbed shortname={disqusShortname} config={disqusConfig} />
+          </Col>
+        </Row>
         <Modal
             id="modal"
             show={this.state.show}
@@ -330,12 +336,3 @@ class LikeButton extends Component {
     );
   }
 }
-/*
-<Row>
-  <Col lg={12}>
-    <Disqus.CommentCount shortname={disqusShortname} config={disqusConfig}>
-    </Disqus.CommentCount>
-    <Disqus.DiscussionEmbed shortname={disqusShortname} config={disqusConfig} />
-  </Col>
-</Row>
-*/
