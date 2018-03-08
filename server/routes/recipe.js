@@ -59,8 +59,8 @@ router.get('/:id', async (req, res, next) => {
 });
 
 
-/* GET Recipe by id . */
-router.put('/:id', isAuthenticated, async (req, res, next) => {
+/* PUT update a recipe. */
+router.put('/:id', isAuthenticated, checkSchema(recipeSchema.update), validate, async (req, res, next) => {
   const response = await recipeController.update(req.body, req.params.id, req.user.id);
   res.status(response.code).json(response);
 });
