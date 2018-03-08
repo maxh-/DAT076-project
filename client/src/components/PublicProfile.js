@@ -15,15 +15,38 @@ const PublicProfile = observer(class PublicProfile extends Component {
     super(props);
     this.state = {
       recipes:[],
-      id:[]
+      user:[],
+      firstName:"",
+      lastName:""
     };
   }
 
+async getUser() {
+  let usr = [];
+  await  fetch('/user/3' , {
+       headers: {
+         'Content-Type': 'application/json'
+       },
+       method: 'GET'
+     })
+       .then(res => res.json())
+       .then(res => usr.push(res.user));
+
+     this.setState({user: usr, firstName: usr[0].firstName, lastName: usr[0].lastName   })
+       console.log(usr);
+       console.log(this.state.user[0].firstName);
+
+}
+
  async componentDidMount() {
+   this.getUser();
+
+  console.log(this.props.match.params);
+
   let recipes = [];
   let tempArray = [];
 
-  await fetch('/user/1/recipes', {
+  await fetch('/user/3/recipes', {
          headers: {
            'Content-Type': 'application/json'
          },
@@ -36,13 +59,9 @@ const PublicProfile = observer(class PublicProfile extends Component {
 
 
             console.log(recipes);
-            console.log(recipes.find(function(rec){return rec.id===1}));
-            console.log(JSON.stringify(recipes));
-
-            console.log(recipes[1].id);
 
              this.setState({
-                 recipes: recipes, id: tempArray
+                 recipes: recipes, userId: this.props.match.params.id
                });
 
 }
@@ -87,17 +106,18 @@ const PublicProfile = observer(class PublicProfile extends Component {
   }
 
   render() {
+
     return (
 
       <div className="PublicProfile">
-        <h2>{Auth.user.firstName} {Auth.user.lastName} offentliga profil </h2>
+        <h2>{this.state.firstName} {this.state.lastName}</h2>
         <Row>
           <Col className="profilePic">
             <img src="/img/sample-profile-pic.jpg" alt=""/>
           </Col>
           <Col>
             <hr />
-            <h2>{Auth.user.firstName} recept: </h2>
+            <h2>{this.state.firstName} recept: </h2>
             <br />
             </Col>
 
@@ -108,7 +128,7 @@ const PublicProfile = observer(class PublicProfile extends Component {
                </Col>
              </Row>
            </Grid>
-          
+
         </Row>
       </div>
     );
