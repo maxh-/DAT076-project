@@ -11,6 +11,7 @@ import Register from './Register';
 import Login from './Login';
 import ForgotPass from './ForgotPass';
 import ResetPass from './ResetPass';
+import EditRecipe from './EditRecipe';
 
 import PrivateRoute from '../util/PrivateRoute';
 
@@ -21,16 +22,16 @@ class Main extends Component {
         <Switch>
           <Route exact path='/' component={Home}/>
           <Route path='/browse' component={Browse}/>
-          <Route path='/recipe/:id' component={Recipe} />
           <Route path='/register' component={Register}/>
           <Route path='/login' component={Login}/>
-	  <Route exact path='/' component={Home}/>
+          <Route exact path='/recipe/:id' component={Recipe} />
+          <Route path='/forgotpass' component={ForgotPass}/>
+          <Route path='/resetpass/:token' component={ResetPass}/>
+          <PrivateRoute path='/recipe/:id/edit' component={EditRecipe} />
 	  <PrivateRoute path='/pages' component={MyPages}/>
 	  <PrivateRoute path='/new' component={NewRecipe}/>
 	  <PrivateRoute path='/profile' component={MyProfile}/>
 	  <PrivateRoute path='/saved' component={MySavedRecipes}/>
-          <Route path='/forgotpass' component={ForgotPass}/>
-          <Route path='/resetpass/:token' component={ResetPass}/>
     		</Switch>
       </main>
     );
