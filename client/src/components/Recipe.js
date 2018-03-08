@@ -6,7 +6,7 @@ import './css/Recipe.css';
 import Auth from '../util/AuthService';
 import RecipeStore from '../util/recipeStore';
 import { observer } from 'mobx-react';
-
+import Disqus from 'disqus-react';
 
 const Recipe = observer( class Recipe extends Component {
   constructor(props) {
@@ -164,6 +164,11 @@ const Recipe = observer( class Recipe extends Component {
   }
 
   render() {
+    const disqusShortname = 'recepter';
+    const disqusConfig = {
+        identifier: this.props.match.params.id
+    };
+
     return (
       <div id="mainContainer">
         <div id="title-div">
@@ -193,6 +198,15 @@ const Recipe = observer( class Recipe extends Component {
             </Col>
           </Row>
         </Grid>
+
+        <hr />
+        <Row>
+          <Col lg={12}>
+            <Disqus.CommentCount shortname={disqusShortname} config={disqusConfig}>
+            </Disqus.CommentCount>
+            <Disqus.DiscussionEmbed shortname={disqusShortname} config={disqusConfig} />
+          </Col>
+        </Row>
 
         <Modal 
             id="modal" 

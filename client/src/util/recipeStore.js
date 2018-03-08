@@ -42,7 +42,7 @@ class RecipeStore {
     .catch(error => console.log(error));
   }
   getAll() {
-    fetch('/recipe/', {
+    fetch('/recipe/top?limit=12', {
       method: 'GET',
     })
       .then(res => res.json())
