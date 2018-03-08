@@ -1,10 +1,5 @@
 module.exports  = (sequelize, DataTypes) => {
-  const Likes = sequelize.define('Likes', {
-    kind: {
-      type:DataTypes.ENUM('up', 'down'),
-      allowNull: false
-    }
-  });
+  const Likes = sequelize.define('Likes', {});
 
   return Likes;
 };

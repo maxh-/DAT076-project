@@ -21,6 +21,12 @@ router.post('/change-password', async (req, res, next) => {
 });
 
 /* GET favorite recipes */ 
+router.get("/likes", async (req, res, next) => {
+  const response = await userController.getLikes(req.user.id);
+  res.status(response.code).json(response);
+});
+
+/* GET favorite recipes */ 
 router.get("/favorite", async (req, res, next) => {
   const response = await userController.getFavorites(req.user.id);
   res.status(response.code).json(response);

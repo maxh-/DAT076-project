@@ -3,13 +3,22 @@ const FuzzySearch = require('fuzzy-search');
 
 exports.findById = async (id) => {
   const recipe = await models.Recipe.findById(id, {
+    attributes:{
+      include: [[models.sequelize.fn("COUNT", models.sequelize.col("likes.id")), "Likes"]]
+    },
     include: [
       models.Step,
       models.Tag,
       {
+        model: models.User,
+        as: 'likes',
+        attributes: []
+      },
+      {
         model: models.RecipeIngredients,
         include: [models.Ingredient, models.Unit]
-      }]
+      }],
+    group: ['Steps.id', 'Tags.id', 'likes.id', 'RecipeIngredients.id']
   });
   if(recipe){
     return {
@@ -28,19 +37,72 @@ exports.findById = async (id) => {
 
 exports.findAll = async (id) => {
   const recipes = await models.Recipe.findAll({
+    attributes:{
+      include: [[models.sequelize.fn("COUNT", models.sequelize.col("likes.id")), "Likes"]]
+    },
     include: [
       models.Step,
       models.Tag,
       {
+        model: models.User,
+        as: 'likes',
+        attributes: []
+      },
+      {
         model: models.RecipeIngredients,
         include: [models.Ingredient, models.Unit]
-      }]
+      }],
+    group: ['id','Steps.id', 'Tags.id', 'likes.id', 'RecipeIngredients.id']
   });
   if(recipes){
     return {
       success: true,
       code: 200,
       recipe: recipes
+    };
+  } else {
+    return {
+      success: false,
+      code: 404,
+      message: "recipe not found"
+    };
+  }
+};
+
+exports.top = async (params) => {
+  let limit = params.limit;
+  console.log(limit);
+  if(limit != undefined && /[0-9]+/.test(limit)){
+    limit = parseInt(limit);
+  }else{
+    limit = 12;
+  }
+  const recipes = await models.Recipe.findAll({
+    attributes:{
+      include: [[models.sequelize.fn("COUNT", models.sequelize.col("likes.id")), "Likes"]]
+    },
+    include: [
+      models.Step,
+      models.Tag,
+      {
+        model: models.User,
+        as: 'likes',
+        attributes: []
+      },
+      {
+        model: models.RecipeIngredients,
+        include: [models.Ingredient, models.Unit]
+      }],
+    group: ['id','Steps.id', 'Tags.id', 'likes.id', 'RecipeIngredients.id'],
+    order: [[models.sequelize.fn("COUNT", models.sequelize.col("likes.id")), 'DESC']]
+  });
+
+  const limitedRecipes = recipes.slice(0, limit);
+  if(recipes){
+    return {
+      success: true,
+      code: 200,
+      recipe: limitedRecipes
     };
   } else {
     return {
@@ -153,16 +215,25 @@ exports.fuzzyFind = async (params) => {
   const recipes = await models.Recipe.findAll(
     {
       where: condition,
-      include: [
-      models.Step,
-      {
-        model: models.Tag,
-        required: true
+      attributes:{
+        include: [[models.sequelize.fn("COUNT", models.sequelize.col("likes.id")), "Likes"]]
       },
-      {
-        model: models.RecipeIngredients,
-        include: [models.Ingredient, models.Unit]
-      }]
+      include: [
+        models.Step,
+        {
+          model: models.Tag,
+          required: true
+        },
+        {
+          model: models.User,
+          as: 'likes',
+          attributes: []
+        },
+        {
+          model: models.RecipeIngredients,
+          include: [models.Ingredient, models.Unit]
+        }],
+      group: ['id', 'Steps.id', 'Tags.id', 'likes.id', 'RecipeIngredients.id']
     });
   // filter all recipes that dont match all the tags
   let filteredRecipes = recipes;
@@ -185,21 +256,25 @@ exports.fuzzyFind = async (params) => {
 };
 
 exports.getLikes = async (id) => {
-  const upLikes = await models.Likes.count({where: {recipeId: id, kind: 'up'}});
-  const downLikes = await models.Likes.count({where: {recipeId: id, kind: 'down'}});
-  const total = upLikes - downLikes;
+  const likes = await models.Likes.count({where: {recipeId: id}});
+
   return {
     success: true,
     code: 200,
-    likes: {
-      total: total,
-      up: upLikes,
-      down: downLikes
-    }
+    likes: likes
   };
 };
 
-exports.like = async (params, recipeId, userId) => {
+exports.like = async (recipeId, userId) => {
+  const like = await models.Likes.find({where: {userId: userId, recipeId: recipeId}});
+  if(like != null){
+    return {
+      success: false,
+      code: 406,
+      message: "recipe already liked"
+    };
+  }
+
   const user = await models.User.findById(userId);
   const recipe = await models.Recipe.findById(recipeId);
   if(recipe === null){
@@ -209,16 +284,12 @@ exports.like = async (params, recipeId, userId) => {
       message: "could not find recipe"
     };
   }
-  recipe.Likes = {
-    kind: params.kind
-  };
-
   await user.addLike(recipe, {as: 'likes'});
 
   return {
     success: true,
     code: 201,
-    message: "recipe has been " + params.kind + "liked"
+    message: "recipe has been liked"
   };
 };
 
@@ -251,3 +322,4 @@ const ingredientsFromJSON = async(ingredients) => {
       })
   );
 };
+

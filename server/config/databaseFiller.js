@@ -75,7 +75,7 @@ exports.fill = async () => {
   const recipes = [
     {
       "userId": 1,
-      "title": "New recipe",
+      "title": "Fiskburgare",
       "timeToComplete": 200230023,
       "tweet": "A great recipe for the whole family",
       "steps": [
@@ -90,7 +90,7 @@ exports.fill = async () => {
           "number": 3
         }
       ],
-      "tags": [ 1,2,3,4,5,6,7,8,9,10],
+      "tags": [ 2,14,13,18],
       "ingredients": [
         {
           "number": 1,
@@ -112,7 +112,7 @@ exports.fill = async () => {
     },
     {
       "userId": 5,
-      "title": "Newer recipe",
+      "title": "Linssoppa",
       "timeToComplete": 123,
       "tweet": "A great recipe for the whole family",
       "steps": [
@@ -127,7 +127,7 @@ exports.fill = async () => {
           "number": 3
         }
       ],
-      "tags": [ 1,2,3],
+      "tags": [ 1,2,9,8,15,10,7],
       "ingredients": [
         {
           "number": 1,
@@ -164,7 +164,7 @@ exports.fill = async () => {
           "number": 3
         }
       ],
-      "tags": [ 18, 17,16],
+      "tags": [ 2,17,16,12,5,6],
       "ingredients": [
         {
           "number": 1,
@@ -201,7 +201,7 @@ exports.fill = async () => {
           "number": 3
         }
       ],
-      "tags": [ 18, 16, 13, 7, 8],
+      "tags": [ 2,8,9,6,5,10,7,12],
       "ingredients": [
         {
           "number": 1,
@@ -238,7 +238,7 @@ exports.fill = async () => {
           "number": 3
         }
       ],
-      "tags": [ 15],
+      "tags": [ 2,12,7,8,9,10],
       "ingredients": [
         {
           "number": 1,
@@ -275,7 +275,7 @@ exports.fill = async () => {
           "number": 3
         }
       ],
-      "tags": [ 1,2,3,4,5,6,7,8,9,10],
+      "tags": [ 3,4,5,6,8,9],
       "ingredients": [
         {
           "number": 1,
@@ -312,7 +312,7 @@ exports.fill = async () => {
           "number": 3
         }
       ],
-      "tags": [ 1,2,3,4,5,6,7,8,9,10],
+      "tags": [ 1,4,5,6,7,8,9,10],
       "ingredients": [
         {
           "number": 1,
@@ -324,7 +324,7 @@ exports.fill = async () => {
     },
     {
       "userId": 1,
-      "title": "Gordon Ramsay's Ramminnen",
+      "title": "Gordon Ramsay's Ramen",
       "timeToComplete": 200230023,
       "tweet": "A great recipe for the whole family",
       "steps": [
@@ -339,7 +339,7 @@ exports.fill = async () => {
           "number": 3
         }
       ],
-      "tags": [ 18,2,3,4,5,6,7,8,9,10],
+      "tags": [ 2,12,15,7,8,9],
       "ingredients": [
         {
           "number": 1,

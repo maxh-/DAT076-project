@@ -107,6 +107,20 @@ exports.findAll = async () => {
   }
 };
 
+exports.getLikes = async (id) => {
+  const user = await models.User.findById(id, {
+    include: [{
+      model: models.Recipe,
+      as: 'likes'
+    }]
+  });
+  return {
+    success: true,
+    code: 200,
+    likes: user.likes
+  };
+};
+
 exports.getFavorites = async (id) => {
   const user = await models.User.findById(id, {
     include: [{
@@ -146,5 +160,26 @@ exports.removeFavorite = async (recipeId, userId) => {
     success: true,
     code: 200,
     message: "favorite has been removed"
+  };
+};
+
+
+exports.getRecipes = async (id) => {
+  const user = await models.User.findById(id, {
+    include: [
+      models.Recipe
+    ]
+  });
+  if(user == null){
+    return {
+      success: false,
+      code: 400,
+      message: "user does not exist"
+    }
+  }
+  return {
+    success: true,
+    code: 200,
+    message: user.Recipes
   };
 };

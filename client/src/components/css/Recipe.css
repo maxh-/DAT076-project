@@ -19,6 +19,24 @@
 #title-div {
 	width: 100%;
 }
+.modal-header {
+	background-color: #27ae60;
+	color:white;
+}
+.modal-footer {
+	background-color: #27ae60;
+	color: white;
+}
+.modal-body h1 {
+	font-family: 'comic-sans';
+	margin: 0 auto;
+	text-align:center;
+	color: #27ae60;
+}
+.modal-body p {
+	margin: 0 auto;
+	text-align: center;
+}
 .jumbotron {
 	margin: 0;
 }
