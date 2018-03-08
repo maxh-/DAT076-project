@@ -37,6 +37,11 @@ exports.create = {
     exists: true,
     errorMessage: "missing from body"
   },
+  'steps.0': {
+      in: ['body'],
+    exists: true,
+    errorMessage: "must have atleast one step"
+  },
   'steps.*.instruction': {
       in: ['body'],
     exists: {
@@ -66,15 +71,23 @@ exports.create = {
   },
   'tags.*':{
       in: ['body'],
-    optional: false,
     isInt: true,
     errorMessage: "must be an integer"
-  }
-  ,
+  },
+  'tags.0':{
+      in: ['body'],
+    exists: true,
+    errorMessage: "must have atleast one tag"
+  },
   ingredients: {
       in: ['body'],
     exists: true,
     errorMessage: "Must be in body"
+  },
+  'ingredients.0': {
+      in: ['body'],
+    exists: true,
+    errorMessage: "must have atleast one ingredient"
   },
   'ingredients.*.number': {
       in: ['body'],
