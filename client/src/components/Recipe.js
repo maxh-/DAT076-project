@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { get } from 'axios';
 import { Jumbotron, Grid, Row, Col, Glyphicon, Button,
-  Modal, Carousel, Label } from 'react-bootstrap';
+  Modal, Label } from 'react-bootstrap';
 import './css/Recipe.css';
 import Auth from '../util/AuthService';
 import RecipeStore from '../util/recipeStore';
@@ -22,43 +22,72 @@ const Recipe = observer( class Recipe extends Component {
       show: false,
       tags: [],
       exists: false,
-      id: ""
+      id: "",
+      liked: false,
+      style: ""
+
     }
     RecipeStore.getOne(this.props.match.params.id);
   }
 
   async componentDidMount() {
     let id = this.props.match.params.id;
+    await fetch('/user/me/likes', {
+      headers: {
+        'Authorization': 'JWT '+ Auth.token
+      },
+      method: 'GET'
+      })
+      .then(res => res.json())
+      .then(res => {
+        this.setState({
+          liked: (undefined !== res.likes.find(function(rec){
+            return rec.id === parseInt(RecipeStore.recipe.id,10)
+          }))
+        });
+    });
     fetch('/recipe/'+id, {
       method: 'GET',
     }).then(res => res.json())
     .then(res => {
+      let btnColor = this.state.liked ? '#C5E1A5' : "white";
       this.setState({
         id: id,
         title: RecipeStore.recipe.title,
-        upVotes: RecipeStore.recipe.Likes,
-        time: RecipeStore.recipe.timeToComplete,
-        steps: RecipeStore.recipe.Steps,
-        ingredients: RecipeStore.recipe.RecipeIngredients,
         tags: RecipeStore.recipe.Tags,
         step: RecipeStore.recipe.Steps.find(function(instr){return instr.number===1}),
         stepIndex: 1,
         exists: true,
+        style: { backgroundColor: btnColor, color: '#2ecc71'  }
       });
     })
-    .catch(error => { 
+    .catch(error => {
       console.log(error);
       this.setState({
         title:"404: Receptet kunde inte hittas",
-        description: error,
-        exists: false
+        description: error
       })
     });
+    fetch('/user/'+RecipeStore.recipe.UserId, {
+      method: 'GET'
+    })
+    .then(res => res.json())
+    .then(res => this.setState({
+      author: res.user.firstName + " " + res.user.lastName
+    }));
   }
 
   handleLike() {
-    RecipeStore.like(this.state.id,Auth.token);
-    this.setState({ upVotes: RecipeStore.recipe.Likes });
+    if(Auth.isLoggedIn){
+      RecipeStore.like(this.state.id,Auth.token);
+      let btnColor = !this.state.liked ? '#C5E1A5' : "white";
+      this.setState(prevState =>({
+        liked: !prevState.liked,
+        style: { backgroundColor: btnColor,color: '#2ecc71'}
+      }));
+    } else {
+      window.location = '/login';
+    }
   }
   componentDidUpdate() {
   }
@@ -80,7 +109,9 @@ const Recipe = observer( class Recipe extends Component {
       }));
     }
   }
-
+  getUser() {
+    return RecipeStore.recipe.UserId
+  }
   showJumbotron() {
     if(this.state.exists) {
       let imgStyle = {
@@ -88,18 +119,24 @@ const Recipe = observer( class Recipe extends Component {
         paddingBottom:"6px",
         marginLeft:"3px"
       };
+      const link = "/publicprofile/" + RecipeStore.recipe.UserId;
       return (
         <div>
           <p>
             <span onClick={this.handleLike.bind(this)}>
               <small>{ RecipeStore.recipe.Likes }</small>
               <img
-                  src="/img/oven-like.svg" 
+                  src="/img/oven-like.svg"
                   style={imgStyle}/>
             </span>
-            <Glyphicon glyph=" glyphicon glyphicon glyphicon-time " id="glyph-space" />
-            <small> {this.state.time} minuter </small>
-
+            <span>
+              <Glyphicon glyph=" glyphicon glyphicon-time " id="glyph-space" />
+              <small> { RecipeStore.recipe.timeToComplete } minuter </small>
+            </span>
+            <span>
+              <Glyphicon glyph=" glyphicon glyphicon-user " id="glyph-space" />
+              <small><a href={link}>{ this.state.author }</a></small>
+            </span>
           </p>
           <p>
            { RecipeStore.recipe.tweet }
@@ -108,10 +145,22 @@ const Recipe = observer( class Recipe extends Component {
       );
     }
   }
+  likeButton() {
+    return(
+      <Button
+        onClick={this.handleLike.bind(this)}
+        id="like-btn"
+        style={this.state.style}>
+        <small>{ RecipeStore.recipe.Likes }</small>
+        <img
+          src="/img/oven-like.svg"
+          id="ovenmitt-style"/>
+      </Button>);
+  }
 
   showTags() {
     let tgs = [];
-    this.state.tags.forEach(function(tag) { 
+    this.state.tags.forEach(function(tag) {
       tgs.push(
         <Label key={tag.id} className="tag-label" >
           <b># </b>{ tag.tag }
@@ -124,12 +173,12 @@ const Recipe = observer( class Recipe extends Component {
   showIngredients() {
     let ingrs = [];
     if(this.state.exists) {
-      ingrs.push(  
+      ingrs.push(
         <h1 key={0}> Ingredienser </h1>
       );
-      this.state.ingredients.forEach(function(ingr) {
+      RecipeStore.recipe.RecipeIngredients.forEach(function(ingr) {
         ingrs.push(
-          <li key={ingr.number}> 
+          <li key={ingr.number}>
             <b>{ ingr.Ingredient.name } </b>
             <small> { ingr.amount } { ingr.Unit.name }</small>
           </li>
@@ -141,23 +190,23 @@ const Recipe = observer( class Recipe extends Component {
   showSteps() {
     let stps = [];
     if(this.state.exists) {
-      stps.push(  
-        <h1 key={0}> 
-          Instruktioner 
-          <Button bsStyle="success" className="pad" 
+      stps.push(
+        <h1 key={0}>
+          Instruktioner
+          <Button bsStyle="success" className="pad"
               onClick={ this.cookingMode.bind(this) }>
-            <b>Börja laga</b>  
+            <b>Börja laga</b>
           </Button>
         </h1>
       );
-      this.state.steps.forEach(function(stp) {
+      RecipeStore.recipe.Steps.forEach(function(stp) {
         stps.push(
-          <li key={stp.number} className="itemInList"> 
+          <li key={stp.number} className="itemInList">
             <p>
-              { stp.instruction } 
+              { stp.instruction }
             </p>
           </li>
-        );    
+        );
       });
     }
     return stps;
@@ -207,10 +256,9 @@ const Recipe = observer( class Recipe extends Component {
             <Disqus.DiscussionEmbed shortname={disqusShortname} config={disqusConfig} />
           </Col>
         </Row>
-
-        <Modal 
-            id="modal" 
-            show={this.state.show} 
+        <Modal
+            id="modal"
+            show={this.state.show}
             onKeyPress={this.switchItem.bind(this)}
             onHide={this.closeCookingMode.bind(this)}>
           <Modal.Header closeButton>
@@ -254,7 +302,7 @@ const RecipeImage = observer(class RecipeImage extends Component {
     // load recipe image & update styles if it exists
     const image = `/img/${this.props.id}.jpg`;
     const res = await fetch(image);
-    if (res.ok) this.setState({ 
+    if (res.ok) this.setState({
       style: {
         ...this.state.style,
         background: "url(" + image + ")",
