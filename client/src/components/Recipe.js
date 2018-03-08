@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { get } from 'axios';
 import { Jumbotron, Grid, Row, Col, Glyphicon, Button,
-  Modal, Carousel, Label } from 'react-bootstrap';
+  Modal, Label } from 'react-bootstrap';
 import './css/Recipe.css';
 import Auth from '../util/AuthService';
 import RecipeStore from '../util/recipeStore';
@@ -22,43 +22,65 @@ const Recipe = observer( class Recipe extends Component {
       show: false,
       tags: [],
       exists: false,
-      id: ""
+      id: "",
+      liked: false,
+      style: ""
+
     }
     RecipeStore.getOne(this.props.match.params.id);
   }
 
   async componentDidMount() {
     let id = this.props.match.params.id;
+    await fetch('/user/me/likes', {
+      headers: {
+        'Authorization': 'JWT '+ Auth.token
+      },
+      method: 'GET'
+      })
+      .then(res => res.json())
+      .then(res => {
+        this.setState({
+          liked: (undefined !== res.likes.find(function(rec){
+            return rec.id === parseInt(RecipeStore.recipe.id,10)
+          }))
+        });
+    });
     fetch('/recipe/'+id, {
       method: 'GET',
     }).then(res => res.json())
     .then(res => {
+      let btnColor = this.state.liked ? '#C5E1A5' : "white";
       this.setState({
         id: id,
         title: RecipeStore.recipe.title,
-        upVotes: RecipeStore.recipe.Likes,
-        time: RecipeStore.recipe.timeToComplete,
-        steps: RecipeStore.recipe.Steps,
-        ingredients: RecipeStore.recipe.RecipeIngredients,
         tags: RecipeStore.recipe.Tags,
         step: RecipeStore.recipe.Steps.find(function(instr){return instr.number===1}),
         stepIndex: 1,
         exists: true,
+        style: { backgroundColor: btnColor, color: '#2ecc71'  }
       });
     })
     .catch(error => {
       console.log(error);
       this.setState({
         title:"404: Receptet kunde inte hittas",
-        description: error,
-        exists: false
+        description: error
       })
     });
   }
 
   handleLike() {
-    RecipeStore.like(this.state.id,Auth.token);
-    this.setState({ upVotes: RecipeStore.recipe.Likes });
+    if(Auth.isLoggedIn){
+      RecipeStore.like(this.state.id,Auth.token);
+      let btnColor = !this.state.liked ? '#C5E1A5' : "white";
+      this.setState(prevState =>({
+        liked: !prevState.liked,
+        style: { backgroundColor: btnColor,color: '#2ecc71'}
+      }));
+    } else {
+      window.location = '/login';
+    }
   }
   componentDidUpdate() {
   }
@@ -116,6 +138,18 @@ const Recipe = observer( class Recipe extends Component {
       );
     }
   }
+  likeButton() {
+    return(
+      <Button
+        onClick={this.handleLike.bind(this)}
+        id="like-btn"
+        style={this.state.style}>
+        <small>{ RecipeStore.recipe.Likes }</small>
+        <img
+          src="/img/oven-like.svg"
+          id="ovenmitt-style"/>
+      </Button>);
+  }
 
   showTags() {
     let tgs = [];
@@ -135,7 +169,7 @@ const Recipe = observer( class Recipe extends Component {
       ingrs.push(
         <h1 key={0}> Ingredienser </h1>
       );
-      this.state.ingredients.forEach(function(ingr) {
+      RecipeStore.recipe.RecipeIngredients.forEach(function(ingr) {
         ingrs.push(
           <li key={ingr.number}>
             <b>{ ingr.Ingredient.name } </b>
@@ -158,7 +192,7 @@ const Recipe = observer( class Recipe extends Component {
           </Button>
         </h1>
       );
-      this.state.steps.forEach(function(stp) {
+      RecipeStore.recipe.Steps.forEach(function(stp) {
         stps.push(
           <li key={stp.number} className="itemInList">
             <p>
@@ -208,13 +242,6 @@ const Recipe = observer( class Recipe extends Component {
         </Grid>
 
         <hr />
-        <Row>
-          <Col lg={12}>
-            <Disqus.CommentCount shortname={disqusShortname} config={disqusConfig}>
-            </Disqus.CommentCount>
-            <Disqus.DiscussionEmbed shortname={disqusShortname} config={disqusConfig} />
-          </Col>
-        </Row>
 
         <Modal
             id="modal"
@@ -279,3 +306,29 @@ const RecipeImage = observer(class RecipeImage extends Component {
 });
 
 export default Recipe;
+
+class LikeButton extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      liked: false
+    }
+  }
+
+  render() {
+    return(
+      <Button>
+
+      </Button>
+    );
+  }
+}
+/*
+<Row>
+  <Col lg={12}>
+    <Disqus.CommentCount shortname={disqusShortname} config={disqusConfig}>
+    </Disqus.CommentCount>
+    <Disqus.DiscussionEmbed shortname={disqusShortname} config={disqusConfig} />
+  </Col>
+</Row>
+*/

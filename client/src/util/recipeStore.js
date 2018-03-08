@@ -1,7 +1,7 @@
 import { extendObservable } from 'mobx';
 
 class RecipeStore {
-  constructor() {    
+  constructor() {
     extendObservable(this, {
       recipes: [],
       recipe: [],
@@ -30,16 +30,28 @@ class RecipeStore {
         },
         method: 'POST',
         body: JSON.stringify({
-          kind : "up" 
+          kind : "up"
         })
     })
     .then((body) => {
       if(body.ok) {
         this.getOne(id);
-        return this.recipe.Likes;
+      }
+      else {
+        fetch('/recipe/'+id+'/like', {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'JWT '+ token
+          },
+          method: 'DELETE',
+        })
+        .then(body =>  {
+          this.getOne(id);
+        })
+        .catch(error => console.log("Kunde inte ogilla"));
       }
     })
-    .catch(error => console.log(error));
+    .catch(error => console.log("Kunde inte gilla"));
   }
   getAll() {
     fetch('/recipe/top?limit=12', {
@@ -58,14 +70,14 @@ class RecipeStore {
 
     if(tags.length === 0) {
       tag = "";
-    } 
+    }
     else {
       tag = "tags="+tags.join();
 
     }
     if(searchTerm.length === 0) {
       term = "";
-    } 
+    }
     else {
       term = '&q=' + searchTerm;
     }
@@ -98,7 +110,7 @@ class RecipeStore {
     });
     return ts;
   }
-      
+
 
 }
 const Store = new RecipeStore();
