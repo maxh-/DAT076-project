@@ -112,6 +112,10 @@
 	border-bottom-right-radius: 0px;
 }
 #tag-bar {
+	box-sizing: border-box;
+	display: inline-block;
+	width: 100%;
+	word-break: break-all;
 }
 #tag-bar span {
 	padding: 4px;
