@@ -184,25 +184,22 @@ getFavourites() {
     favItems.push(<ListGroupItem key={i}
       onClick={this.handleClick.bind(this, i)}
       href="#">{favs[i]}<p>Tidsåtgång: {time[i]} minuter</p>
-      <span  class="glyphicon glyphicon glyphicon-remove" onClick={this.removeFav.bind(this, i)}></span>
+      <span  class="glyphicon glyphicon glyphicon-remove glyphy" onClick={this.removeFav.bind(this, i)}></span>
       </ListGroupItem>)
   }
   return <div className="well">{favItems}</div>;
 
 }
-/*<Button class="btn btn-danger" onClick={this.fillFavorites.bind(this)}>Fyll databas</Button>*/
-  // render component
   render() {
-    console.log(Auth.token);
     return (
       <div classNtimeame="MySavedRecipes">
       <h2>Mina sparade recept</h2>
 
         <FormGroup controlId="formControlsSelect">
-        <Col sm={2} componentClass={ControlLabel}>
+        <Col className="col-two" sm={2} componentClass={ControlLabel}>
             Sortera efter
         </Col>
-        <Col sm={10}>
+        <Col className="col-ten" sm={10}>
             <FormControl componentClass="select"
                 placeholder="select"
                 value={this.state.dropDown}
