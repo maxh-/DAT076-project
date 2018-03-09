@@ -208,6 +208,8 @@ ootmappen.
 **Beskrivning**: Skickar mail till användaren ifall det fungerade. code: 200 ifall det fungerade i response;
 
 # .env settings
+## Backend
+```
 NODE_ENV=production/test/development
 DB_FORCE_SYNC=bool (om true så droppas alla tables och sätts upp igen)
 DB_FILL=bool (om true så fylls databasen med testvärden från databasefiller i config)
@@ -215,3 +217,4 @@ DB_USERNAME=string
 DB_PASSWORD=string
 DB_NAME=string
 DB_HOSTNAME=string
+```
