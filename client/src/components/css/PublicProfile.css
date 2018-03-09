@@ -1,4 +1,4 @@
-.parent {
+.Parent {
 	padding: 0;
 	height: 200px;
     overflow: hidden;
@@ -7,30 +7,53 @@
     display: flex;
     padding: 3px
 }
-.child {
 
+.Parent:hover .Child, .Parent:focus .Child {
+    -ms-transform: 		scale(1.05);
+    -moz-transform: 	scale(1.05);
+    -webkit-transform: 	scale(1.05);
+    -o-transform: 		scale(1.05);
+    transform: 			scale(1.05);
+		box-shadow: 20px 20px 20px #888888;
 }
-
-.gr .show-grid {
+.Gr .Show-grid {
   background-color: inherit;
 }
-.gr {
+.Gr {
   width: 600px;
 }
+.Op{
+	border-top-right-radius: 4px;
+	border-top-left-radius: 4px;
+	background-color: rgba(0,0,0,0.5);
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 10px;
+	margin-left: auto;
+	margin-right: auto;
+  	width: 90%; /* Need a specific value to work */
+ 	align-self: flex-end;
+}
 
-.op span {
+.Op span {
 	opacity: 1;
  	color: white;
  	font-size: 17px;
+
  }
 
- .child {
+ .Child {
  	width: 100%;
  	background-position: center;
      background-size: cover;
      background-repeat: no-repeat;
-     -webkit-transition: all .0s;
-     -moz-transition: all .0s;
-     -o-transition: all .0s;
-     transition: all .0s;
+     -webkit-transition: all 1s;
+     -moz-transition: all .1s;
+     -o-transition: all .1s;
+     transition: all .1s;
+		 width: 250px;
+
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
  }

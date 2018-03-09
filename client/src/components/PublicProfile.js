@@ -8,6 +8,7 @@ import {
   Glyphicon,Table, Grid
 } from 'react-bootstrap';
 import  {get} from 'axios';
+import RecipeStore from '../util/recipeStore';
 
 const PublicProfile = observer(class PublicProfile extends Component {
 
@@ -36,6 +37,11 @@ async getUser() {
 
      this.setState({user: usr, firstName: usr[0].firstName, lastName: usr[0].lastName, id: usr[0].id  })
 
+     if(this.state.firstName[this.state.firstName.length]-1 !== ('s' || 'x')){
+       this.setState({firstName: this.state.firstName+'s'})
+     }
+
+     console.log(this.state.firstName[this.state.firstName.length-1]);
 }
 
  async componentDidMount() {
@@ -57,12 +63,21 @@ async getUser() {
                  recipes: recipes, userId: this.props.match.params.id
                });
 
+               await fetch('/recipe/1/like', {
+                      headers: {
+                        'Content-Type': 'application/json'
+                      },
+                      method: 'GET'
+                    })
+                    .then(res => res.json())
+                    .then(res => console.log(res));;
+
 }
 
   showRecipes() {
     let grid = [];
     let recipes =this.state.recipes;
-
+    console.log(recipes);
 
     recipes.forEach(function(recipe) {
       let backGround = {
@@ -76,18 +91,14 @@ async getUser() {
         marginLeft:"20px"
       };
       grid.push(
-        <Col className="parent" xs={12} sm={6} lg={4}
+        <Col className="Parent" xs={12} sm={6} lg={4}
             key={recipe.id}>
-          <div className="child" style={backGround} >
+          <div className="Child" style={backGround} >
           </div>
-          <div className="op">
+          <div className="Op">
             <a href={'/recipe/' + recipe.id } >
               <span>
                 { recipe.title }
-              </span>
-              <span style={spanRightStyle}>
-                   { recipe.Likes }
-                <img src="/img/oven-like.svg"  style={imgStyle} className="pl"/>
               </span>
             </a>
           </div>
@@ -113,8 +124,8 @@ async getUser() {
             <br />
             </Col>
 
-            <Grid className="gr">
-             <Row  className="show-grid" >
+            <Grid className="Gr">
+             <Row  className="Show-grid" >
                <Col  >
                     { this.showRecipes() }
                </Col>
