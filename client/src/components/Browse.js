@@ -8,6 +8,8 @@ import './css/Browse.css';
 import RecipeStore from '../util/recipeStore';
 
 
+
+
 const Browse = observer(class Browse extends Component {
 
 	constructor(props) {
@@ -27,7 +29,7 @@ const Browse = observer(class Browse extends Component {
     this.addFilter = this.addFilter.bind(this);
   }
   componentDidMount() {
-    this.setState({searchHeader:"Topplista"});
+		this.setState({searchHeader:"Topplista"});
   }
   componentDidUpdate(prevProps, prevState) {
     console.log(this.state.filter);
