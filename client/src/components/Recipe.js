@@ -31,7 +31,7 @@ const Recipe = observer( class Recipe extends Component {
   }
 
   async componentDidMount() {
-    RecipeStore.getOne(this.props.match.params.id);
+    await RecipeStore.getOne(this.props.match.params.id);
     let id = this.props.match.params.id;
     if(Auth.isLoggedIn) {
       await fetch('/user/me/likes', {
