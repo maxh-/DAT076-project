@@ -27,7 +27,8 @@ const server = http.createServer(app);
 /**
  * Listen on provided port, on all network interfaces.
  */
-models.sequelize.sync({force: true}).then(async function () {
+const syncSettings = process.env.NODE_ENV == 'production'? {} : {force:true};
+models.sequelize.sync(syncSettings).then(async function () {
   await databaseFiller.fill();
   server.listen(port);
   server.on('error', onError);
