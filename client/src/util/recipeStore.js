@@ -19,6 +19,7 @@ class RecipeStore {
       .then((body) => {
         if(body.success && body.recipe) {
           this.recipe = body.recipe;
+          console.log(body.recipe.Likes);
         }
       });
   }
@@ -33,26 +34,30 @@ class RecipeStore {
           kind : "up"
         })
     })
-    .then((body) => {
-      if(body.ok) {
+    .then((res) => res.json())
+    .then((res) => {
+      console.log(res);
         this.getOne(id);
-      }
-      else {
-        fetch('/recipe/'+id+'/like', {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'JWT '+ token
-          },
-          method: 'DELETE',
-        })
-        .then(body =>  {
-          this.getOne(id);
-        })
-        .catch(error => console.log("Kunde inte ogilla"));
-      }
     })
-    .catch(error => console.log("Kunde inte gilla"));
+    .catch(error => console.log(error));
   }
+
+  disLike(id,token) {
+    fetch('/recipe/'+id+'/like', {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'JWT '+ token
+        },
+        method: 'DELETE',
+    })
+    .then((res) => res.json())
+    .then((res) => {
+      console.log(res);
+        this.getOne(id);
+    })
+    .catch(error => console.log(error));
+  }
+
   getAll() {
     fetch('/recipe/top?limit=12', {
       method: 'GET',
@@ -103,11 +108,12 @@ class RecipeStore {
       });
   }
   getMyTags(tgs){
-    let ts="";
+    let ts=[];
     let tags = this.tags;
     tgs.forEach(function(tg){
-      ts += "#"+(tags.find(function(tag){ return tag.id===tg; })).tag
+      ts.push(tags.find(function(tag){ return tag.id===tg; }).tag)
     });
+    console.log(ts)
     return ts;
   }
 
