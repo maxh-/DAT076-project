@@ -9,7 +9,7 @@
 	max-width: 1400px;
 }
 #glyph-space {
-	padding-left: 30px;
+	padding-left: 20px;
 }
 #mainContainer .container {
 	margin: 0;
@@ -18,6 +18,12 @@
 }
 #title-div {
 	width: 100%;
+}
+#like-btn:focus {
+	outline: none;
+}
+#save-btn:focus {
+	outline: none;
 }
 .modal-header {
 	background-color: #27ae60;
@@ -87,11 +93,6 @@
 #modalBody {
 	height: 330px;
 }
-.carouselItem {
-	padding: 30px;
-	min-height: 300px;
-	text-align: center;
-}
 #pic {
 	background: #FFF;
 	border: none;
@@ -105,6 +106,22 @@
 	margin: 0 auto;
 	max-height: 450px;
 	object-fit: cover;
+}
+.btn-success {
+	background-color: #2ecc71;
+}
+#ovenmitt-style {
+	height: 32px;
+	padding-bottom: 6px;
+	margin-left: 3px;
+}
+#glyph-heart {
+	height: 32px;
+	margin-left: 3px;
+	color: red;
+}
+#save-btn {
+	font-size: 20px;
 }
 /* TODO */
 #ingrs {
