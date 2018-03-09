@@ -11,8 +11,8 @@ class RecipeStore {
       image: ""
     });
   }
-  getOne(id) {
-    fetch('/api/recipe/'+id, {
+  async getOne(id) {
+    await fetch('/api/recipe/'+id, {
       method: 'GET',
     })
       .then(res => res.json())
@@ -21,37 +21,6 @@ class RecipeStore {
           this.recipe = body.recipe;
         }
       });
-  }
-  like(id,token) {
-    fetch('/api/recipe/'+id+'/like', {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'JWT '+ token
-        },
-        method: 'POST',
-        body: JSON.stringify({
-          kind : "up"
-        })
-    })
-    .then((body) => {
-      if(body.ok) {
-        this.getOne(id);
-      }
-      else {
-        fetch('/api/recipe/'+id+'/like', {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'JWT '+ token
-          },
-          method: 'DELETE',
-        })
-        .then(body =>  {
-          this.getOne(id);
-        })
-        .catch(error => console.log("Kunde inte ogilla"));
-      }
-    })
-    .catch(error => console.log("Kunde inte gilla"));
   }
   getAll() {
     fetch('/api/recipe/top?limit=12', {
@@ -103,11 +72,12 @@ class RecipeStore {
       });
   }
   getMyTags(tgs){
-    let ts="";
+    let ts=[];
     let tags = this.tags;
     tgs.forEach(function(tg){
-      ts += "#"+(tags.find(function(tag){ return tag.id===tg; })).tag
+      ts.push(tags.find(function(tag){ return tag.id===tg; }).tag)
     });
+    console.log(ts)
     return ts;
   }
 
