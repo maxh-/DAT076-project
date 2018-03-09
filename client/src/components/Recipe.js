@@ -24,7 +24,9 @@ const Recipe = observer( class Recipe extends Component {
       exists: false,
       id: "",
       liked: false,
-      style: ""
+      style: "",
+      saved: false,
+      savedStyle: {backgroundColor: "white"}
 
     }
     RecipeStore.getOne(this.props.match.params.id);
@@ -53,7 +55,8 @@ const Recipe = observer( class Recipe extends Component {
     }
     await fetch('/recipe/'+id, {
       method: 'GET',
-    }).then(res => res.json())
+    })
+    .then(res => res.json())
     .then(res => {
       let btnColor = this.state.liked ? '#C5E1A5' : "white";
       this.setState({
@@ -82,6 +85,35 @@ const Recipe = observer( class Recipe extends Component {
     }));
   }
 
+  async saveRecipe() {
+    if(Auth.isLoggedIn) {
+      const meth = !this.state.saved ? 'POST' : 'DELETE';
+      await fetch('/user/me/favorite', {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'JWT '+Auth.token,
+        },
+        method: meth,
+        body: JSON.stringify({
+          recipeId: this.state.id
+        })
+      })
+      .then(res => res.json())
+      .then(res => {
+        if(res.success) {
+          const color = this.state.saved ?
+          {backgroundColor: 'white'} : {backgroundColor: '#fab1a0'};
+          this.setState(prevState => ({
+            savedStyle: color,
+            saved: !prevState.saved
+          }));
+        }
+      });
+    }
+    else {
+      window.location = '/login';
+    }
+  }
 
   cookingMode(e){
     this.setState({ show: true });
@@ -147,22 +179,27 @@ const Recipe = observer( class Recipe extends Component {
   }
   showJumbotron() {
     if(this.state.exists) {
-      let imgStyle = {
-        height:"32px",
-        paddingBottom:"6px",
-        marginLeft:"3px"
-      };
       const link = "/publicprofile/" + RecipeStore.recipe.UserId;
       return (
         <div>
           <p>
-            <span>{this.likeButton()}</span>
+            <span onClick={this.handleLike.bind(this)}>
+              {this.likeButton()}
+            </span>
             <span>
-              <Glyphicon glyph=" glyphicon glyphicon-time " id="glyph-space" />
+              <Button id="save-btn"
+                onClick={this.saveRecipe.bind(this)}
+                style={this.state.savedStyle}>
+                <Glyphicon glyph="glyphicon glyphicon-heart " id="glyph-heart" />
+                <small>Spara</small>
+              </Button>
+            </span>
+            <span>
+              <Glyphicon glyph=" glyphicon glyphicon-time "  />
               <small> { RecipeStore.recipe.timeToComplete } minuter </small>
             </span>
             <span>
-              <Glyphicon glyph=" glyphicon glyphicon-user " id="glyph-space" />
+              <Glyphicon glyph=" glyphicon glyphicon-user "  />
               <small><a href={link}>{ this.state.author }</a></small>
             </span>
           </p>
