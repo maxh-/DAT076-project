@@ -466,7 +466,7 @@ const StepsList = observer(class StepsList extends Component {
   handleChange({ target }) {
     const id = parseInt(target.id);
     console.log(id);
-    this.store.recipe.Steps.find(step => {step.id === id).instruction = 
+    this.store.recipe.Steps.find(step => step.id === id).instruction = 
       target.value;
   }
 });
