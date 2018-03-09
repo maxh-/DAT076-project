@@ -75,6 +75,7 @@
 .op span {
 	opacity: 1;
  	color: white;
+  font-family: 'Lora', serif;
  	font-size: 28px;
  }
 .dropdown-menu {
