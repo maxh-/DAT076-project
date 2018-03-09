@@ -235,10 +235,12 @@ const IngredientList = observer(class Ingredients extends Component {
                   return (
                     <tr 
                     className="clickable-row" 
-                    key={ingredient.Ingredient.id}
-                    onClick={this.deleteIngredient}
                     >
-                      <td>
+                      <td
+                       key={ingredient.Ingredient.id}
+                       id={ingredient.Ingredient.id}
+                       onClick={this.deleteIngredient}
+                       >
                         <Glyphicon glyph="remove" className="pull-right"/>
                         {' ' + ingredient.Ingredient.name + ' '}
                       </td>
@@ -254,7 +256,10 @@ const IngredientList = observer(class Ingredients extends Component {
   }
 
   deleteIngredient({ target }) {
-
+    this.store.recipe.RecipeIngredients = 
+      this.store.recipe.RecipeIngredients.filter(ingredient => {
+        return ingredient.Ingredient.id !== parseInt(target.id);
+      });
   }
 });
 
