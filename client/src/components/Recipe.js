@@ -183,7 +183,7 @@ const Recipe = observer( class Recipe extends Component {
       return (
         <div>
           <p>
-            <span onClick={this.handleLike.bind(this)}>
+            <span>
               {this.likeButton()}
             </span>
             <span>
