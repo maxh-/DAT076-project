@@ -273,7 +273,8 @@ class NewRecipe extends Component {
 
     return    <ListGroupItem
                   onClick={this.handleClick.bind(this,'del',parseInt(ing['number'],10), 'ingredient')}
-                  key={ing['number']}>
+                  key={ing['number']}
+                  className="ing">
                 <Col xs={6}>
                   <b>{ing['ingredient']} </b>
                 </Col>

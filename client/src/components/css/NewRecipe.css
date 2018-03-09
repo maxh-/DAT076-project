@@ -23,10 +23,13 @@
 textarea {
     resize: none;
 }
-.col-sm-10 {
-	padding: 2px;
-}
 #tagSpace {
 		margin: 3px;
 		border-radius: 0px;
+}
+.ing {
+	padding: 4px 15px ;
+}
+.ing div {
+	font-size: 16px;
 }
