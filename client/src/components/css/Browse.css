@@ -161,11 +161,6 @@
 	margin: 0;
 	width: 52px;
 }
-<<<<<<< HEAD
-#glyph-heart {
-	color: red;
-}
-=======
 #span-right {
 	border-radius: 4px;
 	padding: 4px 8px;
@@ -182,12 +177,6 @@
 	border-bottom-right-radius: 0px;
 }
 
->>>>>>> 6f44f57cb73d7ed8e4b33b98f467e87f16837b8b
-/*
-.content {
-	background-color: #79e0bd
-}
-*/
 .child {
 	background-color: #FFFF;
 }
