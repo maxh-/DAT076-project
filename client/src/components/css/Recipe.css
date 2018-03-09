@@ -9,7 +9,7 @@
 	max-width: 1400px;
 }
 #glyph-space {
-	padding-left: 30px;
+	padding-left: 20px;
 }
 #mainContainer .container {
 	margin: 0;
@@ -89,11 +89,6 @@
 }
 #modalBody {
 	height: 330px;
-}
-.carouselItem {
-	padding: 30px;
-	min-height: 300px;
-	text-align: center;
 }
 #pic {
 	background: #FFF;

@@ -73,6 +73,13 @@ const Recipe = observer( class Recipe extends Component {
         description: error
       })
     });
+    await fetch('/user/'+RecipeStore.recipe.UserId, {
+      method: 'GET'
+    })
+    .then(res => res.json())
+    .then(res => this.setState({
+      author: res.user.firstName + " " + res.user.lastName
+    }));
   }
 
 
@@ -93,6 +100,7 @@ const Recipe = observer( class Recipe extends Component {
       }));
     }
   }
+
 
   handleLike() {
     if(Auth.isLoggedIn){
@@ -134,14 +142,29 @@ const Recipe = observer( class Recipe extends Component {
       </Button>);
   }
 
+  getUser() {
+    return RecipeStore.recipe.UserId
+  }
   showJumbotron() {
     if(this.state.exists) {
+      let imgStyle = {
+        height:"32px",
+        paddingBottom:"6px",
+        marginLeft:"3px"
+      };
+      const link = "/publicprofile/" + RecipeStore.recipe.UserId;
       return (
         <div>
           <p>
-            {this.likeButton()}
-            <Glyphicon glyph=" glyphicon glyphicon glyphicon-time " id="glyph-space" />
-            <small> { RecipeStore.recipe.timeToComplete } minuter </small>
+            <span>{this.likeButton()}</span>
+            <span>
+              <Glyphicon glyph=" glyphicon glyphicon-time " id="glyph-space" />
+              <small> { RecipeStore.recipe.timeToComplete } minuter </small>
+            </span>
+            <span>
+              <Glyphicon glyph=" glyphicon glyphicon-user " id="glyph-space" />
+              <small><a href={link}>{ this.state.author }</a></small>
+            </span>
           </p>
           <p>
            { RecipeStore.recipe.tweet }
@@ -241,7 +264,6 @@ const Recipe = observer( class Recipe extends Component {
         </Grid>
 
         <hr />
-
         <Row>
           <Col lg={12}>
             <Disqus.CommentCount shortname={disqusShortname} config={disqusConfig}>
@@ -249,7 +271,6 @@ const Recipe = observer( class Recipe extends Component {
             <Disqus.DiscussionEmbed shortname={disqusShortname} config={disqusConfig} />
           </Col>
         </Row>
-
         <Modal
             id="modal"
             show={this.state.show}
