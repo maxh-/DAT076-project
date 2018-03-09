@@ -1,13 +1,16 @@
 import { extendObservable, action } from 'mobx';
 import { get } from 'axios';
+import { extend } from 'underscore';
 
 class EditRecipeStore {
   constructor(recipeId) {
+    this.recipe = {};
     extendObservable(this, {
       recipe: {},
       id: recipeId,
       units: [],
       allTags: [],
+      allIngredients: [],
       allMealTypes: [],
       nonSelectedTags: [],
       mealType: {}, // selected mealType tag
@@ -15,7 +18,8 @@ class EditRecipeStore {
       update: action(async () => {
         // fetch & filter tags according to type
         await get(`/recipe/${this.id}`).then(res => {
-          this.recipe = res.data.recipe;
+          this.recipe = extend(res.data.recipe, {ingredients: []});
+          this.recipe['ingredients'] = res.data.RecipeIngredients;
           this.mealType = getMealType(res.data.recipe.Tags);
         });
         await get(`/tag`).then(res => {
@@ -26,24 +30,26 @@ class EditRecipeStore {
         });
         this.updateTags();
         get('/unit').then(res => this.units = res.data.recipe);
+        get('/ingredient').then(res => this.allIngredients = res.data.recipe);
       }),
       updateTags: () => {
+        // update 
         this.otherTags = this.recipe.Tags.filter(tag => {
           return !this.allMealTypes.find(mealTypeTag => {
             return mealTypeTag.id === tag.id;
-          })
+          });
         });
         this.nonSelectedTags = this.allTags.filter(tag => {
           return !this.otherTags.find(otherTag => {
             return otherTag.id === tag.id;
-          });            
+          });
         })
       },
       setMealType: (id) => {
         // Set the mealType tag and update recipe tags accordingly
         const oldMealType = this.mealType;
         const newMealType = this.allMealTypes.find(tag => {
-          return tag.id === parseInt(id);
+          return tag.id === parseInt(id, 10);
         });
         this.mealType = newMealType;
         const replaceIndex = this.recipe.Tags.findIndex(tag => {

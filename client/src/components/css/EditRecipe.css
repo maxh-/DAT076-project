@@ -10,3 +10,11 @@
 .clickable-row:hover {
     cursor: pointer;
 }
+
+.small-padding {
+    padding: 1px;
+}
+
+.add-btn {
+    padding-right: 5px;
+}

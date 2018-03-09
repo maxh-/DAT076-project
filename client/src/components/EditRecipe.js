@@ -27,8 +27,8 @@ const EditRecipe = observer(class EditRecipe extends Component {
     this.handleChangeMealType = this.handleChangeMealType.bind(this);
   }
 
-  async componentDidMount() {
-    await this.store.update();
+  componentDidMount() {
+    this.store.update();
   }
 
   render() {
@@ -42,7 +42,7 @@ const EditRecipe = observer(class EditRecipe extends Component {
       <div className="edit-recipe">
         <h2>Redigera recept</h2>
         <hr />
-        <form action={this.handleSubmit}>
+        <form>
 
           {/**  Titel **/}
 
@@ -61,7 +61,6 @@ const EditRecipe = observer(class EditRecipe extends Component {
             <ControlLabel>Tidsåtgång</ControlLabel>
             <FormControl componentClass="select"
               placeholder="select"
-              value={0}
               onChange={this.handleChange}
               name="timeToComplete"
               defaultValue={this.store.recipe.timeToComplete}>
@@ -92,7 +91,7 @@ const EditRecipe = observer(class EditRecipe extends Component {
               name="mealType"
               >
               {this.store.allMealTypes.map(tag => {
-                return <option value={tag.id} id={tag.id}>{tag.tag}</option>;
+                return <option key={tag.id} value={tag.id} id={tag.id}>{tag.tag}</option>;
               })}
             </FormControl>
           </FormGroup>
@@ -111,12 +110,14 @@ const EditRecipe = observer(class EditRecipe extends Component {
           {/**  Taggar  **/}
 
           <FormGroup>
-            <div class="btn-toolbar">
+            <div className="btn-toolbar">
               <ControlLabel>Taggar</ControlLabel><br />
               {this.store.otherTags.map(tag => {
                 return <TagButton 
                         store={this.store} 
-                        tag={tag} id={tag.id} 
+                        tag={tag} 
+                        id={tag.id} 
+                        key={tag.id} 
                         isChecked={true}
                         />
               })}
@@ -125,6 +126,7 @@ const EditRecipe = observer(class EditRecipe extends Component {
                         store={this.store} 
                         tag={tag} 
                         id={tag.id} 
+                        key={tag.id}
                         isChecked={false}
                         />
               })}
@@ -143,6 +145,8 @@ const EditRecipe = observer(class EditRecipe extends Component {
       </div>
     );
   }
+
+  
 
   handleChange({ target }) {
     this.store.recipe[target.name] = target.value;
@@ -191,6 +195,7 @@ const TagButton = observer(class TagButton extends Component {
             className={this.state.checked ? 'active' : ''}
             onClick={this.onClick}
             id={this.tag.id}
+            key={this.tag.id}
             >
              #{this.tag.tag}
            </Button>;
@@ -207,7 +212,6 @@ const TagButton = observer(class TagButton extends Component {
         return tag.id === id;
       }));
     }
-
     this.setState({
       checked: !this.state.checked
     })
@@ -219,30 +223,38 @@ const IngredientList = observer(class Ingredients extends Component {
     super(props);
     this.store = props.store;
     this.state = {
-      ingredients: this.store.recipe.RecipeIngredients
+      error: false,
+      errorMessages: []
     };
-    this.deleteIngredient = this.deleteIngredient.bind(this);
   }
 
   render() {
     return (
       <FormGroup>
         <Row>
-          <Col md={7}>
+          <Col md={10}>
             <Table hover>
               <tbody>
                 {this.store.recipe.RecipeIngredients.map(ingredient => {
                   return (
-                    <tr 
-                    className="clickable-row" 
-                    >
+                    <tr className="clickable-row" key={ingredient.number}>
                       <td
-                       key={ingredient.Ingredient.id}
-                       id={ingredient.Ingredient.id}
-                       onClick={this.deleteIngredient}
+                       key={ingredient.number}
+                       id={ingredient.number}
+                       onClick={this.deleteIngredient.bind(this)}
                        >
-                        <Glyphicon glyph="remove" className="pull-right"/>
+                        <span className="pull-right">
+                          <Glyphicon 
+                           glyph="remove" 
+                           id={ingredient.number}
+                           key={ingredient.number}
+                           onClick={this.deleteIngredient.bind(this)}
+                           />
+                        </span>
                         {' ' + ingredient.Ingredient.name + ' '}
+                        <strong>
+                          {ingredient.amount + ' ' + ingredient.Unit.name}
+                        </strong>
                       </td>
                     </tr>
                   );
@@ -251,15 +263,103 @@ const IngredientList = observer(class Ingredients extends Component {
             </Table>
           </Col>
         </Row>
+        <Row>
+            <FormGroup
+                controlId="formBasicText">
+                <Col xs={12} md={10}>
+                  <Col sm={6} className="small-padding">
+                    <FormControl
+                      type="text"
+                      placeholder="Ingrediens"
+                      inputRef={(a) => this.ingredient = a}
+                    />
+                  </Col>
+                  <Col xs={4} sm={2} className="small-padding">
+                    <FormControl
+                     type="text"
+                     placeholder="Mängd"
+                     inputRef={(b) => this.amount = b}
+                     />
+                  </Col>
+                  <Col xs={4} sm={2} className="small-padding">
+                    <FormControl
+                     componentClass="select"
+                     defaultValue="l"
+                     inputRef={(c) => this.unit = c }
+                     onChange={this.handleChangeUnit.bind(this)}
+                     name="UnitId"
+                     >
+                      { this.makeUnits() }
+                    </FormControl>
+                  </Col>
+                  <Col xs={4} sm={2} className="add-btn">
+                    <Button 
+                     onClick={this.addIngredient.bind(this)} 
+                     className="fillWidth btn btn-primary"
+                     >
+                      <Glyphicon glyph="plus" />
+                    </Button>
+                  </Col>
+                </Col>
+              </FormGroup>
+          </Row>
       </FormGroup>
     );
   }
 
+  makeUnits() {
+    let uns = [];
+    this.store.units.forEach(function(un) {
+        uns.push( <option
+                      key={un.id}
+                      value={un.id}>
+                    { un.abbreviation }
+                  </option>
+
+        );
+    });
+    return uns;
+  }
+
+  handleChangeUnit({target}) {
+    console.log(target);
+  }
+
   deleteIngredient({ target }) {
-    this.store.recipe.RecipeIngredients = 
+    //const id = parseInt(target.id);
+    const number = parseInt(target.id);
+    // remove ingredient from recipe
+    this.store.recipe.RecipeIngredients =
       this.store.recipe.RecipeIngredients.filter(ingredient => {
-        return ingredient.Ingredient.id !== parseInt(target.id);
+        return ingredient.number !== number;
       });
+    // adjust ingredient indices
+    this.store.recipe.RecipeIngredients.map(ingredient => {
+      if (ingredient.number > number) ingredient.number--;
+    });
+  }
+
+  addIngredient(e) {
+    const number = this.state.number;
+    const ingredientName  = this.ingredient.value;
+    const amount    = this.amount.value;
+    const UnitId    = parseInt(this.unit.value);
+    
+    this.store.recipe.RecipeIngredients.push({
+      number: this.store.recipe.RecipeIngredients.length+1,
+      amount: amount,
+      UnitId: UnitId,
+      Ingredient: { 
+        name: ingredientName
+      },
+      Unit: {
+        name: this.store.units.find(unit => unit.id === UnitId).name
+      }
+    });
+    
+    this.ingredient.value = "";
+    this.amount.value = "";
+    this.unit.value = "1";
   }
 });
 
