@@ -11,8 +11,10 @@ exports.findById = async (id) => {
       }]
   });
   const likes = await recipe.countLikes();
+  const favorites = await recipe.countFavorites();
   const result = recipe.toJSON();
   result.Likes = likes;
+  result.Favorites = favorites;
 
   if(recipe){
     return {
@@ -39,7 +41,7 @@ exports.findAll = async (id) => {
         include: [models.Ingredient, models.Unit]
       }]
   });
-  const result = countLikes(recipes);
+  const result = countLikesFavorites(recipes);
   if(recipes){
     return {
       success: true,
@@ -72,8 +74,8 @@ exports.top = async (params) => {
         include: [models.Ingredient, models.Unit]
       }]
   });
-  const result = await countLikes(recipes);
-  result.sort((a,b) => { return b.Likes - a.Likes; });
+  const result = await countLikesFavorites(recipes);
+  result.sort((a,b) => { return (b.Likes + b.Favorites) - (a.Likes + a.Favorites); });
   const limitedRecipes = result.slice(0, limit);
   if(recipes){
     return {
@@ -216,7 +218,7 @@ exports.fuzzyFind = async (params) => {
     const searcher = new FuzzySearch(filteredRecipes, ['title']);
     searchedRecipes = searcher.search(query);
   }
-  const result = await countLikes(searchedRecipes);
+  const result = await countLikesFavorites(searchedRecipes);
   return {
     success: true,
     code: 200,
@@ -292,11 +294,14 @@ const ingredientsFromJSON = async(ingredients) => {
   );
 };
 
-const countLikes = async (recipes) => {
+const countLikesFavorites = async (recipes) => {
   return await Promise.all(recipes.map(async (recipe) => {
+    const favorites = await recipe.countFavorites();
     const likes = await recipe.countLikes();
     const tmp = recipe.toJSON();
     tmp.Likes = likes;
+    tmp.Favorites = favorites;
     return tmp;
   }));
 };
+
