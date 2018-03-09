@@ -23,9 +23,6 @@
 textarea {
     resize: none;
 }
-.col-sm-10 {
-	padding: 2px;
-}
 #tagSpace {
 		margin: 3px;
 		border-radius: 0px;
@@ -33,6 +30,6 @@ textarea {
 .ing {
 	padding: 4px 15px ;
 }
-.ing div b{
+.ing div {
 	font-size: 16px;
 }
