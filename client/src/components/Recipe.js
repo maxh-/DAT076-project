@@ -116,11 +116,9 @@ const Recipe = observer( class Recipe extends Component {
       })
       .then(res => res.json())
       .then(res => {
-        console.log(res);
         if(res.success) {
           const color = this.state.saved ?
           {backgroundColor: 'white'} : {backgroundColor: '#fab1a0'};
-          console.log(color);
           this.setState(prevState => ({
             savedStyle: color,
             saved: !prevState.saved
