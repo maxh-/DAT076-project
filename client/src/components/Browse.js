@@ -75,9 +75,8 @@ const Browse = observer(class Browse extends Component {
   showRecipeCols() {
     let dummyCols = [];
     RecipeStore.recipes.forEach(function(recipe) {
-      let imgUrl = "/img/bild.jpg" /* +recipe.id+'.jpg'*/;
       let bgStyle = {
-        backgroundImage: 'url(' + '/img/bild.jpg' + ')'
+        backgroundImage: 'url(' + '/img/'+recipe.id+'.jpg' + ')'
       };
       let imgStyle = {
         height:"32px",
