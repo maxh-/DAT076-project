@@ -1,3 +1,4 @@
+ @import url('https://fonts.googleapis.com/css?family=Lora|Roboto+Condensed');
 .content{
 	padding: 10px 0;
 }
@@ -83,8 +84,7 @@
  	color: white;
  	font-size: 28px;
 	padding-left: 20px;
-	font-family: 'Roboto', sans-serif;
-
+	font-family: 'Roboto Condensed', sans-serif;
  }
 .op {
 	width: 100%;
