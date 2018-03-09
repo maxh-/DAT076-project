@@ -74,24 +74,29 @@ const Recipe = observer( class Recipe extends Component {
 
   handleLike() {
     if(Auth.isLoggedIn){
-      if(!this.state.liked) {
-        console.log("LIK");
-        RecipeStore.like(this.state.id,Auth.token);
-      }
-      else {
-        console.log("DIS");
-        RecipeStore.disLike(this.state.id,Auth.token);
-      }
-      let btnColor = !this.state.liked ? '#C5E1A5' : "white";
-      this.setState(prevState =>({
-        liked: !prevState.liked,
-        style: { backgroundColor: btnColor,color: '#2ecc71'}
-      }));
+      const meth = this.state.liked ? 'DELETE' : 'POST';
+      fetch('/recipe/'+this.state.id+'/like', {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'JWT '+Auth.token
+          },
+          method: meth,
+      })
+      .then((res) => res.json())
+      .then((res) => {
+          if(res.success) {
+            RecipeStore.getOne(this.state.id);
+            let btnColor = !this.state.liked ? '#C5E1A5' : "white";
+            this.setState(prevState =>({
+              liked: !prevState.liked,
+              style: { backgroundColor: btnColor,color: '#2ecc71'}
+            }));
+          }
+      })
+      .catch(error => console.log(error));
     } else {
       window.location = '/login';
     }
-  }
-  componentDidUpdate() {
   }
 
   cookingMode(e){

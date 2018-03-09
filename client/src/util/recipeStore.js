@@ -23,41 +23,6 @@ class RecipeStore {
         }
       });
   }
-  like(id,token) {
-    fetch('/recipe/'+id+'/like', {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'JWT '+ token
-        },
-        method: 'POST',
-        body: JSON.stringify({
-          kind : "up"
-        })
-    })
-    .then((res) => res.json())
-    .then((res) => {
-      console.log(res);
-        this.getOne(id);
-    })
-    .catch(error => console.log(error));
-  }
-
-  disLike(id,token) {
-    fetch('/recipe/'+id+'/like', {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'JWT '+ token
-        },
-        method: 'DELETE',
-    })
-    .then((res) => res.json())
-    .then((res) => {
-      console.log(res);
-        this.getOne(id);
-    })
-    .catch(error => console.log(error));
-  }
-
   getAll() {
     fetch('/recipe/top?limit=12', {
       method: 'GET',
