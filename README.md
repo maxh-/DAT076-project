@@ -93,7 +93,7 @@ ootmappen.
 **Path**: /recipe/top?limit=A  
 **Method**: Get  
 **RequiresAuth**: NO  
-**Beskrivning**: Hämtar top mest gillade recept. Ifall en limit är skickad så får man de antalet recept annars får man 12.
+**Beskrivning**: Hämtar top mest gillade/favoriserade recept. Ifall en limit är skickad så får man de antalet recept annars får man 12.
 
 **Path**: /recipe/:id/like  
 **Method**: Get  
