@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import { Glyphicon, Grid, Row, Col, Button, InputGroup,
-	FormControl, DropdownButton,
+	FormControl, DropdownButton, Label,
 	ToggleButtonGroup, ToggleButton,
 	PageHeader, ButtonToolbar } from 'react-bootstrap';
 import './css/Browse.css';
@@ -11,6 +11,7 @@ import RecipeStore from '../util/recipeStore';
 
 
 const Browse = observer(class Browse extends Component {
+
 	constructor(props) {
     super(props);
     this.state = {
@@ -74,48 +75,63 @@ const Browse = observer(class Browse extends Component {
     }
   }
   showRecipeCols() {
-    let dummyCols = [];
+    let recipeCols = [];
     RecipeStore.recipes.forEach(function(recipe) {
       let bgStyle = {
         backgroundImage: 'url(' + '/img/'+recipe.id+'.jpg' + ')'
       };
       let imgStyle = {
         height:"32px",
-        paddingBottom:"5px",
+        paddingBottom:"7px",
+				paddingLeft:"5px"
       };
       let spanRightStyle = {
         marginLeft:"20px"
       };
-      dummyCols.push(
-        <Col className="parent" xs={12} sm={6} lg={4}
+      recipeCols.push(
+        <Col className="grand-parent" xs={12} sm={6} lg={4}
             key={recipe.id}>
-          <div className="child" style={bgStyle} >
-          </div>
-          <div className="op">
-            <a href={'/recipe/' + recipe.id } >
-              <span>
-                { recipe.title }
-              </span>
+						<a href={'/recipe/' + recipe.id } >
+					<div className="parent">
+	          <div className="child" style={bgStyle} >
+	          </div>
+	          <div className="op">
+							<div>
+		              <span>
+		                { recipe.title }
+		              </span>
 
-              <span style={spanRightStyle}>
-                   { recipe.Likes }
-                <img src="/img/oven-like.svg"  style={imgStyle} className="pl"/>
-              </span>
-            </a>
-          </div>
+		              <span id="span-right">
+		                   { recipe.Likes }
+		                <img src="/img/oven-like.svg"  style={imgStyle} className="pl"/>
+		              </span>
+		          </div>
+						</div>
+					</div>
+				</a>
         </Col>
       );
     });
-    return dummyCols;
+    return recipeCols;
   }
 
   searchTerm() {
     return(
-      <div>
-        <h4>{ RecipeStore.getMyTags(this.state.filter) } </h4>
+      <div id="tag-bar">
+        { this.showTags() }
       </div>
     );
   }
+	showTags() {
+		let tags = []
+		console.log(RecipeStore.getMyTags(this.state.filter));
+		RecipeStore.getMyTags(this.state.filter).forEach(function(tag) {
+			tags.push(
+					<span><b>#</b>{ tag }</span>
+			);
+		});
+		return tags;
+	}
 
   handleSubmit(event) {
     if(this.state.searchWord.length>0 || this.state.filter.length>0) {
@@ -149,7 +165,7 @@ const Browse = observer(class Browse extends Component {
 		  		</form>
           <ButtonToolbar>
             <Col xs={3}>
-              <DropdownButton title="Måltid" id="1">
+              <DropdownButton title="Måltid" className="btns">
     			      <ToggleButtonGroup type="radio" name="meal"
                     value={this.state.filter}
         						onClick={this.addFilter.bind(this)}>
@@ -161,7 +177,7 @@ const Browse = observer(class Browse extends Component {
               </DropdownButton>
             </Col>
             <Col xs={3}>
-             	<DropdownButton title="Rättyp" id="2">
+             	<DropdownButton title="Rättyp" className="btns">
   		          <ToggleButtonGroup type="radio" name="filter"
                       value={this.state.filter}
                       onClick={this.addFilter.bind(this)} >
@@ -172,7 +188,7 @@ const Browse = observer(class Browse extends Component {
               </DropdownButton>
             </Col>
             <Col xs={3}>
-              <DropdownButton title="Ingrediens" id="3">
+              <DropdownButton title="Ingrediens" className="btns">
   		          <ToggleButtonGroup type="radio" name="filter"
   		      					value={this.state.filter}
           						onClick={this.addFilter.bind(this)}>
@@ -186,7 +202,7 @@ const Browse = observer(class Browse extends Component {
               </DropdownButton>
             </Col>
             <Col xs={3}>
-              <DropdownButton title="Specialkost" id="4">
+              <DropdownButton title="Specialkost" className="btns">
                 <ToggleButtonGroup type="radio" name="filter"
                       value={this.state.filter}
                       onClick={this.addFilter.bind(this)}>

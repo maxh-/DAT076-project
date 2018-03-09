@@ -22,8 +22,8 @@
 #like-btn:focus {
 	outline: none;
 }
-#save-btn:hover {
-	background-color: white;
+#save-btn:focus {
+	outline: none;
 }
 .modal-header {
 	background-color: #27ae60;
@@ -118,6 +118,7 @@
 #glyph-heart {
 	height: 32px;
 	margin-left: 3px;
+	color: red;
 }
 #save-btn {
 	font-size: 20px;

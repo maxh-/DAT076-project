@@ -33,6 +33,7 @@ const Recipe = observer( class Recipe extends Component {
   }
 
   async componentDidMount() {
+    await RecipeStore.getOne(this.props.match.params.id);
     let id = this.props.match.params.id;
     if(Auth.isLoggedIn) {
       await fetch('/user/me/likes', {
@@ -43,6 +44,8 @@ const Recipe = observer( class Recipe extends Component {
         })
         .then(res => res.json())
         .then(res => {
+          console.log(res.likes);
+          console.log(RecipeStore.recipe.id);
           this.setState({
             liked: (undefined !== res.likes.find(function(rec){
               return rec.id === parseInt(RecipeStore.recipe.id,10)
@@ -50,7 +53,7 @@ const Recipe = observer( class Recipe extends Component {
           });
       });
     }
-    fetch('/recipe/'+id, {
+    await fetch('/recipe/'+id, {
       method: 'GET',
     })
     .then(res => res.json())
@@ -82,25 +85,6 @@ const Recipe = observer( class Recipe extends Component {
     }));
   }
 
-  handleLike() {
-    if(Auth.isLoggedIn){
-      if(!this.state.liked) {
-        console.log("LIK");
-        RecipeStore.like(this.state.id,Auth.token);
-      }
-      else {
-        console.log("DIS");
-        RecipeStore.disLike(this.state.id,Auth.token);
-      }
-      let btnColor = !this.state.liked ? '#C5E1A5' : "white";
-      this.setState(prevState =>({
-        liked: !prevState.liked,
-        style: { backgroundColor: btnColor,color: '#2ecc71'}
-      }));
-    } else {
-      window.location = '/login';
-    }
-  }
   async saveRecipe() {
     if(Auth.isLoggedIn) {
       const meth = !this.state.saved ? 'POST' : 'DELETE';
@@ -116,11 +100,9 @@ const Recipe = observer( class Recipe extends Component {
       })
       .then(res => res.json())
       .then(res => {
-        console.log(res);
         if(res.success) {
           const color = this.state.saved ?
           {backgroundColor: 'white'} : {backgroundColor: '#fab1a0'};
-          console.log(color);
           this.setState(prevState => ({
             savedStyle: color,
             saved: !prevState.saved
@@ -131,8 +113,6 @@ const Recipe = observer( class Recipe extends Component {
     else {
       window.location = '/login';
     }
-  }
-  componentDidUpdate() {
   }
 
   cookingMode(e){
@@ -152,6 +132,48 @@ const Recipe = observer( class Recipe extends Component {
       }));
     }
   }
+
+
+  handleLike() {
+    if(Auth.isLoggedIn){
+      const meth = this.state.liked ? 'DELETE' : 'POST';
+      fetch('/recipe/'+this.state.id+'/like', {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'JWT '+Auth.token
+          },
+          method: meth,
+      })
+      .then((res) => res.json())
+      .then((res) => {
+          if(res.success) {
+            RecipeStore.getOne(this.state.id);
+            let btnColor = !this.state.liked ? '#C5E1A5' : "white";
+            this.setState(prevState =>({
+              liked: !prevState.liked,
+              style: { backgroundColor: btnColor,color: '#2ecc71'}
+            }));
+          }
+      })
+      .catch(error => console.log(error));
+    } else {
+      window.location = '/login';
+    }
+  }
+
+  likeButton() {
+    return(
+      <Button
+        onClick={this.handleLike.bind(this)}
+        id="like-btn"
+        style={this.state.style}>
+        <small>{ RecipeStore.recipe.Likes }</small>
+        <img
+          src="/img/oven-like.svg"
+          id="ovenmitt-style"/>
+      </Button>);
+  }
+
   getUser() {
     return RecipeStore.recipe.UserId
   }
@@ -161,7 +183,7 @@ const Recipe = observer( class Recipe extends Component {
       return (
         <div>
           <p>
-            <span onClick={this.handleLike.bind(this)}>
+            <span>
               {this.likeButton()}
             </span>
             <span>
@@ -188,19 +210,6 @@ const Recipe = observer( class Recipe extends Component {
       );
     }
   }
-  likeButton() {
-    return(
-      <Button
-        onClick={this.handleLike.bind(this)}
-        id="like-btn"
-        style={this.state.style}>
-        <small>{ RecipeStore.recipe.Likes }</small>
-        <img
-          src="/img/oven-like.svg"
-          id="ovenmitt-style"/>
-      </Button>);
-  }
-
   showTags() {
     let tgs = [];
     this.state.tags.forEach(function(tag) {

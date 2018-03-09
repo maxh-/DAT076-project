@@ -11,53 +11,17 @@ class RecipeStore {
       image: ""
     });
   }
-  getOne(id) {
-    fetch('/recipe/'+id, {
+  async getOne(id) {
+    await fetch('/recipe/'+id, {
       method: 'GET',
     })
       .then(res => res.json())
       .then((body) => {
         if(body.success && body.recipe) {
           this.recipe = body.recipe;
-          console.log(body.recipe.Likes);
         }
       });
   }
-  like(id,token) {
-    fetch('/recipe/'+id+'/like', {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'JWT '+ token
-        },
-        method: 'POST',
-        body: JSON.stringify({
-          kind : "up"
-        })
-    })
-    .then((res) => res.json())
-    .then((res) => {
-      console.log(res);
-        this.getOne(id);
-    })
-    .catch(error => console.log(error));
-  }
-
-  disLike(id,token) {
-    fetch('/recipe/'+id+'/like', {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'JWT '+ token
-        },
-        method: 'DELETE',
-    })
-    .then((res) => res.json())
-    .then((res) => {
-      console.log(res);
-        this.getOne(id);
-    })
-    .catch(error => console.log(error));
-  }
-
   getAll() {
     fetch('/recipe/top?limit=12', {
       method: 'GET',
