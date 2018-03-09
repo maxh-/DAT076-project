@@ -49,10 +49,6 @@ await  fetch('/user/me/favorite', {
     idArray[j] = tempArray[j].id;
     timeArray[j] = tempArray[j].timeToComplete;
   }
-console.log(favArray);
-console.log(tempArray);
-console.log(idArray);
-console.log(timeArray);
 await this.setState({favourites: favArray, id: idArray, time: timeArray, favArray: favArray, timeArray:timeArray, Obj: tempArray })
 
 this.sortByTime();
@@ -129,9 +125,6 @@ async removeFav(index, e) {
   e.stopPropagation();
   let removeItem = this.state.id[index];
 
-   console.log(this.state.favourites);
-   console.log();
-
    fetch('/user/me/favorite', {
      headers: {
        'Content-Type': 'application/json',
@@ -175,7 +168,6 @@ for(var k =0; k<this.state.favourites.length; k++) {
     await this.setState ({
       favourites: [], idArray: [], timeArray:[]
     });
-  console.log(this.state.favourites.length);
   }
 
 
@@ -193,14 +185,12 @@ getFavourites() {
       <span  class="glyphicon glyphicon glyphicon-remove" onClick={this.removeFav.bind(this, i)}></span>
       </ListGroupItem>)
   }
-  return <div>{favItems}</div>;
+  return <div className="well">{favItems}</div>;
 
 }
 
   // render component
   render() {
-
-    var favs = this.state.favourites;
     return (
       <div classNtimeame="MySavedRecipes">
       <h2>Mina sparade recept</h2>

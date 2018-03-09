@@ -25,7 +25,7 @@ class Main extends Component {
           <Route path='/recipe/:id' component={Recipe} />
           <Route path='/register' component={Register}/>
           <Route path='/login' component={Login}/>
-          <Route path='/publicprofile/:id' component={PublicProfile}/>
+          <Route path='/publicprofile/:id' component={PublicProfile}/>  
 	  <Route exact path='/' component={Home}/>
 	  <PrivateRoute path='/pages' component={MyPages}/>
 	  <PrivateRoute path='/new' component={NewRecipe}/>
