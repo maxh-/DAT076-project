@@ -10,6 +10,7 @@ import {
   Col,
   Button
 } from 'react-bootstrap';
+import classNames from 'classnames';
 import './css/EditRecipe.css';
 import Auth from '../util/AuthService';
 
@@ -85,7 +86,7 @@ const EditRecipe = observer(class EditRecipe extends Component {
               name="mealType"
               >
               {this.store.allMealTypes.map(tag => {
-                return <option value={tag.id}>{tag.tag}</option>;
+                return <option value={tag.id} id={tag.id}>{tag.tag}</option>;
               })}
             </FormControl>
           </FormGroup>
@@ -104,7 +105,7 @@ const EditRecipe = observer(class EditRecipe extends Component {
           {/**  Taggar  **/}
 
           {this.store.allTags.map(tag => {
-            return <TagButton store={this.store} tag={tag} />
+            return <TagButton store={this.store} tag={tag} id={tag.id}/>
           })}
 
 
@@ -145,20 +146,30 @@ const formatTime = (minutes) => {
   return `${hours}:${mins}`;
 }
 
-class TagButton extends Component {
+const TagButton = observer(class TagButton extends Component {
   constructor(props) {
     super(props);
     this.store = props.store;
+    this.tag = props.tag;
     this.state = {
-      checked: props.tag.checked,
-      id: props.tag.id,
-      name: props.tag.tag
+      checked: this.isSelected(props.tag)
     };
   }
 
-  render() {
-    return (<Button className={this.state.checked ? "active" : ""}>{this.state.name}</Button>);
+  isSelected(tag) {
+    if (this.store.otherTags.find(otherTag => otherTag.id === tag.id)) {
+      return true;
+    }
+    return false;
   }
-}
+
+  async componentDidMount() {
+    console.log(this.state);
+  }
+
+  render() {
+    return <Button className={this.state.checked ? 'active' : ''}>{this.tag.tag}</Button>;
+  }
+});
 
 export default EditRecipe;

@@ -23,12 +23,6 @@ class EditRecipeStore {
         this.otherTags = this.recipe.Tags.filter(tag => {
           return !this.allMealTypes.includes(tag);
         });
-        this.allTags.map(tag => {
-          // add 'checked' boolean prop to tags in allTags
-          this.otherTags.find(otherTag => otherTag.id === tag.id)
-            ? tag.checked = true
-            : tag.checked = false;
-        });
       }),
       setMealType: (id) => {
         const oldMealType = this.mealType;
@@ -42,6 +36,10 @@ class EditRecipeStore {
         this.recipe.Tags[replaceIndex] = newMealType;
       }
     })
+  }
+
+  getTag(id) {
+    return this.allTags.find(tag => tag.id === id);
   }
 }
 
