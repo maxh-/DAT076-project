@@ -24,31 +24,39 @@ const Recipe = observer( class Recipe extends Component {
       exists: false,
       id: "",
       liked: false,
-      style: ""
+      style: "",
+      saved: false,
+      savedStyle: {backgroundColor: "white"}
 
     }
     RecipeStore.getOne(this.props.match.params.id);
   }
 
   async componentDidMount() {
+    await RecipeStore.getOne(this.props.match.params.id);
     let id = this.props.match.params.id;
-    await fetch('/user/me/likes', {
-      headers: {
-        'Authorization': 'JWT '+ Auth.token
-      },
-      method: 'GET'
-      })
-      .then(res => res.json())
-      .then(res => {
-        this.setState({
-          liked: (undefined !== res.likes.find(function(rec){
-            return rec.id === parseInt(RecipeStore.recipe.id,10)
-          }))
-        });
-    });
-    await fetch('/recipe/'+id, {
+    if(Auth.isLoggedIn) {
+      await fetch('/api/user/me/likes', {
+        headers: {
+          'Authorization': 'JWT '+ Auth.token
+        },
+        method: 'GET'
+        })
+        .then(res => res.json())
+        .then(res => {
+          console.log(res.likes);
+          console.log(RecipeStore.recipe.id);
+          this.setState({
+            liked: (undefined !== res.likes.find(function(rec){
+              return rec.id === parseInt(RecipeStore.recipe.id,10)
+            }))
+          });
+      });
+    }
+    await fetch('/api/recipe/'+id, {
       method: 'GET',
-    }).then(res => res.json())
+    })
+    .then(res => res.json())
     .then(res => {
       let btnColor = this.state.liked ? '#C5E1A5' : "white";
       this.setState({
@@ -68,7 +76,7 @@ const Recipe = observer( class Recipe extends Component {
         description: error
       })
     });
-    await fetch('/user/'+RecipeStore.recipe.UserId, {
+    await fetch('/api/user/'+RecipeStore.recipe.UserId, {
       method: 'GET'
     })
     .then(res => res.json())
@@ -77,19 +85,34 @@ const Recipe = observer( class Recipe extends Component {
     }));
   }
 
-  handleLike() {
-    if(Auth.isLoggedIn){
-      RecipeStore.like(this.state.id,Auth.token);
-      let btnColor = !this.state.liked ? '#C5E1A5' : "white";
-      this.setState(prevState =>({
-        liked: !prevState.liked,
-        style: { backgroundColor: btnColor,color: '#2ecc71'}
-      }));
-    } else {
+  async saveRecipe() {
+    if(Auth.isLoggedIn) {
+      const meth = !this.state.saved ? 'POST' : 'DELETE';
+      await fetch('/api/user/me/favorite', {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'JWT '+Auth.token,
+        },
+        method: meth,
+        body: JSON.stringify({
+          recipeId: this.state.id
+        })
+      })
+      .then(res => res.json())
+      .then(res => {
+        if(res.success) {
+          const color = this.state.saved ?
+          {backgroundColor: 'white'} : {backgroundColor: '#fab1a0'};
+          this.setState(prevState => ({
+            savedStyle: color,
+            saved: !prevState.saved
+          }));
+        }
+      });
+    }
+    else {
       window.location = '/login';
     }
-  }
-  componentDidUpdate() {
   }
 
   cookingMode(e){
@@ -109,42 +132,35 @@ const Recipe = observer( class Recipe extends Component {
       }));
     }
   }
-  getUser() {
-    return RecipeStore.recipe.UserId
-  }
-  showJumbotron() {
-    if(this.state.exists) {
-      let imgStyle = {
-        height:"32px",
-        paddingBottom:"6px",
-        marginLeft:"3px"
-      };
-      const link = "/publicprofile/" + RecipeStore.recipe.UserId;
-      return (
-        <div>
-          <p>
-            <span onClick={this.handleLike.bind(this)}>
-              <small>{ RecipeStore.recipe.Likes }</small>
-              <img
-                  src="/img/oven-like.svg"
-                  style={imgStyle}/>
-            </span>
-            <span>
-              <Glyphicon glyph=" glyphicon glyphicon-time " id="glyph-space" />
-              <small> { RecipeStore.recipe.timeToComplete } minuter </small>
-            </span>
-            <span>
-              <Glyphicon glyph=" glyphicon glyphicon-user " id="glyph-space" />
-              <small><a href={link}>{ this.state.author }</a></small>
-            </span>
-          </p>
-          <p>
-           { RecipeStore.recipe.tweet }
-          </p>
-        </div>
-      );
+
+
+  handleLike() {
+    if(Auth.isLoggedIn){
+      const meth = this.state.liked ? 'DELETE' : 'POST';
+      fetch('/api/recipe/'+this.state.id+'/like', {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'JWT '+Auth.token
+          },
+          method: meth,
+      })
+      .then((res) => res.json())
+      .then((res) => {
+          if(res.success) {
+            RecipeStore.getOne(this.state.id);
+            let btnColor = !this.state.liked ? '#C5E1A5' : "white";
+            this.setState(prevState =>({
+              liked: !prevState.liked,
+              style: { backgroundColor: btnColor,color: '#2ecc71'}
+            }));
+          }
+      })
+      .catch(error => console.log(error));
+    } else {
+      window.location = '/login';
     }
   }
+
   likeButton() {
     return(
       <Button
@@ -158,6 +174,42 @@ const Recipe = observer( class Recipe extends Component {
       </Button>);
   }
 
+  getUser() {
+    return RecipeStore.recipe.UserId
+  }
+  showJumbotron() {
+    if(this.state.exists) {
+      const link = "/publicprofile/" + RecipeStore.recipe.UserId;
+      return (
+        <div>
+          <p>
+            <span>
+              {this.likeButton()}
+            </span>
+            <span>
+              <Button id="save-btn"
+                onClick={this.saveRecipe.bind(this)}
+                style={this.state.savedStyle}>
+                <Glyphicon glyph="glyphicon glyphicon-heart " id="glyph-heart" />
+                <small>Spara</small>
+              </Button>
+            </span>
+            <span>
+              <Glyphicon glyph=" glyphicon glyphicon-time "  />
+              <small> { RecipeStore.recipe.timeToComplete } minuter </small>
+            </span>
+            <span>
+              <Glyphicon glyph=" glyphicon glyphicon-user "  />
+              <small><a href={link}>{ this.state.author }</a></small>
+            </span>
+          </p>
+          <p>
+           { RecipeStore.recipe.tweet }
+          </p>
+        </div>
+      );
+    }
+  }
   showTags() {
     let tgs = [];
     this.state.tags.forEach(function(tag) {
