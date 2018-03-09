@@ -46,7 +46,7 @@ const Recipe = observer( class Recipe extends Component {
           }))
         });
     });
-    fetch('/recipe/'+id, {
+    await fetch('/recipe/'+id, {
       method: 'GET',
     }).then(res => res.json())
     .then(res => {
@@ -68,7 +68,7 @@ const Recipe = observer( class Recipe extends Component {
         description: error
       })
     });
-    fetch('/user/'+RecipeStore.recipe.UserId, {
+    await fetch('/user/'+RecipeStore.recipe.UserId, {
       method: 'GET'
     })
     .then(res => res.json())
