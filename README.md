@@ -133,7 +133,7 @@ ootmappen.
 **RequiresAuth**: YES  
 **Beskrivning**: Hämtar infon om den inloggade användaren
 
-**Path**: /user/me/changePassword  
+**Path**: /user/me/change-password  
 **Method**: POST  
 **RequiresAuth**: YES  
 **JSON**: 
