@@ -25,3 +25,17 @@
 form {
   text-align: left;
 }
+
+.myRecipes {
+  text-align: left;
+  margin-top: 50px;
+}
+
+.editButton {
+  margin-right: 10px;
+}
+
+.recipeName {
+  font-size: 1.2em;
+  margin-bottom: -10px;
+}

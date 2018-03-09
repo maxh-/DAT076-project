@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Col, FormGroup, ControlLabel, FormControl,
   Button, ButtonToolbar, InputGroup, Glyphicon, ToggleButton,
-  ListGroup, ListGroupItem, ToggleButtonGroup,   } from 'react-bootstrap';
+  ListGroup, ListGroupItem, ToggleButtonGroup,   }  from 'react-bootstrap';
 import './css/NewRecipe.css';
 import Auth from '../util/AuthService';
 
@@ -51,7 +51,7 @@ class NewRecipe extends Component {
   componentDidUpdate(prevProps, prevState) {
    // console.log("state: ");
    // console.log(this.state);
-     console.log(this.state.tags);
+     console.log(this.state.ingredients);
 
   }
   handleChange({ target }) {
@@ -252,19 +252,18 @@ class NewRecipe extends Component {
 
   addTags({ target }) {
     if(target.value !== undefined) {
-      if(!this.state.tags.includes(parseInt(target.value,10))) {
+      if(!this.state.tags.includes(target.value)) {
         this.setState({
           tags: this.state.tags.concat(parseInt(target.value,10))
         });
       }
       else {
         this.setState({
-          tags: this.state.tags.filter(word => word !== parseInt(target.value,10))
+          tags: this.state.tags.filter(word => word !== target.value)
         });
       }
     }
   }
-
 
   createIngredients(ing) {
     let targ  = this.state.units.filter(function(un){
