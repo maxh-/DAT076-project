@@ -6,3 +6,7 @@
     margin-top: 5px;
     border-radius: 0px;
 }
+
+.clickable-row:hover {
+    cursor: pointer;
+}

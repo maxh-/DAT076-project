@@ -8,7 +8,11 @@ import {
   HelpBlock,
   Form,
   Col,
-  Button
+  Row,
+  Button,
+  InputGroup,
+  Glyphicon,
+  Table
 } from 'react-bootstrap';
 import classNames from 'classnames';
 import './css/EditRecipe.css';
@@ -49,7 +53,7 @@ const EditRecipe = observer(class EditRecipe extends Component {
             label="Titel"
             onChange={this.handleChange}
             value={this.store.recipe.title}
-          />
+            />
 
           {/**  Tid **/}
 
@@ -61,7 +65,9 @@ const EditRecipe = observer(class EditRecipe extends Component {
               onChange={this.handleChange}
               name="timeToComplete"
               defaultValue={this.store.recipe.timeToComplete}>
-              <option value={0}>{ formatTime(this.store.recipe.timeToComplete) }</option>
+              <option value={0}>
+                { formatTime(this.store.recipe.timeToComplete) }
+              </option>
               <option value={15}>0:15</option>
               <option value={30}>0:30</option>
               <option value={45}>0:45</option>
@@ -100,20 +106,37 @@ const EditRecipe = observer(class EditRecipe extends Component {
             label="Beskrivning"
             onChange={this.handleChange}
             value={this.store.recipe.tweet}
-          />
+            />
 
           {/**  Taggar  **/}
 
-          <div class="btn-toolbar">
-            <ControlLabel>Taggar</ControlLabel><br />
-            {this.store.otherTags.map(tag => {
-              return <TagButton store={this.store} tag={tag} id={tag.id} isChecked={true}/>
-            })}
-            {this.store.nonSelectedTags.map(tag => {
-              return <TagButton store={this.store} tag={tag} id={tag.id} isChecked={false}/>
-            })}
-          </div>
+          <FormGroup>
+            <div class="btn-toolbar">
+              <ControlLabel>Taggar</ControlLabel><br />
+              {this.store.otherTags.map(tag => {
+                return <TagButton 
+                        store={this.store} 
+                        tag={tag} id={tag.id} 
+                        isChecked={true}
+                        />
+              })}
+              {this.store.nonSelectedTags.map(tag => {
+                return <TagButton 
+                        store={this.store} 
+                        tag={tag} 
+                        id={tag.id} 
+                        isChecked={false}
+                        />
+              })}
+            </div>
+          </FormGroup>
 
+          {/**  Ingredienser  **/}
+
+          <FormGroup>
+            <ControlLabel>Ingredienser</ControlLabel><br />
+            <IngredientList store={this.store} />
+          </FormGroup>
 
         </form>
         <pre>{ JSON.stringify(this.store.recipe, null, 2) }</pre>
@@ -191,22 +214,47 @@ const TagButton = observer(class TagButton extends Component {
   }
 });
 
-const Ingredients = observer(class Ingredients extends Component {
+const IngredientList = observer(class Ingredients extends Component {
   constructor(props) {
     super(props);
     this.store = props.store;
     this.state = {
       ingredients: this.store.recipe.RecipeIngredients
     };
+    this.deleteIngredient = this.deleteIngredient.bind(this);
   }
+
   render() {
     return (
-      <div>
-        {this.state.ingredients.map(ingredient => {
-          return ingredient.Ingredient.name + ' ';
-        })}
-      </div>
+      <FormGroup>
+        <Row>
+          <Col md={7}>
+            <Table hover>
+              <tbody>
+                {this.store.recipe.RecipeIngredients.map(ingredient => {
+                  return (
+                    <tr 
+                    className="clickable-row" 
+                    key={ingredient.Ingredient.id}
+                    onClick={this.deleteIngredient}
+                    >
+                      <td>
+                        <Glyphicon glyph="remove" className="pull-right"/>
+                        {' ' + ingredient.Ingredient.name + ' '}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </Table>
+          </Col>
+        </Row>
+      </FormGroup>
     );
+  }
+
+  deleteIngredient({ target }) {
+
   }
 });
 

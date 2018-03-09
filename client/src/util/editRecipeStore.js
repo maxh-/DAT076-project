@@ -6,6 +6,7 @@ class EditRecipeStore {
     extendObservable(this, {
       recipe: {},
       id: recipeId,
+      units: [],
       allTags: [],
       allMealTypes: [],
       nonSelectedTags: [],
@@ -24,6 +25,7 @@ class EditRecipeStore {
           this.allMealTypes = filterTags(res.data.tags, [1, 2, 3, 4]);
         });
         this.updateTags();
+        get('/unit').then(res => this.units = res.data.recipe);
       }),
       updateTags: () => {
         this.otherTags = this.recipe.Tags.filter(tag => {
@@ -53,7 +55,7 @@ class EditRecipeStore {
 
       },
       deselectTag(id) {
-        
+
       }
     })
   }
