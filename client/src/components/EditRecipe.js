@@ -12,7 +12,8 @@ import {
   Button,
   InputGroup,
   Glyphicon,
-  Table
+  Table,
+  Panel
 } from 'react-bootstrap';
 import classNames from 'classnames';
 import './css/EditRecipe.css';
@@ -140,6 +141,13 @@ const EditRecipe = observer(class EditRecipe extends Component {
             <IngredientList store={this.store} />
           </FormGroup>
 
+          {/**  Steg  **/}
+
+          <FormGroup>
+            <ControlLabel>Steg</ControlLabel>
+            <StepsList store={this.store} />
+          </FormGroup>
+
         </form>
         <pre>{ JSON.stringify(this.store.recipe, null, 2) }</pre>
       </div>
@@ -223,9 +231,30 @@ const IngredientList = observer(class Ingredients extends Component {
     super(props);
     this.store = props.store;
     this.state = {
-      error: false,
-      errorMessages: []
+      showError: false,
+      errorMessage: ''
     };
+  }
+
+  renderError() {
+    if (this.state.showError) {
+      return (
+        <Row>
+          <Col md={10}>
+            <Panel bsStyle="danger">
+              <Panel.Heading>
+                <Panel.Title componentClass="h3">Fel:</Panel.Title>
+              </Panel.Heading>
+              <Panel.Body>
+                {this.state.errorMessage}
+              </Panel.Body>
+            </Panel>  
+          </Col>
+        </Row>
+      );
+    } else {
+      return null;
+    }
   }
 
   render() {
@@ -263,6 +292,7 @@ const IngredientList = observer(class Ingredients extends Component {
             </Table>
           </Col>
         </Row>
+        { this.renderError() }
         <Row>
             <FormGroup
                 controlId="formBasicText">
@@ -270,7 +300,7 @@ const IngredientList = observer(class Ingredients extends Component {
                   <Col sm={6} className="small-padding">
                     <FormControl
                       type="text"
-                      placeholder="Ingrediens"
+                      placeholder="Ny ingrediens"
                       inputRef={(a) => this.ingredient = a}
                     />
                   </Col>
@@ -286,14 +316,13 @@ const IngredientList = observer(class Ingredients extends Component {
                      componentClass="select"
                      defaultValue="l"
                      inputRef={(c) => this.unit = c }
-                     onChange={this.handleChangeUnit.bind(this)}
                      name="UnitId"
                      >
                       { this.makeUnits() }
                     </FormControl>
                   </Col>
                   <Col xs={4} sm={2} className="add-btn">
-                    <Button 
+                    <Button
                      onClick={this.addIngredient.bind(this)} 
                      className="fillWidth btn btn-primary"
                      >
@@ -321,10 +350,6 @@ const IngredientList = observer(class Ingredients extends Component {
     return uns;
   }
 
-  handleChangeUnit({target}) {
-    console.log(target);
-  }
-
   deleteIngredient({ target }) {
     //const id = parseInt(target.id);
     const number = parseInt(target.id);
@@ -340,26 +365,109 @@ const IngredientList = observer(class Ingredients extends Component {
   }
 
   addIngredient(e) {
-    const number = this.state.number;
     const ingredientName  = this.ingredient.value;
-    const amount    = this.amount.value;
-    const UnitId    = parseInt(this.unit.value);
+    const amount          = this.amount.value;
+    const UnitId          = parseInt(this.unit.value);
     
-    this.store.recipe.RecipeIngredients.push({
-      number: this.store.recipe.RecipeIngredients.length+1,
-      amount: amount,
-      UnitId: UnitId,
-      Ingredient: { 
-        name: ingredientName
-      },
-      Unit: {
-        name: this.store.units.find(unit => unit.id === UnitId).name
-      }
+    if (this.validateNewIngredient()) {
+      this.store.recipe.RecipeIngredients.push({
+        number: this.store.recipe.RecipeIngredients.length+1,
+        amount: amount,
+        UnitId: UnitId,
+        Ingredient: { 
+          name: ingredientName
+        },
+        Unit: {
+          name: this.store.units.find(unit => unit.id === UnitId).name
+        }
+      });
+      
+      this.ingredient.value = "";
+      this.amount.value = "";
+      this.unit.value = "1";
+    }
+  }
+
+  validateNewIngredient() {
+    const ingredientName = this.ingredient.value;
+    const amount         = this.amount.value;
+
+    this.setState({
+      showError: false,
+      errorMessage: ''
     });
-    
-    this.ingredient.value = "";
-    this.amount.value = "";
-    this.unit.value = "1";
+
+    if (!/[a-zåäö]+/i.test(ingredientName.replace(/ /g, ''))) {
+      this.setState({
+        showError: true,
+        errorMessage: 'Ingrediensnamn kan bara bestå av bokstäver och mellanslag.'
+      })
+      return false;
+    }
+
+    if (!/[0-9]+/.test(amount)) {
+      this.setState({
+        showError: true,
+        errorMessage: 'Mängd kan bara bestå av siffror.'
+      })
+      return false;
+    }
+
+    return true;
+  }
+});
+
+const StepsList = observer(class StepsList extends Component {
+  constructor(props) {
+    super(props);
+    this.store = props.store;
+    this.handleChange = this.handleChange.bind(this);
+    this.deleteStep = this.deleteStep.bind(this);
+  }
+
+  render() {
+    return (
+      <Row>
+        <Col md={10}>
+          <FormGroup>
+            {this.store.recipe.Steps.map(step => {
+              return (
+                <Row className="step">                  
+                  <Col md={11}>
+                    <FormControl
+                      type="text"
+                      value={step.instruction}
+                      onChange={this.handleChange}
+                      id={step.number}
+                    />
+                  </Col>
+                  <Col md={1}>
+                    <Button 
+                      id={step.number} 
+                      onClick={this.deleteStep} 
+                      className="btn-block"
+                      >
+                      <Glyphicon id={step.number} glyph="remove" />
+                    </Button>
+                  </Col>
+                </Row>
+              );
+            })}
+          </FormGroup>
+        </Col>
+      </Row>
+    );
+  }
+
+  deleteStep({ target }) {
+    console.log(target.id);
+  }
+
+  handleChange({ target }) {
+    const id = parseInt(target.id);
+    console.log(id);
+    this.store.recipe.Steps.find(step => {step.id === id).instruction = 
+      target.value;
   }
 });
 

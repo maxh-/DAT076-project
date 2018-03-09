@@ -16,5 +16,14 @@
 }
 
 .add-btn {
-    padding-right: 5px;
+    padding-right: 0px;
+    padding-left: 5px;
+}
+
+.step {
+    margin-bottom: 5px;
+}
+
+.delete-step-btn {
+    padding: 0px;
 }
