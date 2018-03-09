@@ -103,7 +103,7 @@ const Recipe = observer( class Recipe extends Component {
   }
   async saveRecipe() {
     if(Auth.isLoggedIn) {
-      const meth = this.state.saved ? 'POST' : 'DELETE';
+      const meth = !this.state.saved ? 'POST' : 'DELETE';
       await fetch('/user/me/favorite', {
         headers: {
           'Content-Type': 'application/json',
