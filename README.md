@@ -9,7 +9,7 @@ ootmappen.
 # Routes
 
 ## Recipe
-**Path**: /recipe/  
+**Path**: /api/recipe/  
 **Method**: POST  
 **RequiresAuth**: YES  
 **JSON**: 
@@ -42,7 +42,7 @@ ootmappen.
 ```
 **Beskrivning**: Skapa recept, lyckas den så skickas code 201 tillbaka samt receptet. Man kan skicka både ingrediensens namn (Om den inte finns i databasen så skapas en ny då!) eller ingrediensens Id).
 
-**Path**: /recipe/:id  
+**Path**: /api/recipe/:id  
 **Method**: PUT  
 **RequiresAuth**: YES  
 **JSON**: 
@@ -75,37 +75,37 @@ ootmappen.
 ```
 **Beskrivning**: Skapa recept, lyckas den så skickas code 201 tillbaka samt receptet. Man kan skicka både ingrediensens namn (Om den inte finns i databasen så skapas en ny då!) eller ingrediensens Id).
 
-**Path**: /recipe/:id  
+**Path**: /api/recipe/:id  
 **Method**: Get  
 **RequiresAuth**: NO  
 **Beskrivning**: Hämtar ett recept
 
-**Path**: /recipe/  
+**Path**: /api/recipe/  
 **Method**: Get  
 **RequiresAuth**: NO  
 **Beskrivning**: Hämtar alla recept
 
-**Path**: /recipe/search?tags=A&q=B  
+**Path**: /api/recipe/search?tags=A&q=B  
 **Method**: Get  
 **RequiresAuth**: NO  
 **Beskrivning**: söker på ett recept. A är kommaseparerade ids ex 1,2,3. B är en sträng. För att bara söka på ena av dem så strunda i att inkludera den andra.
 
-**Path**: /recipe/top?limit=A  
+**Path**: /api/recipe/top?limit=A  
 **Method**: Get  
 **RequiresAuth**: NO  
 **Beskrivning**: Hämtar top mest gillade/favoriserade recept. Ifall en limit är skickad så får man de antalet recept annars får man 12.
 
-**Path**: /recipe/:id/like  
+**Path**: /api/recipe/:id/like  
 **Method**: Get  
 **RequiresAuth**: NO  
 **Beskrivning**: Hämtar likes för ett recept
 
-**Path**: /recipe/:id/like  
+**Path**: /api/recipe/:id/like  
 **Method**: POST  
 **RequiresAuth**: YES  
 **Beskrivning**: Likear ett recept
 
-**Path**: /recipe/:id/like  
+**Path**: /api/recipe/:id/like  
 **Method**: DELETE  
 **RequiresAuth**: YES  
 **Beskrivning**: Tar bort like från ett recept
@@ -113,27 +113,27 @@ ootmappen.
 
 ## User
 
-**Path**: /user/  
+**Path**: /api/user/  
 **Method**: GET  
 **RequiresAuth**: NO  
 **Beskrivning**: Hämtar publik info om alla användare
 
-**Path**: /user/:id  
+**Path**: /api/user/:id  
 **Method**: GET  
 **RequiresAuth**: NO  
 **Beskrivning**: hämtar publik info om en specifik användare
 
-**Path**: /user/:id/recipes  
+**Path**: /api/user/:id/recipes  
 **Method**: GET  
 **RequiresAuth**: NO  
 **Beskrivning**: hämtar recept som en användare har skapat
 
-**Path**: /user/me/  
+**Path**: /api/user/me/  
 **Method**: GET  
 **RequiresAuth**: YES  
 **Beskrivning**: Hämtar infon om den inloggade användaren
 
-**Path**: /user/me/change-password  
+**Path**: /api/user/me/change-password  
 **Method**: POST  
 **RequiresAuth**: YES  
 **JSON**: 
@@ -146,7 +146,7 @@ ootmappen.
 ```
 *Beskrivning**: ändrar lösenord på den inloggade användaren.
 
-**Path**: /user/me/  
+**Path**: /api/user/me/  
 **Method**: POST  
 **RequiresAuth**: YES  
 **JSON**: 
@@ -159,18 +159,18 @@ ootmappen.
 ```
 *Beskrivning**: ändrar uppgifter på den inloggade användaren. firstName och lastName får inte vara tomma! 
 
-**Path**: /user/me/likes  
+**Path**: /api/user/me/likes  
 **Method**: GET  
 **RequiresAuth**: YES  
   *Beskrivning**: hämtar recept som användaren har likeat
 
-**Path**: /user/me/favorite  
+**Path**: /api/user/me/favorite  
 **Method**: GET  
 **RequiresAuth**: YES  
   *Beskrivning**: hämtar alla favoriter till en användare
 
 
-**Path**: /user/me/favorite  
+**Path**: /api/user/me/favorite  
 **Method**: POST  
 **RequiresAuth**: YES  
 **JSON**: 
@@ -183,7 +183,7 @@ ootmappen.
   *Beskrivning**: Lägger till ett recept till favoriter för den inloggade användaren
 
 
-**Path**: /user/me/favorite  
+**Path**: /api/user/me/favorite  
 **Method**: DELETE  
 **RequiresAuth**: YES  
 **JSON**: 
@@ -197,12 +197,12 @@ ootmappen.
   
   
 ## Auth
-**Path**: /auth/  
+**Path**: /api/auth/  
 **Method**: GET  
 **RequiresAuth**: YES  
 **Beskrivning**: hämtar den inloggade användaren ifall personen är inloggad
 
-**Path**: /auth/register  
+**Path**: /api/auth/register  
 **Method**: POST  
 **RequiresAuth**: NO  
 **JSON**: 
@@ -217,7 +217,7 @@ ootmappen.
 ```
 **Beskrivning**: Skapar ny användare, code: 201 ifall det funkade.
 
-**Path**: /auth/login  
+**Path**: /api/auth/login  
 **Method**: POST  
 **RequiresAuth**: NO  
 **JSON**: 
@@ -229,7 +229,7 @@ ootmappen.
 ```
 **Beskrivning**: Loggar in användaren. Får användaren som user i response.
 
-**Path**: /auth/forgot  
+**Path**: /api/auth/forgot  
 **Method**: POST  
 **RequiresAuth**: NO  
 **JSON**: 
@@ -240,12 +240,12 @@ ootmappen.
 ```
 **Beskrivning**: Skickar mail till användaren med en länk med en token i så de kan ändra sitt lösenord.
 
-**Path**: /auth/reset/:token  
+**Path**: /api/auth/reset/:token  
 **Method**: GET  
 **RequiresAuth**: NO  
 **Beskrivning**: skickar code 200 om token existerar och inte gått ut och token går att hitta i response som `token`
 
-**Path**: /auth/reset/:token  
+**Path**: /api/auth/reset/:token  
 **Method**: POST  
 **RequiresAuth**: NO  
 **JSON**: 
@@ -260,40 +260,40 @@ ootmappen.
 
 
 ## Ingredient
-**Path**: /ingredient/  
+**Path**: /api/ingredient/  
 **Method**: GET  
 **RequiresAuth**: NO  
 **Beskrivning**: hämtar alla ingredienser
 
-**Path**: /ingredient/:id  
+**Path**: /api/ingredient/:id  
 **Method**: GET  
 **RequiresAuth**: NO  
 **Beskrivning**: hämta ingrediens med id 
 
 ## Tag
-**Path**: /tag/  
+**Path**: /api/tag/  
 **Method**: GET  
 **RequiresAuth**: NO  
 **Beskrivning**: hämtar alla taggar
 
-**Path**: /tag/:id  
+**Path**: /api/tag/:id  
 **Method**: GET  
 **RequiresAuth**: NO  
 **Beskrivning**: hämta tag med id
 
 ## Unit
-**Path**: /unit/  
+**Path**: /api/unit/  
 **Method**: GET  
 **RequiresAuth**: NO  
 **Beskrivning**: hämtar alla units
 
-**Path**: /tag/:id  
+**Path**: /api/tag/:id  
 **Method**: GET  
 **RequiresAuth**: NO  
 **Beskrivning**: hämta unit med id
 
 ## Upload
-**Path**: /upload/  
+**Path**: /api/upload/  
 **Method**: POST  
 **RequiresAuth**: NO  
 **FormData**:
@@ -304,7 +304,7 @@ name: String
 **Beskrivning***: laddar upp bilder 
 
 ## Welcome
-**Path**: /welcome/  
+**Path**: /api/welcome/  
 **Method**: GET  
 **RequiresAuth**: NO  
 **Beskrivning**: Svara med en JSON med navia tidiga positiva tankar om framtiden för projektet.
