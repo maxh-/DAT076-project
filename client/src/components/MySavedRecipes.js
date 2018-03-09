@@ -104,7 +104,7 @@ if(target.value === "Nam") {
 
   this.setState({favourites: titleArray, id: idArray, time: timeArray})
 }
-async fillFavorites() {
+/*async fillFavorites() {
   for(var f=1; f<=8; f++) {
 await fetch('/user/me/favorite', {
     headers: {
@@ -120,6 +120,7 @@ await fetch('/user/me/favorite', {
     .then(res => console.log(res));
     }
 }
+*/
 
 async removeFav(index, e) {
   e.stopPropagation();
@@ -150,6 +151,7 @@ async removeFav(index, e) {
   }
 
 async removeAll() {
+
 for(var k =0; k<this.state.favourites.length; k++) {
   let removeItem = this.state.id[k];
     fetch('/user/me/favorite', {
@@ -188,13 +190,14 @@ getFavourites() {
   return <div className="well">{favItems}</div>;
 
 }
-
+/*<Button class="btn btn-danger" onClick={this.fillFavorites.bind(this)}>Fyll databas</Button>*/
   // render component
   render() {
+    console.log(Auth.token);
     return (
       <div classNtimeame="MySavedRecipes">
       <h2>Mina sparade recept</h2>
-      <Button class="btn btn-danger" onClick={this.fillFavorites.bind(this)}>Fyll databas</Button>
+
         <FormGroup controlId="formControlsSelect">
         <Col sm={2} componentClass={ControlLabel}>
             Sortera efter
