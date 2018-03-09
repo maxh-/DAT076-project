@@ -32,7 +32,7 @@ let tempArray = [];
 let favArray = [];
 let idArray = [];
 let timeArray =[];
-await  fetch('/user/me/favorite', {
+await  fetch('/api/user/me/favorite', {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': 'JWT '+ Auth.token
@@ -126,7 +126,7 @@ async removeFav(index, e) {
   e.stopPropagation();
   let removeItem = this.state.id[index];
 
-   fetch('/user/me/favorite', {
+   fetch('/api/user/me/favorite', {
      headers: {
        'Content-Type': 'application/json',
        'Authorization': 'JWT '+ Auth.token
@@ -154,7 +154,7 @@ async removeAll() {
 
 for(var k =0; k<this.state.favourites.length; k++) {
   let removeItem = this.state.id[k];
-    fetch('/user/me/favorite', {
+    fetch('/api/user/me/favorite', {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'JWT '+ Auth.token

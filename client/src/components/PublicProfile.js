@@ -26,7 +26,7 @@ const PublicProfile = observer(class PublicProfile extends Component {
 
 async getUser() {
   let usr = [];
-  await  fetch('/user/' + this.id , {
+  await  fetch('/api/user/' + this.id , {
        headers: {
          'Content-Type': 'application/json'
        },
@@ -43,7 +43,7 @@ async getUser() {
    let recipes = [];
 
 
-  await fetch('/user/'+this.id+'/recipes', {
+  await fetch('/api/user/'+this.id+'/recipes', {
          headers: {
            'Content-Type': 'application/json'
          },
@@ -57,7 +57,7 @@ async getUser() {
                  recipes: recipes, userId: this.props.match.params.id
                });
 
-               await fetch('/recipe/1/like', {
+               await fetch('/api/recipe/1/like', {
                       headers: {
                         'Content-Type': 'application/json'
                       },
