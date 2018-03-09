@@ -25,12 +25,11 @@ const Recipe = observer( class Recipe extends Component {
       id: "",
       liked: false,
       style: ""
-
     }
-    RecipeStore.getOne(this.props.match.params.id);
   }
 
   async componentDidMount() {
+    await RecipeStore.getOne(this.props.match.params.id);
     let id = this.props.match.params.id;
     if(Auth.isLoggedIn) {
       await fetch('/user/me/likes', {
@@ -41,6 +40,8 @@ const Recipe = observer( class Recipe extends Component {
         })
         .then(res => res.json())
         .then(res => {
+          console.log(res.likes);
+          console.log(RecipeStore.recipe.id);
           this.setState({
             liked: (undefined !== res.likes.find(function(rec){
               return rec.id === parseInt(RecipeStore.recipe.id,10)
@@ -48,7 +49,7 @@ const Recipe = observer( class Recipe extends Component {
           });
       });
     }
-    fetch('/recipe/'+id, {
+    await fetch('/recipe/'+id, {
       method: 'GET',
     }).then(res => res.json())
     .then(res => {
@@ -237,13 +238,6 @@ const Recipe = observer( class Recipe extends Component {
         </Grid>
 
         <hr />
-        <Row>
-          <Col lg={12}>
-            <Disqus.CommentCount shortname={disqusShortname} config={disqusConfig}>
-            </Disqus.CommentCount>
-            <Disqus.DiscussionEmbed shortname={disqusShortname} config={disqusConfig} />
-          </Col>
-        </Row>
         <Modal
             id="modal"
             show={this.state.show}
@@ -307,3 +301,13 @@ const RecipeImage = observer(class RecipeImage extends Component {
 });
 
 export default Recipe;
+/*
+<Row>
+  <Col lg={12}>
+    <Disqus.CommentCount shortname={disqusShortname} config={disqusConfig}>
+    </Disqus.CommentCount>
+    <Disqus.DiscussionEmbed shortname={disqusShortname} config={disqusConfig} />
+  </Col>
+</Row>
+
+*/

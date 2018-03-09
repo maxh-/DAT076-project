@@ -11,15 +11,14 @@ class RecipeStore {
       image: ""
     });
   }
-  getOne(id) {
-    fetch('/recipe/'+id, {
+  async getOne(id) {
+    await fetch('/recipe/'+id, {
       method: 'GET',
     })
       .then(res => res.json())
       .then((body) => {
         if(body.success && body.recipe) {
           this.recipe = body.recipe;
-          console.log(body.recipe.Likes);
         }
       });
   }
