@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import { Glyphicon, Grid, Row, Col, Button, InputGroup,
-	FormControl, DropdownButton,
+	FormControl, DropdownButton, Label,
 	ToggleButtonGroup, ToggleButton,
 	PageHeader, ButtonToolbar } from 'react-bootstrap';
 import './css/Browse.css';
@@ -116,11 +116,21 @@ const Browse = observer(class Browse extends Component {
 
   searchTerm() {
     return(
-      <div>
-        <h4>{ RecipeStore.getMyTags(this.state.filter) } </h4>
+      <div id="tag-bar">
+        { this.showTags() }
       </div>
     );
   }
+	showTags() {
+		let tags = []
+		console.log(RecipeStore.getMyTags(this.state.filter));
+		RecipeStore.getMyTags(this.state.filter).forEach(function(tag) {
+			tags.push(
+					<span><b>#</b>{ tag }</span>
+			);
+		});
+		return tags;
+	}
 
   handleSubmit(event) {
     if(this.state.searchWord.length>0 || this.state.filter.length>0) {
