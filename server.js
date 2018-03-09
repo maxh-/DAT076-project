@@ -21,6 +21,8 @@ const tag = require('./server/routes/tag');
 const unit = require('./server/routes/unit');
 const upload = require('./server/routes/upload');
 
+const baseUrl = process.env.NODE_ENV == 'production' ? '' : '/api';
+
 const app = express();
 
 app.use(logger('dev'));
@@ -35,15 +37,15 @@ app.use(passportConfig.initialize());
 
 
 // routes
-app.use('/api/welcome', welcome);
-app.use('/api/auth', auth);
-app.use('/api/recipe', recipe);
-app.use('/api/user/me', isAuthenticated, userMe);
-app.use('/api/user', user);
-app.use('/api/ingredient', ingredient);
-app.use('/api/tag', tag);
-app.use('/api/unit', unit);
-app.use('/api/upload', upload);
+app.use(baseUrl + '/welcome', welcome);
+app.use(baseUrl + '/auth', auth);
+app.use(baseUrl + '/recipe', recipe);
+app.use(baseUrl + '/user/me', isAuthenticated, userMe);
+app.use(baseUrl + '/user', user);
+app.use(baseUrl + '/ingredient', ingredient);
+app.use(baseUrl + '/tag', tag);
+app.use(baseUrl + '/unit', unit);
+app.use(baseUrl + '/upload', upload);
 
 
 app.use(function (req, res, next) {
