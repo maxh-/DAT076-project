@@ -24,7 +24,9 @@ const Recipe = observer( class Recipe extends Component {
       exists: false,
       id: "",
       liked: false,
-      style: ""
+      style: "",
+      saved: false,
+      savedStyle: {backgroundColor: "white"}
 
     }
     RecipeStore.getOne(this.props.match.params.id);
@@ -32,23 +34,6 @@ const Recipe = observer( class Recipe extends Component {
 
   async componentDidMount() {
     let id = this.props.match.params.id;
-<<<<<<< HEAD
-    await fetch('/user/me/likes', {
-      headers: {
-        'Authorization': 'JWT '+ Auth.token
-      },
-      method: 'GET'
-      })
-      .then(res => res.json())
-      .then(res => {
-        this.setState({
-          liked: (undefined !== res.likes.find(function(rec){
-            return rec.id === parseInt(RecipeStore.recipe.id,10)
-          }))
-        });
-    });
-    await fetch('/recipe/'+id, {
-=======
     if(Auth.isLoggedIn) {
       await fetch('/user/me/likes', {
         headers: {
@@ -66,9 +51,9 @@ const Recipe = observer( class Recipe extends Component {
       });
     }
     fetch('/recipe/'+id, {
->>>>>>> f37/like-btn
       method: 'GET',
-    }).then(res => res.json())
+    })
+    .then(res => res.json())
     .then(res => {
       let btnColor = this.state.liked ? '#C5E1A5' : "white";
       this.setState({
@@ -116,6 +101,37 @@ const Recipe = observer( class Recipe extends Component {
       window.location = '/login';
     }
   }
+  async saveRecipe() {
+    if(Auth.isLoggedIn) {
+      const meth = this.state.saved ? 'POST' : 'DELETE';
+      await fetch('/user/me/favorite', {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'JWT '+Auth.token,
+        },
+        method: meth,
+        body: JSON.stringify({
+          recipeId: this.state.id
+        })
+      })
+      .then(res => res.json())
+      .then(res => {
+        console.log(res);
+        if(res.success) {
+          const color = this.state.saved ?
+          {backgroundColor: 'white'} : {backgroundColor: '#fab1a0'};
+          console.log(color);
+          this.setState(prevState => ({
+            savedStyle: color,
+            saved: !prevState.saved
+          }));
+        }
+      });
+    }
+    else {
+      window.location = '/login';
+    }
+  }
   componentDidUpdate() {
   }
 
@@ -141,27 +157,27 @@ const Recipe = observer( class Recipe extends Component {
   }
   showJumbotron() {
     if(this.state.exists) {
-      let imgStyle = {
-        height:"32px",
-        paddingBottom:"6px",
-        marginLeft:"3px"
-      };
       const link = "/publicprofile/" + RecipeStore.recipe.UserId;
       return (
         <div>
           <p>
             <span onClick={this.handleLike.bind(this)}>
-              <small>{ RecipeStore.recipe.Likes }</small>
-              <img
-                  src="/img/oven-like.svg"
-                  style={imgStyle}/>
+              {this.likeButton()}
             </span>
             <span>
-              <Glyphicon glyph=" glyphicon glyphicon-time " id="glyph-space" />
+              <Button id="save-btn"
+                onClick={this.saveRecipe.bind(this)}
+                style={this.state.savedStyle}>
+                <Glyphicon glyph="glyphicon glyphicon-heart " id="glyph-heart" />
+                <small>Spara</small>
+              </Button>
+            </span>
+            <span>
+              <Glyphicon glyph=" glyphicon glyphicon-time "  />
               <small> { RecipeStore.recipe.timeToComplete } minuter </small>
             </span>
             <span>
-              <Glyphicon glyph=" glyphicon glyphicon-user " id="glyph-space" />
+              <Glyphicon glyph=" glyphicon glyphicon-user "  />
               <small><a href={link}>{ this.state.author }</a></small>
             </span>
           </p>

@@ -22,6 +22,9 @@
 #like-btn:focus {
 	outline: none;
 }
+#save-btn:hover {
+	background-color: white;
+}
 .modal-header {
 	background-color: #27ae60;
 	color:white;
@@ -111,6 +114,13 @@
 	height: 32px;
 	padding-bottom: 6px;
 	margin-left: 3px;
+}
+#glyph-heart {
+	height: 32px;
+	margin-left: 3px;
+}
+#save-btn {
+	font-size: 20px;
 }
 /* TODO */
 #ingrs {
