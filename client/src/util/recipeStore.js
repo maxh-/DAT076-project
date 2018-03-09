@@ -11,8 +11,8 @@ class RecipeStore {
       image: ""
     });
   }
-  getOne(id) {
-    fetch('/recipe/'+id, {
+  async getOne(id) {
+    await fetch('/recipe/'+id, {
       method: 'GET',
     })
       .then(res => res.json())
@@ -21,25 +21,6 @@ class RecipeStore {
           this.recipe = body.recipe;
         }
       });
-  }
-  like(id,token) {
-    fetch('/recipe/'+id+'/like', {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'JWT '+ token
-        },
-        method: 'POST',
-        body: JSON.stringify({
-          kind : "up"
-        })
-    })
-    .then((body) => {
-      if(body.ok) {
-        this.getOne(id);
-        return this.recipe.Likes;
-      }
-    })
-    .catch(error => console.log(error));
   }
   getAll() {
     fetch('/recipe/top?limit=12', {

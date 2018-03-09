@@ -364,7 +364,39 @@ exports.fill = async () => {
     await recipeController.create(recipes[i], recipes[i].userId);
   }
 
+  await models.Likes.create({userId: 1, recipeId: 1});
+  await models.Likes.create({userId: 1, recipeId: 2});
+  await models.Likes.create({userId: 1, recipeId: 3});
+  await models.Likes.create({userId: 1, recipeId: 4});
+  await models.Likes.create({userId: 1, recipeId: 5});
+  await models.Likes.create({userId: 2, recipeId: 1});
+  await models.Likes.create({userId: 2, recipeId: 2});
+  await models.Likes.create({userId: 2, recipeId: 3});
+  await models.Likes.create({userId: 3, recipeId: 1});
+  await models.Likes.create({userId: 3, recipeId: 7});
+  await models.Likes.create({userId: 3, recipeId: 2});
+  await models.Likes.create({userId: 3, recipeId: 3});
+  await models.Likes.create({userId: 4, recipeId: 5});
+  await models.Likes.create({userId: 4, recipeId: 3});
+  await models.Likes.create({userId: 5, recipeId: 1});
+  await models.Likes.create({userId: 5, recipeId: 3});
+
+  await models.Favorites.create({userId: 1, recipeId: 1});
+  await models.Favorites.create({userId: 1, recipeId: 2});
+  await models.Favorites.create({userId: 1, recipeId: 3});
+  await models.Favorites.create({userId: 1, recipeId: 4});
+  await models.Favorites.create({userId: 1, recipeId: 5});
+  await models.Favorites.create({userId: 2, recipeId: 1});
+  await models.Favorites.create({userId: 2, recipeId: 2});
+  await models.Favorites.create({userId: 2, recipeId: 3});
+  await models.Favorites.create({userId: 3, recipeId: 1});
+  await models.Favorites.create({userId: 3, recipeId: 7});
+  await models.Favorites.create({userId: 4, recipeId: 5});
+  await models.Favorites.create({userId: 5, recipeId: 1});
+
+
   return true;
 };
+
 
 
