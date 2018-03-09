@@ -215,6 +215,7 @@ getFavourites() {
           </Col>
         </FormGroup>
         <br/>
+        <br/>
         <ListGroup>
           {this.getFavourites()}
           <Button class="btn btn-danger" onClick={this.removeAll.bind(this)}>Ta bort alla recept</Button>
