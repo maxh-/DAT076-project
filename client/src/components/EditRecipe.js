@@ -26,6 +26,11 @@ const EditRecipe = observer(class EditRecipe extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleChangeMealType = this.handleChangeMealType.bind(this);
+
+    this.state ={
+      showError: false,
+      message: ''
+    }
   }
 
   componentDidMount() {
@@ -41,115 +46,117 @@ const EditRecipe = observer(class EditRecipe extends Component {
   RenderRecipePage(props) {
     return (
       <div className="edit-recipe">
-        <h2>Redigera recept</h2>
-        <hr />
-        <form>
+        <Col md={10} mdOffset={1}>
+          <h2>Redigera recept</h2>
+          <hr />
+          <form>
 
-          {/**  Titel **/}
+            {/**  Titel **/}
 
-          <FieldGroup
-            id="title"
-            name="title"
-            type="text"
-            label="Titel"
-            onChange={this.handleChange}
-            value={this.store.recipe.title}
-            />
-
-          {/**  Tid **/}
-
-          <FormGroup controlId="formControlsSelect">
-            <ControlLabel>Tidsåtgång</ControlLabel>
-            <FormControl componentClass="select"
-              placeholder="select"
+            <FieldGroup
+              id="title"
+              name="title"
+              type="text"
+              label="Titel"
               onChange={this.handleChange}
-              name="timeToComplete"
-              defaultValue={this.store.recipe.timeToComplete}>
-              <option value={0}>
-                { formatTime(this.store.recipe.timeToComplete) }
-              </option>
-              <option value={15}>0:15</option>
-              <option value={30}>0:30</option>
-              <option value={45}>0:45</option>
-              <option value={60}>1:00</option>
-              <option value={90}>1:30</option>
-              <option value={120}>2:00</option>
-              <option value={240}>4:00</option>
-              <option value={480}>8:00</option>
-              <option value={1440}>24:00+</option>
-            </FormControl>
-          </FormGroup>
+              value={this.store.recipe.title}
+              />
 
-          {/**  Måltid  **/}
+            {/**  Tid **/}
 
-          <FormGroup controlId="formControlsSelect">
-            <ControlLabel>Måltid</ControlLabel>
-            <FormControl
-              componentClass="select"
-              placeholder="select"
-              value={this.store.mealType.id}
-              onChange={this.handleChangeMealType}
-              name="mealType"
-              >
-              {this.store.allMealTypes.map(tag => {
-                return <option key={tag.id} value={tag.id} id={tag.id}>{tag.tag}</option>;
-              })}
-            </FormControl>
-          </FormGroup>
+            <FormGroup controlId="formControlsSelect">
+              <ControlLabel>Tidsåtgång</ControlLabel>
+              <FormControl componentClass="select"
+                placeholder="select"
+                onChange={this.handleChange}
+                name="timeToComplete"
+                defaultValue={this.store.recipe.timeToComplete}>
+                <option value={0}>
+                  { formatTime(this.store.recipe.timeToComplete) }
+                </option>
+                <option value={15}>0:15</option>
+                <option value={30}>0:30</option>
+                <option value={45}>0:45</option>
+                <option value={60}>1:00</option>
+                <option value={90}>1:30</option>
+                <option value={120}>2:00</option>
+                <option value={240}>4:00</option>
+                <option value={480}>8:00</option>
+                <option value={1440}>24:00+</option>
+              </FormControl>
+            </FormGroup>
 
-          {/**  Beskrivning  **/}
+            {/**  Måltid  **/}
 
-          <FieldGroup
-            id="tweet"
-            name="tweet"
-            type="text"
-            label="Beskrivning"
-            onChange={this.handleChange}
-            value={this.store.recipe.tweet}
-            />
+            <FormGroup controlId="formControlsSelect">
+              <ControlLabel>Måltid</ControlLabel>
+              <FormControl
+                componentClass="select"
+                placeholder="select"
+                value={this.store.mealType.id}
+                onChange={this.handleChangeMealType}
+                name="mealType"
+                >
+                {this.store.allMealTypes.map(tag => {
+                  return <option key={tag.id} value={tag.id} id={tag.id}>{tag.tag}</option>;
+                })}
+              </FormControl>
+            </FormGroup>
 
-          {/**  Taggar  **/}
+            {/**  Beskrivning  **/}
 
-          <FormGroup>
-            <div className="btn-toolbar">
-              <ControlLabel>Taggar</ControlLabel><br />
-              {this.store.otherTags.map(tag => {
-                return <TagButton 
-                        store={this.store} 
-                        tag={tag} 
-                        id={tag.id} 
-                        key={tag.id} 
-                        isChecked={true}
-                        />
-              })}
-              {this.store.nonSelectedTags.map(tag => {
-                return <TagButton 
-                        store={this.store} 
-                        tag={tag} 
-                        id={tag.id} 
-                        key={tag.id}
-                        isChecked={false}
-                        />
-              })}
-            </div>
-          </FormGroup>
+            <FieldGroup
+              id="tweet"
+              name="tweet"
+              type="text"
+              label="Beskrivning"
+              onChange={this.handleChange}
+              value={this.store.recipe.tweet}
+              />
 
-          {/**  Ingredienser  **/}
+            {/**  Taggar  **/}
 
-          <FormGroup>
-            <ControlLabel>Ingredienser</ControlLabel><br />
-            <IngredientList store={this.store} />
-          </FormGroup>
+            <FormGroup>
+              <div className="btn-toolbar">
+                <ControlLabel>Taggar</ControlLabel><br />
+                {this.store.otherTags.map(tag => {
+                  return <TagButton 
+                          store={this.store} 
+                          tag={tag} 
+                          id={tag.id} 
+                          key={tag.id} 
+                          isChecked={true}
+                          />
+                })}
+                {this.store.nonSelectedTags.map(tag => {
+                  return <TagButton 
+                          store={this.store} 
+                          tag={tag} 
+                          id={tag.id} 
+                          key={tag.id}
+                          isChecked={false}
+                          />
+                })}
+              </div>
+            </FormGroup>
 
-          {/**  Steg  **/}
+            {/**  Ingredienser  **/}
 
-          <FormGroup>
-            <ControlLabel>Steg</ControlLabel>
-            <StepsList store={this.store} />
-          </FormGroup>
+            <FormGroup>
+              <ControlLabel>Ingredienser</ControlLabel><br />
+              <IngredientList store={this.store} />
+            </FormGroup>
 
-        </form>
-        <pre>{ JSON.stringify(this.store.recipe, null, 2) }</pre>
+            {/**  Steg  **/}
+
+            <FormGroup>
+              <ControlLabel>Steg</ControlLabel>
+              <StepsList store={this.store} />
+            </FormGroup>
+
+          </form>
+          <pre>{ JSON.stringify(this.store.recipe, null, 2) }</pre>
+        </Col>
       </div>
     );
   }
@@ -261,7 +268,7 @@ const IngredientList = observer(class Ingredients extends Component {
     return (
       <FormGroup>
         <Row>
-          <Col md={10}>
+          <Col md={12}>
             <Table hover>
               <tbody>
                 {this.store.recipe.RecipeIngredients.map(ingredient => {
@@ -296,7 +303,7 @@ const IngredientList = observer(class Ingredients extends Component {
         <Row>
             <FormGroup
                 controlId="formBasicText">
-                <Col xs={12} md={10}>
+                <Col xs={12} md={12}>
                   <Col sm={6} className="small-padding">
                     <FormControl
                       type="text"
@@ -405,7 +412,7 @@ const IngredientList = observer(class Ingredients extends Component {
       return false;
     }
 
-    if (!/[0-9]+/.test(amount)) {
+    if (!/[\d]+/.test(amount)) {
       this.setState({
         showError: true,
         errorMessage: 'Mängd kan bara bestå av siffror.'
@@ -421,14 +428,22 @@ const StepsList = observer(class StepsList extends Component {
   constructor(props) {
     super(props);
     this.store = props.store;
+    
+    this.state = {
+      newStep: ''
+    };
+
     this.handleChange = this.handleChange.bind(this);
     this.deleteStep = this.deleteStep.bind(this);
+    this.handleChangeNewStep = this.handleChangeNewStep.bind(this);
+    this.deleteStep = this.deleteStep.bind(this);
+    this.addStep = this.addStep.bind(this);
   }
 
   render() {
     return (
       <Row>
-        <Col md={10}>
+        <Col md={12}>
           <FormGroup>
             {this.store.recipe.Steps.map(step => {
               return (
@@ -454,19 +469,57 @@ const StepsList = observer(class StepsList extends Component {
               );
             })}
           </FormGroup>
+          <FormGroup>
+            <Row className="step">                  
+              <Col md={11}>
+                <FormControl
+                  type="text"
+                  placeholder="Nytt steg"
+                  value={this.state.newStep}
+                  onChange={this.handleChangeNewStep}
+                />
+              </Col>
+              <Col md={1}>
+                <Button 
+                  onClick={this.addStep} 
+                  className="btn btn-primary fullWidth btn-block add-btn"
+                  >
+                  <Glyphicon glyph="plus" />
+                </Button>
+              </Col>
+            </Row>
+          </FormGroup>
         </Col>
       </Row>
     );
   }
 
+  handleChangeNewStep({ target }) {
+    this.setState({
+      newStep: target.value
+    });
+  }
+
   deleteStep({ target }) {
     console.log(target.id);
+    const id = parseInt(target.id);
+    this.store.recipe.Steps =
+      this.store.recipe.Steps.filter(step => step.number !== id);
+    this.store.recipe.Steps.map(step => {
+      if (step.number > id) step.number--;
+    });
+  }
+
+  addStep() {
+    this.store.recipe.Steps.push({
+      instruction: this.state.newStep,
+      number: this.store.recipe.Steps.length+1
+    })
   }
 
   handleChange({ target }) {
     const id = parseInt(target.id);
-    console.log(id);
-    this.store.recipe.Steps.find(step => step.id === id).instruction = 
+    this.store.recipe.Steps.find(step => step.number === id).instruction = 
       target.value;
   }
 });

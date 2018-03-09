@@ -33,7 +33,7 @@ class EditRecipeStore {
         get('/ingredient').then(res => this.allIngredients = res.data.recipe);
       }),
       updateTags: () => {
-        // update 
+        // update tags
         this.otherTags = this.recipe.Tags.filter(tag => {
           return !this.allMealTypes.find(mealTypeTag => {
             return mealTypeTag.id === tag.id;
