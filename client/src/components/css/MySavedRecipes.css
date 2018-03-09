@@ -1,0 +1,19 @@
+
+.glyphicon:hover{
+  color:red !important;
+}
+
+.btn-toolbar {
+position: relative !important;
+
+}
+.col-xs-3 {
+	padding: 0;
+}
+.col-xs-3 .dropdown {
+	width: 100%;
+}
+.dropdown .dropdown-toggle {
+	width: 100%;
+
+}

@@ -10,11 +10,17 @@ import {
   ControlLabel,
   FormControl,
   HelpBlock,
-  Glyphicon
+  Glyphicon,
+
+  ListGroup,
+  ListGroupItem,
+  Table
+
 } from 'react-bootstrap';
 import LoadingSpinner from './LoadingSpinner';
 
 import Auth from '../util/AuthService';
+import UserRecipeStore from '../util/userRecipeStore';
 
 const MyProfile = observer(class MyProfile extends Component {
 
@@ -26,7 +32,9 @@ const MyProfile = observer(class MyProfile extends Component {
       editedLastName: Auth.user.lastName,
       loading: false,
       done: false,
-      fail: false
+      fail: false,
+      id: [],
+      recipes:[]
     };
     this.handleShowModal = this.handleShowModal.bind(this);
     this.handleCloseModal = this.handleCloseModal.bind(this);
@@ -45,14 +53,16 @@ const MyProfile = observer(class MyProfile extends Component {
           <Col md={10} className="aboutUser">
             <Row>
               <Col>
-                <h2>{Auth.user.firstName} {Auth.user.lastName}</h2>
+                <h2>{Auth.user.firstName} {Auth.user.lastName}<a className="btn btn-default pull-right" onClick={this.handleShowModal}>Ändra</a></h2>
                 <hr />
                 <strong>E-post:</strong> { Auth.user.email }
-                <a className="btn btn-default pull-right" onClick={this.handleShowModal}><Glyphicon glyph="pencil" /> Redigera profil</a>
+                <br />
+                <MyRecipes />
               </Col>
             </Row>
           </Col>
         </Row>
+
         <div className="modal-container" style={{ height: 200 }}>
           <Modal
             show={this.state.showEditModal}
@@ -78,6 +88,7 @@ const MyProfile = observer(class MyProfile extends Component {
                   id="editedLastName"
                   name="editedLastName"
                   type="text"
+
                   label="Förnamn"
                   placeholder={Auth.user.lastName}
                   value={this.state.editedLastName}
@@ -92,7 +103,7 @@ const MyProfile = observer(class MyProfile extends Component {
                   <Button className="btn btn-primary"
                           onClick={this.handleSubmit}>
                     Spara
-                  </Button>                  
+                  </Button>
                 </div>
                 <LoadingSpinner
                   className="pull-left"
@@ -103,9 +114,58 @@ const MyProfile = observer(class MyProfile extends Component {
               </Modal.Footer>
             </form>
           </Modal>
+          {this.showRecipes()}
         </div>
+
       </div>
     );
+  }
+
+  async componentDidMount() {
+    let recipes = [];
+  await fetch('/user/ '+ Auth.token.id +'/recipes', {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        method: 'GET'
+      })
+        .then(res => res.json())
+        .then(res => res.message.forEach((value) => {
+          recipes.push(value)
+        }));
+      await this.setState({recipes: recipes});
+
+  }
+
+  showRecipes() {
+    let Recipes = this.state.recipes;
+    let recipeItem = [];
+    if(Recipes.length !== 0){
+    for(var i=0; i<Recipes.length; i++) {
+      recipeItem.push(<ListGroupItem key={i}
+                      onClick={this.handleClick.bind(this, i)}
+                      href="#">
+                      {Recipes[i].title} </ListGroupItem>)
+    }
+    return (<div className="recipeContainerShadow">
+    <h2>Mina recept</h2>
+    {recipeItem}
+    </div>);
+  } else {
+
+    return (<div className="recipeContainerShadow"><h2>Du har inga recept</h2> <button class="btn btn-success" onClick={this.buttonClick.bind(this)}>Skapa recept</button> </div>);
+
+
+
+    }
+  }
+
+  async handleClick(i) {
+     window.location = "recipe/ " + this.state.recipes[i].id;
+  }
+
+  buttonClick() {
+    window.location = "/new"
   }
 
   handleShowModal() {
@@ -128,8 +188,8 @@ const MyProfile = observer(class MyProfile extends Component {
     await this.setState({
       [target.name]: target.value
     });
-    console.log(this.state);
-  }  
+    //console.log(this.state);
+  }
 
   async handleSubmit() {
     // show loading icon
@@ -150,6 +210,45 @@ const MyProfile = observer(class MyProfile extends Component {
   }
 });
 
+const MyRecipes = observer(class MyRecipes extends Component {
+  constructor(props) {
+    super(props);
+    this.store = new UserRecipeStore(Auth.user.id);
+  }
+
+  componentDidMount() {
+    this.store.update();
+  }
+
+  render() {
+    return (
+      <div className="myRecipes">
+        <h3>Mina Recept</h3>
+        <Table striped hover>
+          <tbody className="recipeName">
+            { this.showRecipes() }
+          </tbody>
+        </Table>
+      </div>
+    )
+  }
+
+  showRecipes() {
+    return this.store.recipes.map(recipe => {
+      return (
+        <tr>
+          <td>
+            <a className="btn btn-default btn-sm editButton pull-right" href={`/recipe/${recipe.id}/edit`}>
+              <Glyphicon glyph="pencil" />
+            </a>
+            {recipe.title}
+            </td>
+          </tr>
+      );
+    });
+  }
+});
+
 const FieldGroup = ({ id, label, help, ...props }) => {
   return (
     <FormGroup controlId={id}>
@@ -159,5 +258,7 @@ const FieldGroup = ({ id, label, help, ...props }) => {
     </FormGroup>
   );
 };
+
+
 
 export default MyProfile;

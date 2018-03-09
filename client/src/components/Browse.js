@@ -1,21 +1,22 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import { Glyphicon, Grid, Row, Col, Button, InputGroup,
-	FormControl, DropdownButton, 
+	FormControl, DropdownButton,
 	ToggleButtonGroup, ToggleButton,
 	PageHeader, ButtonToolbar } from 'react-bootstrap';
 import './css/Browse.css';
 import RecipeStore from '../util/recipeStore';
 
 
+
+
 const Browse = observer(class Browse extends Component {
-	
 	constructor(props) {
     super(props);
     this.state = {
     	searchWord: '',
   		filter: [],
-      meal:"", 
+      meal:"",
       recipes: [],
       availableTags: [],
       searchHeader: ""
@@ -27,7 +28,7 @@ const Browse = observer(class Browse extends Component {
     this.addFilter = this.addFilter.bind(this);
   }
   componentDidMount() {
-    this.setState({searchHeader:"Topplista"});
+		this.setState({searchHeader:"Topplista"});
   }
   componentDidUpdate(prevProps, prevState) {
     console.log(this.state.filter);
@@ -69,15 +70,14 @@ const Browse = observer(class Browse extends Component {
     }
     else {
       this.setState({ searchHeader:"Sökresultat" });
-      RecipeStore.searchFor([], this.state.searchWord);      
+      RecipeStore.searchFor([], this.state.searchWord);
     }
   }
   showRecipeCols() {
     let dummyCols = [];
     RecipeStore.recipes.forEach(function(recipe) {
-      let imgUrl = "/img/bild.jpg" /* +recipe.id+'.jpg'*/;
       let bgStyle = {
-        backgroundImage: 'url(' + '/img/bild.jpg' + ')'
+        backgroundImage: 'url(' + '/img/'+recipe.id+'.jpg' + ')'
       };
       let imgStyle = {
         height:"32px",
@@ -87,7 +87,7 @@ const Browse = observer(class Browse extends Component {
         marginLeft:"20px"
       };
       dummyCols.push(
-        <Col className="parent" xs={12} sm={6} lg={4} 
+        <Col className="parent" xs={12} sm={6} lg={4}
             key={recipe.id}>
           <div className="child" style={bgStyle} >
           </div>
@@ -103,7 +103,7 @@ const Browse = observer(class Browse extends Component {
               </span>
             </a>
           </div>
-        </Col>   
+        </Col>
       );
     });
     return dummyCols;
@@ -137,13 +137,13 @@ const Browse = observer(class Browse extends Component {
     		<div id="search" >
 		      <form onSubmit={this.handleSubmit}>
 			      <InputGroup className="gr">
-				      <FormControl bsSize="large" id="fc" type="text"  
-				        placeholder="Sök recept" name="searchWord" 
+				      <FormControl bsSize="large" id="fc" type="text"
+				        placeholder="Sök recept" name="searchWord"
 				        onChange={this.handleChangeSearch.bind(this)} />
 				      <InputGroup.Addon id="addon" >
-					  		<Button id="subBtn" type="submit" bsSize="large">        		
+					  		<Button id="subBtn" type="submit" bsSize="large">
 					  			<Glyphicon glyph="search" />
-								</Button>			      
+								</Button>
 							</InputGroup.Addon>
 				    </InputGroup>
 		  		</form>
@@ -162,7 +162,7 @@ const Browse = observer(class Browse extends Component {
             </Col>
             <Col xs={3}>
              	<DropdownButton title="Rättyp" id="2">
-  		          <ToggleButtonGroup type="radio" name="filter" 
+  		          <ToggleButtonGroup type="radio" name="filter"
                       value={this.state.filter}
                       onClick={this.addFilter.bind(this)} >
       			      <ToggleButton className="dropdownItem" value={5}>Nattamat</ToggleButton>
@@ -187,7 +187,7 @@ const Browse = observer(class Browse extends Component {
             </Col>
             <Col xs={3}>
               <DropdownButton title="Specialkost" id="4">
-                <ToggleButtonGroup type="radio" name="filter" 
+                <ToggleButtonGroup type="radio" name="filter"
                       value={this.state.filter}
                       onClick={this.addFilter.bind(this)}>
       			      <ToggleButton className="dropdownItem" value={8}>lakto-vegetarianskt</ToggleButton>
@@ -195,7 +195,7 @@ const Browse = observer(class Browse extends Component {
       			      <ToggleButton className="dropdownItem" value={10}>ovo-vegetarianskt</ToggleButton>
                   <ToggleButton className="dropdownItem" value={17}>Glutenfritt</ToggleButton>
 
-                </ToggleButtonGroup>  
+                </ToggleButtonGroup>
               </DropdownButton>
             </Col>
 				  </ButtonToolbar>
