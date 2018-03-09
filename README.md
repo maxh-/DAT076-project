@@ -42,6 +42,7 @@ ootmappen.
 ```
 **Beskrivning**: Skapa recept, lyckas den så skickas code 201 tillbaka samt receptet. Man kan skicka både ingrediensens namn (Om den inte finns i databasen så skapas en ny då!) eller ingrediensens Id).
 
+
 **Path**: /api/recipe/:id  
 **Method**: PUT  
 **RequiresAuth**: YES  
@@ -176,7 +177,7 @@ ootmappen.
 **JSON**: 
 ```
 {
-  recipeId: String
+  recipeId: Integer
 
 }
 ```
@@ -189,7 +190,7 @@ ootmappen.
 **JSON**: 
 ```
 {
-  recipeId: String
+  recipeId: Integer
 
 }
 ```

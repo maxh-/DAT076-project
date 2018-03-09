@@ -84,7 +84,7 @@ exports.register = async (params) => {
     }else{
       return {
         success: false,
-        code: 304,
+        code: 400,
         message: "user already exists"
       };
     }
@@ -97,7 +97,7 @@ exports.register = async (params) => {
   }
 };
 
-exports.forgotPassword = async (email, host) => {
+exports.forgotPassword = async (email) => {
   const buf = await crypto.randomBytes(20);
   const token = buf.toString('hex');
 

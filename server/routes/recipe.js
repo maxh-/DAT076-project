@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const recipeController = require('../controllers/recipeController');
 const isAuthenticated = require('../middlewares/isAuthenticated');
+const { checkSchema, check, oneOf} = require('express-validator/check');
+const validate = require('../middlewares/validate');
+const recipeSchema = require('../validation-schemas/recipe');
 
 
 /* GET Recipe by id . */
@@ -11,7 +14,10 @@ router.get('/', async (req, res, next) => {
 });
 
 /* POST create a recipe*/
-router.post('/', isAuthenticated, async (req, res, next) => {
+router.post('/', isAuthenticated, checkSchema(recipeSchema.create), oneOf([
+  check('ingredients.*.ingredient').exists().not().isEmpty().matches(/^[a-zåäöA-ZÅÄÖ\s]*$/),
+  check('ingredients.*.IngredientId').exists().isInt()
+]), validate, async (req, res, next) => {
   const response = await recipeController.create(req.body, req.user.id);
   res.status(response.code).json(response);
 });
@@ -54,7 +60,7 @@ router.get('/:id', async (req, res, next) => {
 
 
 /* PUT update a recipe. */
-router.put('/:id', isAuthenticated, async (req, res, next) => {
+router.put('/:id', isAuthenticated, checkSchema(recipeSchema.update), validate, async (req, res, next) => {
   const response = await recipeController.update(req.body, req.params.id, req.user.id);
   res.status(response.code).json(response);
 });
