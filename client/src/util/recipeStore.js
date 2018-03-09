@@ -12,7 +12,7 @@ class RecipeStore {
     });
   }
   getOne(id) {
-    fetch('/recipe/'+id, {
+    fetch('/api/recipe/'+id, {
       method: 'GET',
     })
       .then(res => res.json())
@@ -23,7 +23,7 @@ class RecipeStore {
       });
   }
   like(id,token) {
-    fetch('/recipe/'+id+'/like', {
+    fetch('/api/recipe/'+id+'/like', {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'JWT '+ token
@@ -38,7 +38,7 @@ class RecipeStore {
         this.getOne(id);
       }
       else {
-        fetch('/recipe/'+id+'/like', {
+        fetch('/api/recipe/'+id+'/like', {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'JWT '+ token
@@ -54,7 +54,7 @@ class RecipeStore {
     .catch(error => console.log("Kunde inte gilla"));
   }
   getAll() {
-    fetch('/recipe/top?limit=12', {
+    fetch('/api/recipe/top?limit=12', {
       method: 'GET',
     })
       .then(res => res.json())
@@ -81,7 +81,7 @@ class RecipeStore {
     else {
       term = '&q=' + searchTerm;
     }
-    fetch('/recipe/search?'+tag+term, {
+    fetch('/api/recipe/search?'+tag+term, {
       method: 'GET',
     })
       .then(res => res.json())
@@ -92,7 +92,7 @@ class RecipeStore {
       });
   }
   getTags() {
-   fetch('/tag/', {
+   fetch('/api/tag/', {
       method: 'GET',
     })
       .then(res => res.json())

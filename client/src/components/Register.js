@@ -118,7 +118,7 @@ async onPassword2Change(e) {
   onSubmit(e) {
     e.preventDefault();
     //console.log(this.state);
-    fetch('/auth/register', {
+    fetch('/api/auth/register', {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'

@@ -35,15 +35,15 @@ app.use(passportConfig.initialize());
 
 
 // routes
-app.use('/welcome', welcome);
-app.use('/auth', auth);
-app.use('/recipe', recipe);
-app.use('/user/me', isAuthenticated, userMe);
-app.use('/user', user);
-app.use('/ingredient', ingredient);
-app.use('/tag', tag);
-app.use('/unit', unit);
-app.use('/upload', upload);
+app.use('/api/welcome', welcome);
+app.use('/api/auth', auth);
+app.use('/api/recipe', recipe);
+app.use('/api/user/me', isAuthenticated, userMe);
+app.use('/api/user', user);
+app.use('/api/ingredient', ingredient);
+app.use('/api/tag', tag);
+app.use('/api/unit', unit);
+app.use('/api/upload', upload);
 
 
 app.use(function (req, res, next) {

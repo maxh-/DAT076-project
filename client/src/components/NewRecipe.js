@@ -37,12 +37,12 @@ class NewRecipe extends Component {
 
   componentDidMount() {
     //hämta tags, units etc
-    fetch('/tag/',{
+    fetch('/api/tag/',{
       method: 'GET',
     })
     .then(res => res.json())
     .then(res => this.setState({availableTags: res.tags}));
-    fetch('/unit/',{
+    fetch('/api/unit/',{
       method: 'GET',
     })
     .then(res => res.json())
@@ -138,7 +138,7 @@ class NewRecipe extends Component {
     });
     console.log(Auth.token);
 
-    fetch('/recipe/', {
+    fetch('/api/recipe/', {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'JWT '+ Auth.token
@@ -173,7 +173,7 @@ class NewRecipe extends Component {
     await data.append('file', image);
     await data.append('name', id + '.jpg'); // add extension so backend doesn't complain
     console.log('submitting data:', data);
-    return fetch('/upload', {
+    return fetch('/api/upload', {
       method: 'POST',
       body: data
     })

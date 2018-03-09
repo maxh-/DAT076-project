@@ -27,7 +27,7 @@ onChange({ target }) {
 onSubmit(e) {
   let token = this.props.match.params.token;
   e.preventDefault();
-  fetch('/auth/reset/' + token, {
+  fetch('/api/auth/reset/' + token, {
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'

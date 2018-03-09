@@ -25,7 +25,7 @@ constructor(props) {
 onSubmit(e) {
   e.preventDefault();
 
-  fetch('/auth/forgot', {
+  fetch('/api/auth/forgot', {
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
