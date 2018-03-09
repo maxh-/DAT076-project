@@ -36,7 +36,7 @@ const Recipe = observer( class Recipe extends Component {
     await RecipeStore.getOne(this.props.match.params.id);
     let id = this.props.match.params.id;
     if(Auth.isLoggedIn) {
-      await fetch('/user/me/likes', {
+      await fetch('/api/user/me/likes', {
         headers: {
           'Authorization': 'JWT '+ Auth.token
         },
@@ -53,7 +53,7 @@ const Recipe = observer( class Recipe extends Component {
           });
       });
     }
-    await fetch('/recipe/'+id, {
+    await fetch('/api/recipe/'+id, {
       method: 'GET',
     })
     .then(res => res.json())
@@ -76,7 +76,7 @@ const Recipe = observer( class Recipe extends Component {
         description: error
       })
     });
-    await fetch('/user/'+RecipeStore.recipe.UserId, {
+    await fetch('/api/user/'+RecipeStore.recipe.UserId, {
       method: 'GET'
     })
     .then(res => res.json())
@@ -88,7 +88,7 @@ const Recipe = observer( class Recipe extends Component {
   async saveRecipe() {
     if(Auth.isLoggedIn) {
       const meth = !this.state.saved ? 'POST' : 'DELETE';
-      await fetch('/user/me/favorite', {
+      await fetch('/api/user/me/favorite', {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'JWT '+Auth.token,
@@ -137,7 +137,7 @@ const Recipe = observer( class Recipe extends Component {
   handleLike() {
     if(Auth.isLoggedIn){
       const meth = this.state.liked ? 'DELETE' : 'POST';
-      fetch('/recipe/'+this.state.id+'/like', {
+      fetch('/api/recipe/'+this.state.id+'/like', {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'JWT '+Auth.token

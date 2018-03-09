@@ -12,7 +12,7 @@ class RecipeStore {
     });
   }
   async getOne(id) {
-    await fetch('/recipe/'+id, {
+    await fetch('/api/recipe/'+id, {
       method: 'GET',
     })
       .then(res => res.json())
@@ -23,7 +23,7 @@ class RecipeStore {
       });
   }
   getAll() {
-    fetch('/recipe/top?limit=12', {
+    fetch('/api/recipe/top?limit=12', {
       method: 'GET',
     })
       .then(res => res.json())
@@ -50,7 +50,7 @@ class RecipeStore {
     else {
       term = '&q=' + searchTerm;
     }
-    fetch('/recipe/search?'+tag+term, {
+    fetch('/api/recipe/search?'+tag+term, {
       method: 'GET',
     })
       .then(res => res.json())
@@ -61,7 +61,7 @@ class RecipeStore {
       });
   }
   getTags() {
-   fetch('/tag/', {
+   fetch('/api/tag/', {
       method: 'GET',
     })
       .then(res => res.json())
