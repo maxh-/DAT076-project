@@ -127,7 +127,9 @@
 	margin: 0;
 	width: 52px;
 }
-
+#glyph-heart {
+	color: red;
+}
 /*
 .content {
 	background-color: #79e0bd
