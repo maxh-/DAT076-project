@@ -1,3 +1,11 @@
+@import url('https://fonts.googleapis.com/css?family=Lora');
+@import url('https://fonts.googleapis.com/css?family=Lora|Roboto+Condensed');
+*{
+  font-family: 'Roboto Condensed', sans-serif;
+}
+h1, h2, h3 {
+  font-family: 'Lora', serif;
+}
 body {
   margin-top: 50px;
 }
@@ -29,4 +37,10 @@ body {
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+h1 {
+
+
+      font-family: 'Lora', serif;
+
 }

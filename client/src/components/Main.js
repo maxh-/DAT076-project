@@ -12,6 +12,7 @@ import Login from './Login';
 import ForgotPass from './ForgotPass';
 import ResetPass from './ResetPass';
 
+
 import PrivateRoute from '../util/PrivateRoute';
 
 class Main extends Component {
@@ -24,6 +25,7 @@ class Main extends Component {
           <Route path='/recipe/:id' component={Recipe} />
           <Route path='/register' component={Register}/>
           <Route path='/login' component={Login}/>
+        
 	  <Route exact path='/' component={Home}/>
 	  <PrivateRoute path='/pages' component={MyPages}/>
 	  <PrivateRoute path='/new' component={NewRecipe}/>
@@ -31,6 +33,8 @@ class Main extends Component {
 	  <PrivateRoute path='/saved' component={MySavedRecipes}/>
           <Route path='/forgotpass' component={ForgotPass}/>
           <Route path='/resetpass/:token' component={ResetPass}/>
+
+
     		</Switch>
       </main>
     );
