@@ -182,6 +182,7 @@ getFavourites() {
 
   for(var i = 0; i<favs.length; i++) {
     favItems.push(<ListGroupItem key={i}
+      className="l-g-i"
       onClick={this.handleClick.bind(this, i)}
       href="#">{favs[i]}<p>Tidsåtgång: {time[i]} minuter</p>
       <span  class="glyphicon glyphicon glyphicon-remove glyphy" onClick={this.removeFav.bind(this, i)}></span>
@@ -213,7 +214,7 @@ getFavourites() {
         </FormGroup>
         <br/>
         <br/>
-        <ListGroup>
+        <ListGroup class="l-g" >
           {this.getFavourites()}
           <Button class="btn btn-danger" onClick={this.removeAll.bind(this)}>Ta bort alla recept</Button>
         </ListGroup>

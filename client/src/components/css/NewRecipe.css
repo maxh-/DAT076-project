@@ -30,3 +30,9 @@ textarea {
 		margin: 3px;
 		border-radius: 0px;
 }
+.ing {
+	padding: 4px 15px ;
+}
+.ing div b{
+	font-size: 16px;
+}
