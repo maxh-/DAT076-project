@@ -35,11 +35,11 @@ async getUser() {
        .then(res => res.json())
        .then(res => usr.push(res.user));
 
-     this.setState({user: usr, firstName: usr[0].firstName, lastName: usr[0].lastName, id: usr[0].id  })
+    await this.setState({user: usr, firstName: usr[0].firstName, lastName: usr[0].lastName, id: usr[0].id  })
 
-     if(this.state.firstName[this.state.firstName.length]-1 !== ('s' || 'x')){
-       this.setState({firstName: this.state.firstName+'s'})
-     }
+     if(this.state.firstName[this.state.firstName.length]-1 !== ("s" || "x")){
+      await this.setState({firstName: this.state.firstName+'s'});
+    }else await this.setState({firstName: usr[0].firstName  });
 
      console.log(this.state.firstName[this.state.firstName.length-1]);
 }
@@ -108,6 +108,11 @@ async getUser() {
     return grid;
   }
 
+  checkForS() {
+    if((this.state.firstName[this.state.firstName.length]-1) !== "s"){
+    return <h2>{this.state.firstName}</h2>;
+  } else return <h2>{this.state.firstName} `s`</h2>;
+  }
   render() {
 
     return (
@@ -120,14 +125,14 @@ async getUser() {
           </Col>
           <Col>
             <hr />
-            <h2>{this.state.firstName} recept: </h2>
+            {this.state.firstName}
             <br />
             </Col>
 
             <Grid className="Gr">
              <Row  className="Show-grid" >
                <Col  >
-                    { this.showRecipes() }
+                    { this.showRecipes()}
                </Col>
              </Row>
            </Grid>
