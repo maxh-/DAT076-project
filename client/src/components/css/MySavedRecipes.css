@@ -1,26 +1,11 @@
 
-.glyphicon:hover{
+.glyphy:hover{
   color:red !important;
 }
-
-.btn-toolbar {
-position: relative !important;
-
-}
-.col-xs-3 {
-	padding: 0;
-}
-.col-xs-3 .dropdown {
-	width: 100%;
-}
-.dropdown .dropdown-toggle {
-	width: 100%;
-}
-
-.col-sm-10{
+.col-ten{
   width: 10%;
 }
-.col-sm-2 {
+.col-two {
   margin-left: 28%
 }
 
@@ -32,17 +17,4 @@ position: relative !important;
   width: 50%;
   margin: 0 auto;
   padding: 5px;
-
-}
-.list-group .list-group-item {
-
-
-}
-
-.list-group .list-group-item:hover {
-
-}
-
-.recipes{
-
 }
