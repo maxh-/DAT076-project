@@ -25,11 +25,13 @@ const Recipe = observer( class Recipe extends Component {
       id: "",
       liked: false,
       style: ""
+
     }
+    RecipeStore.getOne(this.props.match.params.id);
   }
 
   async componentDidMount() {
-    await RecipeStore.getOne(this.props.match.params.id);
+    RecipeStore.getOne(this.props.match.params.id);
     let id = this.props.match.params.id;
     if(Auth.isLoggedIn) {
       await fetch('/user/me/likes', {
@@ -73,6 +75,25 @@ const Recipe = observer( class Recipe extends Component {
     });
   }
 
+
+  cookingMode(e){
+    this.setState({ show: true });
+  }
+  closeCookingMode(e){
+    this.setState({show:false});
+  }
+  switchItem(e){
+    if(e.key === " "){
+      const nextIndex = (this.state.stepIndex%RecipeStore.recipe.Steps.length)+1;
+      this.setState(prevState => ({
+        step: RecipeStore.recipe.Steps.find(function(instr) {
+          return instr.number===nextIndex
+        }),
+        stepIndex: prevState.stepIndex+1
+      }));
+    }
+  }
+
   handleLike() {
     if(Auth.isLoggedIn){
       const meth = this.state.liked ? 'DELETE' : 'POST';
@@ -100,22 +121,17 @@ const Recipe = observer( class Recipe extends Component {
     }
   }
 
-  cookingMode(e){
-    this.setState({ show: true });
-  }
-  closeCookingMode(e){
-    this.setState({show:false});
-  }
-  switchItem(e){
-    if(e.key === " "){
-      const nextIndex = (this.state.stepIndex%RecipeStore.recipe.Steps.length)+1;
-      this.setState(prevState => ({
-        step: RecipeStore.recipe.Steps.find(function(instr) {
-          return instr.number===nextIndex
-        }),
-        stepIndex: prevState.stepIndex+1
-      }));
-    }
+  likeButton() {
+    return(
+      <Button
+        onClick={this.handleLike.bind(this)}
+        id="like-btn"
+        style={this.state.style}>
+        <small>{ RecipeStore.recipe.Likes }</small>
+        <img
+          src="/img/oven-like.svg"
+          id="ovenmitt-style"/>
+      </Button>);
   }
 
   showJumbotron() {
@@ -134,19 +150,6 @@ const Recipe = observer( class Recipe extends Component {
       );
     }
   }
-  likeButton() {
-    return(
-      <Button
-        onClick={this.handleLike.bind(this)}
-        id="like-btn"
-        style={this.state.style}>
-        <small>{ RecipeStore.recipe.Likes }</small>
-        <img
-          src="/img/oven-like.svg"
-          id="ovenmitt-style"/>
-      </Button>);
-  }
-
   showTags() {
     let tgs = [];
     this.state.tags.forEach(function(tag) {
@@ -238,6 +241,15 @@ const Recipe = observer( class Recipe extends Component {
         </Grid>
 
         <hr />
+
+        <Row>
+          <Col lg={12}>
+            <Disqus.CommentCount shortname={disqusShortname} config={disqusConfig}>
+            </Disqus.CommentCount>
+            <Disqus.DiscussionEmbed shortname={disqusShortname} config={disqusConfig} />
+          </Col>
+        </Row>
+
         <Modal
             id="modal"
             show={this.state.show}
@@ -301,13 +313,3 @@ const RecipeImage = observer(class RecipeImage extends Component {
 });
 
 export default Recipe;
-/*
-<Row>
-  <Col lg={12}>
-    <Disqus.CommentCount shortname={disqusShortname} config={disqusConfig}>
-    </Disqus.CommentCount>
-    <Disqus.DiscussionEmbed shortname={disqusShortname} config={disqusConfig} />
-  </Col>
-</Row>
-
-*/
