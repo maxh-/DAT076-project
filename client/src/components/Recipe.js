@@ -32,20 +32,22 @@ const Recipe = observer( class Recipe extends Component {
 
   async componentDidMount() {
     let id = this.props.match.params.id;
-    await fetch('/user/me/likes', {
-      headers: {
-        'Authorization': 'JWT '+ Auth.token
-      },
-      method: 'GET'
-      })
-      .then(res => res.json())
-      .then(res => {
-        this.setState({
-          liked: (undefined !== res.likes.find(function(rec){
-            return rec.id === parseInt(RecipeStore.recipe.id,10)
-          }))
-        });
-    });
+    if(Auth.isLoggedIn) {
+      await fetch('/user/me/likes', {
+        headers: {
+          'Authorization': 'JWT '+ Auth.token
+        },
+        method: 'GET'
+        })
+        .then(res => res.json())
+        .then(res => {
+          this.setState({
+            liked: (undefined !== res.likes.find(function(rec){
+              return rec.id === parseInt(RecipeStore.recipe.id,10)
+            }))
+          });
+      });
+    }
     fetch('/recipe/'+id, {
       method: 'GET',
     }).then(res => res.json())
