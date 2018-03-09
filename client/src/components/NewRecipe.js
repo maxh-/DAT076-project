@@ -23,7 +23,7 @@ class NewRecipe extends Component {
       unit: "",
       description: "",
       meal: 1,
-      units: []      
+      units: []
     }
     window.submit = this.submitImage;
     this.handleChange = this.handleChange.bind(this);
@@ -252,14 +252,14 @@ class NewRecipe extends Component {
 
   addTags({ target }) {
     if(target.value !== undefined) {
-      if(!this.state.tags.includes(target.value)) {
+      if(!this.state.tags.includes(parseInt(target.value,10))) {
         this.setState({
           tags: this.state.tags.concat(parseInt(target.value,10))
         });
       }
       else {
         this.setState({
-          tags: this.state.tags.filter(word => word !== target.value)
+          tags: this.state.tags.filter(word => word !== parseInt(target.value,10))
         });
       }
     }
@@ -494,4 +494,3 @@ class NewRecipe extends Component {
 }
 
 export default NewRecipe;
-
