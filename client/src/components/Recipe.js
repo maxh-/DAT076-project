@@ -32,6 +32,7 @@ const Recipe = observer( class Recipe extends Component {
 
   async componentDidMount() {
     let id = this.props.match.params.id;
+<<<<<<< HEAD
     await fetch('/user/me/likes', {
       headers: {
         'Authorization': 'JWT '+ Auth.token
@@ -47,6 +48,25 @@ const Recipe = observer( class Recipe extends Component {
         });
     });
     await fetch('/recipe/'+id, {
+=======
+    if(Auth.isLoggedIn) {
+      await fetch('/user/me/likes', {
+        headers: {
+          'Authorization': 'JWT '+ Auth.token
+        },
+        method: 'GET'
+        })
+        .then(res => res.json())
+        .then(res => {
+          this.setState({
+            liked: (undefined !== res.likes.find(function(rec){
+              return rec.id === parseInt(RecipeStore.recipe.id,10)
+            }))
+          });
+      });
+    }
+    fetch('/recipe/'+id, {
+>>>>>>> f37/like-btn
       method: 'GET',
     }).then(res => res.json())
     .then(res => {
@@ -79,7 +99,14 @@ const Recipe = observer( class Recipe extends Component {
 
   handleLike() {
     if(Auth.isLoggedIn){
-      RecipeStore.like(this.state.id,Auth.token);
+      if(!this.state.liked) {
+        console.log("LIK");
+        RecipeStore.like(this.state.id,Auth.token);
+      }
+      else {
+        console.log("DIS");
+        RecipeStore.disLike(this.state.id,Auth.token);
+      }
       let btnColor = !this.state.liked ? '#C5E1A5' : "white";
       this.setState(prevState =>({
         liked: !prevState.liked,
