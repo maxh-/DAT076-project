@@ -1,30 +1,24 @@
 const models = require('../models');
 const FuzzySearch = require('fuzzy-search');
-
 exports.findById = async (id) => {
   const recipe = await models.Recipe.findById(id, {
-    attributes:{
-      include: [[models.sequelize.fn("COUNT", models.sequelize.col("likes.id")), "Likes"]]
-    },
     include: [
       models.Step,
       models.Tag,
       {
-        model: models.User,
-        as: 'likes',
-        attributes: []
-      },
-      {
         model: models.RecipeIngredients,
         include: [models.Ingredient, models.Unit]
-      }],
-    group: ['Steps.id', 'Tags.id', 'likes.id', 'RecipeIngredients.id']
+      }]
   });
+  const likes = await recipe.countLikes();
+  const result = recipe.toJSON();
+  result.Likes = likes;
+
   if(recipe){
     return {
       success: true,
       code: 200,
-      recipe: recipe.toJSON()
+      recipe: result
     };
   } else {
     return {
@@ -37,28 +31,20 @@ exports.findById = async (id) => {
 
 exports.findAll = async (id) => {
   const recipes = await models.Recipe.findAll({
-    attributes:{
-      include: [[models.sequelize.fn("COUNT", models.sequelize.col("likes.id")), "Likes"]]
-    },
     include: [
       models.Step,
       models.Tag,
       {
-        model: models.User,
-        as: 'likes',
-        attributes: []
-      },
-      {
         model: models.RecipeIngredients,
         include: [models.Ingredient, models.Unit]
-      }],
-    group: ['id','Steps.id', 'Tags.id', 'likes.id', 'RecipeIngredients.id']
+      }]
   });
+  const result = countLikes(recipes);
   if(recipes){
     return {
       success: true,
       code: 200,
-      recipe: recipes
+      recipe: result
     };
   } else {
     return {
@@ -78,26 +64,17 @@ exports.top = async (params) => {
     limit = 12;
   }
   const recipes = await models.Recipe.findAll({
-    attributes:{
-      include: [[models.sequelize.fn("COUNT", models.sequelize.col("likes.id")), "Likes"]]
-    },
     include: [
       models.Step,
       models.Tag,
       {
-        model: models.User,
-        as: 'likes',
-        attributes: []
-      },
-      {
         model: models.RecipeIngredients,
         include: [models.Ingredient, models.Unit]
-      }],
-    group: ['id','Steps.id', 'Tags.id', 'likes.id', 'RecipeIngredients.id'],
-    order: [[models.sequelize.fn("COUNT", models.sequelize.col("likes.id")), 'DESC']]
+      }]
   });
-
-  const limitedRecipes = recipes.slice(0, limit);
+  const result = await countLikes(recipes);
+  result.sort((a,b) => { return b.Likes - a.Likes; });
+  const limitedRecipes = result.slice(0, limit);
   if(recipes){
     return {
       success: true,
@@ -215,9 +192,6 @@ exports.fuzzyFind = async (params) => {
   const recipes = await models.Recipe.findAll(
     {
       where: condition,
-      attributes:{
-        include: [[models.sequelize.fn("COUNT", models.sequelize.col("likes.id")), "Likes"]]
-      },
       include: [
         models.Step,
         {
@@ -225,29 +199,24 @@ exports.fuzzyFind = async (params) => {
           required: true
         },
         {
-          model: models.User,
-          as: 'likes',
-          attributes: []
-        },
-        {
           model: models.RecipeIngredients,
           include: [models.Ingredient, models.Unit]
-        }],
-      group: ['id', 'Steps.id', 'Tags.id', 'likes.id', 'RecipeIngredients.id']
+        }]
     });
   // filter all recipes that dont match all the tags
   let filteredRecipes = recipes;
   if(tags != '' && tags != undefined){
-    filteredRecipes= recipes.filter((recipe) => {
+    filteredRecipes = recipes.filter((recipe) => {
       return recipe.Tags.length == tags.split(',').length;
     });
   }
   // Fuzzy search the relevant recipes
-  let result = filteredRecipes;
+  let searchedRecipes = filteredRecipes;
   if(query != '' &&  query != undefined){
     const searcher = new FuzzySearch(filteredRecipes, ['title']);
-    result = searcher.search(query);
+    searchedRecipes = searcher.search(query);
   }
+  const result = await countLikes(searchedRecipes);
   return {
     success: true,
     code: 200,
@@ -323,3 +292,11 @@ const ingredientsFromJSON = async(ingredients) => {
   );
 };
 
+const countLikes = async (recipes) => {
+  return await Promise.all(recipes.map(async (recipe) => {
+    const likes = await recipe.countLikes();
+    const tmp = recipe.toJSON();
+    tmp.Likes = likes;
+    return tmp;
+  }));
+};
