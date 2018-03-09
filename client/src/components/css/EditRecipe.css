@@ -1,3 +1,8 @@
 .edit-recipe {
     text-align: left;
 }
+
+.btn-toolbar>.btn {
+    margin-top: 5px;
+    border-radius: 0px;
+}

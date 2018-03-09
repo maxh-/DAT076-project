@@ -104,9 +104,15 @@ const EditRecipe = observer(class EditRecipe extends Component {
 
           {/**  Taggar  **/}
 
-          {this.store.allTags.map(tag => {
-            return <TagButton store={this.store} tag={tag} id={tag.id}/>
-          })}
+          <div class="btn-toolbar">
+            <ControlLabel>Taggar</ControlLabel><br />
+            {this.store.otherTags.map(tag => {
+              return <TagButton store={this.store} tag={tag} id={tag.id} isChecked={true}/>
+            })}
+            {this.store.nonSelectedTags.map(tag => {
+              return <TagButton store={this.store} tag={tag} id={tag.id} isChecked={false}/>
+            })}
+          </div>
 
 
         </form>
@@ -152,23 +158,55 @@ const TagButton = observer(class TagButton extends Component {
     this.store = props.store;
     this.tag = props.tag;
     this.state = {
-      checked: this.isSelected(props.tag)
+      checked: props.isChecked
     };
-  }
-
-  isSelected(tag) {
-    if (this.store.otherTags.find(otherTag => otherTag.id === tag.id)) {
-      return true;
-    }
-    return false;
-  }
-
-  async componentDidMount() {
-    console.log(this.state);
+    this.onClick = this.onClick.bind(this);
   }
 
   render() {
-    return <Button className={this.state.checked ? 'active' : ''}>{this.tag.tag}</Button>;
+    return <Button 
+            className={this.state.checked ? 'active' : ''}
+            onClick={this.onClick}
+            id={this.tag.id}
+            >
+             #{this.tag.tag}
+           </Button>;
+  }
+
+  onClick({ target }) {
+    const id = parseInt(target.id);
+    if (this.state.checked) {
+      this.store.recipe.Tags = this.store.recipe.Tags.filter(tag => {
+        return tag.id !== id;
+      });
+    } else {
+      this.store.recipe.Tags.push(this.store.allTags.find(tag => {
+        return tag.id === id;
+      }));
+    }
+
+    this.setState({
+      checked: !this.state.checked
+    })
+  }
+});
+
+const Ingredients = observer(class Ingredients extends Component {
+  constructor(props) {
+    super(props);
+    this.store = props.store;
+    this.state = {
+      ingredients: this.store.recipe.RecipeIngredients
+    };
+  }
+  render() {
+    return (
+      <div>
+        {this.state.ingredients.map(ingredient => {
+          return ingredient.Ingredient.name + ' ';
+        })}
+      </div>
+    );
   }
 });
 
