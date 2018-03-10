@@ -68,9 +68,9 @@ router.get('/:id', async (req, res, next) => {
 
 /* PUT update a recipe. */
 router.put('/:id', isAuthenticated, checkSchema(recipeSchema.update), check('ingredients').custom((values) => {
-  console.log(values);
-  const unique = (new Set(values.ingredient)).size !== values.lengthK;
-  if(unique){
+  const ingredients = values.map((value) => {return value.ingredient ? value.ingredient : value.IngredientId;});
+  const unique = (new Set(ingredients)).size === values.length;
+  if(!unique){
     throw new Error('Ingredients must be unique');
   }
   return unique;
