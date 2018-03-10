@@ -23,11 +23,6 @@ const Navigation = observer(class Navigation extends Component {
         </Navbar.Brand>
         <Navbar.Toggle />
         <Navbar.Collapse>
-          <Nav>
-            <NavItem href="/browse">
-              Bläddra
-            </NavItem>
-          </Nav>
           <Greeting />
         </Navbar.Collapse>
       </Navbar>
