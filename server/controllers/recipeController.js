@@ -10,13 +10,14 @@ exports.findById = async (id) => {
         include: [models.Ingredient, models.Unit]
       }]
   });
-  const likes = await recipe.countLikes();
-  const favorites = await recipe.countFavorites();
-  const result = recipe.toJSON();
-  result.Likes = likes;
-  result.Favorites = favorites;
 
   if(recipe){
+    const likes = await recipe.countLikes();
+    const favorites = await recipe.countFavorites();
+    const result = recipe.toJSON();
+    result.Likes = likes;
+    result.Favorites = favorites;
+
     return {
       success: true,
       code: 200,
