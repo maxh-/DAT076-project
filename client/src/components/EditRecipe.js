@@ -397,7 +397,6 @@ const IngredientList = observer(class Ingredients extends Component {
                            glyph="remove" 
                            id={ingredient.number}
                            key={ingredient.number}
-                           onClick={this.deleteIngredient.bind(this)}
                            />
                         </span>
                         {' ' + ingredient.Ingredient.name + ' '}
@@ -472,6 +471,7 @@ const IngredientList = observer(class Ingredients extends Component {
 
   deleteIngredient({ target }) {
     //const id = parseInt(target.id);
+    console.log(this.store.recipe.RecipeIngredients)
     const number = parseInt(target.id);
     // remove ingredient from recipe
     this.store.recipe.RecipeIngredients =
