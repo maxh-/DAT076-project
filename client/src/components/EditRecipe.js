@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
+import { put } from 'axios';
 import EditRecipeStore from '../util/editRecipeStore';
 import {
   FormGroup,
@@ -22,12 +23,14 @@ import Auth from '../util/AuthService';
 const EditRecipe = observer(class EditRecipe extends Component {
   constructor(props) {
     super(props);
+    this.id = this.props.match.params.id;
     this.store = new EditRecipeStore(this.props.match.params.id);
-    this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleChangeMealType = this.handleChangeMealType.bind(this);
+    this.validateRecipe = this.validateRecipe.bind(this);
+    this.submitRecipe = this.submitRecipe.bind(this);
 
-    this.state ={
+    this.state = {
       showError: false,
       message: ''
     }
@@ -43,12 +46,36 @@ const EditRecipe = observer(class EditRecipe extends Component {
       : <div></div>;
   }
 
+  renderError() {
+    if (this.state.showError) {
+      return (
+        <Row>
+          <Col md={10}>
+            <Panel bsStyle="danger">
+              <Panel.Heading>
+                <Panel.Title componentClass="h3">Fel:</Panel.Title>
+              </Panel.Heading>
+              <Panel.Body>
+                {this.state.message}
+              </Panel.Body>
+            </Panel>  
+          </Col>
+        </Row>
+      );
+    } else {
+      return null;
+    }
+  }
+
   RenderRecipePage(props) {
     return (
       <div className="edit-recipe">
         <Col md={10} mdOffset={1}>
           <h2>Redigera recept</h2>
           <hr />
+
+          {this.renderError()}
+
           <form>
 
             {/**  Titel **/}
@@ -155,13 +182,12 @@ const EditRecipe = observer(class EditRecipe extends Component {
             </FormGroup>
 
           </form>
+          <Button className="btn-lg btn-primary" onClick={this.submitRecipe}>Spara ändringar</Button>
           <pre>{ JSON.stringify(this.store.recipe, null, 2) }</pre>
         </Col>
       </div>
     );
   }
-
-  
 
   handleChange({ target }) {
     this.store.recipe[target.name] = target.value;
@@ -171,8 +197,69 @@ const EditRecipe = observer(class EditRecipe extends Component {
     this.store.setMealType(target.value);
   }
 
-  handleSubmit() {
+  validateRecipe() {
+    this.setState({
+      showError: false,
+      message: ''
+    });
 
+    const title = this.store.recipe.title;
+    const steps = this.store.recipe.Steps;
+    const tweet = this.store.recipe.tweet;
+    const ingredients = this.store.recipe.RecipeIngredients;
+
+    if (title.length === 0 || !/[\w]+/.test(title)) {
+      this.setState({
+        showError: true,
+        message: 'Ogiltig titel. Titeln får inte vara tom.'
+      });
+      return false;
+    }
+
+    if (tweet.length === 0 || !/[\w]+/.test(tweet)) {
+      this.setState({
+        showError: true,
+        message: 'Ogiltig beskrivning. Beskrivningen får inte vara tom.'
+      });
+      return false;
+    }
+
+    if (ingredients.length === 0) {
+      this.setState({
+        showError: true,
+        message: 'Ett recept måste ha minst en ingrediens.'
+      });
+      return false;
+    }
+
+    if (steps.length === 0) {
+      this.setState({
+        showError: true,
+        message: 'Ett recept måste ha minst ett steg.'
+      });
+      return false;
+    }
+
+    return true;
+  }
+
+  submitRecipe() {
+    const success = this.validateRecipe();
+    if (success) {
+      const newRecipe = formatRecipe(this.store.recipe);
+      console.log(newRecipe);
+      fetch(`/api/recipe/${this.id}`, {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `jwt ${Auth.token}`
+        },
+        method: 'POST',
+        body: newRecipe
+      }).then(res => res.json()).then(body => {
+        console.log(body);
+      })
+    }
   }
 })
 
@@ -192,6 +279,24 @@ const formatTime = (minutes) => {
   hours = hours < 10 ? '0' + hours : hours;
   mins = mins < 10 ? '0' + mins : mins;
   return `${hours}:${mins}`;
+}
+
+const formatRecipe = (recipe) => {
+  const newRecipe = {};
+  newRecipe.title = recipe.title;
+  newRecipe.timeToComplete = recipe.timeToComplete;
+  newRecipe.tweet = recipe.tweet;
+  newRecipe.steps = recipe.Steps;
+  newRecipe.tags = recipe.Tags;
+  newRecipe.ingredients = recipe.RecipeIngredients.map(ingredient => {
+    return {
+      number: ingredient.number,
+      amount: ingredient.amount,
+      UnitId: ingredient.UnitId,
+      ingredient: ingredient.Ingredient.name
+    }
+  })
+  return newRecipe;
 }
 
 const TagButton = observer(class TagButton extends Component {

@@ -81,5 +81,3 @@ const getMealType = (tags) => {
 }
 
 export default EditRecipeStore;
-
-window.ers = new EditRecipeStore(2);
