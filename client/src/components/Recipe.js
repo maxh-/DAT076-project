@@ -245,6 +245,21 @@ const Recipe = observer( class Recipe extends Component {
     }
     return ingrs;
   }
+  showIngredientsModal() {
+    let ingrs = [];
+    if(this.state.exists) {
+      RecipeStore.recipe.RecipeIngredients.forEach(function(ingr) {
+        ingrs.push(
+          <ul>
+            <b>{ ingr.Ingredient.name }: </b>
+            <small> { ingr.amount } { ingr.Unit.name }</small>
+          </ul>
+        );
+      });
+    }
+    return ingrs;
+  }
+
   showSteps() {
     let stps = [];
     if(this.state.exists) {
@@ -299,7 +314,7 @@ const Recipe = observer( class Recipe extends Component {
               </ul>
             </Col>
             <Col xs={12} md={8} id="steps" className="lists">
-              <ol id="steps-list">
+              <ol id="steps-list-modal">
                 { this.showSteps() }
               </ol>
             </Col>
@@ -326,13 +341,27 @@ const Recipe = observer( class Recipe extends Component {
           <Modal.Body id="modalBody"
               onClick={this.switchItemViaClick.bind(this)}>
             <div>
+            <Row>
               <h1>{this.state.step.number}</h1>
               <hr/>
+              </Row>
+              <Row>
+              <Col xs={12} md={4}>
+              <div className="showIngrs-div-modal">
+                      <ul id="ingredients-list-modal" class="well">
+                        { this.showIngredientsModal() }
+                      </ul>
+                  </div>
+                  </Col>
+                  <Col xs={12} md={4}>
               <p>
                 <b>
                   {this.state.step.instruction}
                 </b>
               </p>
+              </Col>
+              </Row>
+
             </div>
           </Modal.Body>
           <Modal.Footer>
