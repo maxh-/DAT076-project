@@ -67,10 +67,7 @@ const Recipe = observer( class Recipe extends Component {
       });
     })
     .catch(error => {
-      this.setState({
-        title:"404: Receptet kunde inte hittas",
-        description: error
-      })
+      window.location = '/404';
     });
     await fetch('/api/user/'+RecipeStore.recipe.UserId, {
       method: 'GET'
