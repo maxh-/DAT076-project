@@ -21,13 +21,12 @@ class Main extends Component {
     return (
       <main>
         <Switch>
-          <Route exact path='/' component={Home}/>
-          <Route path='/browse' component={Browse}/>
+          <Route exact path='/' component={Browse}/>
           <Route path='/recipe/:id' component={Recipe} />
           <Route path='/register' component={Register}/>
           <Route path='/login' component={Login}/>
           <Route path='/publicprofile/:id' component={PublicProfile}/>
-	  <Route exact path='/' component={Home}/>
+	  <Route exact path='/' component={Browse}/>
 	  <PrivateRoute path='/pages' component={MyPages}/>
 	  <PrivateRoute path='/new' component={NewRecipe}/>
 	  <PrivateRoute path='/profile' component={MyProfile}/>
