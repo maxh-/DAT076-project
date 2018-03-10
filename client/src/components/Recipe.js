@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { get } from 'axios';
 import { Jumbotron, Grid, Row, Col, Glyphicon, Button,
   Modal, Label } from 'react-bootstrap';
 import './css/Recipe.css';
@@ -44,8 +43,6 @@ const Recipe = observer( class Recipe extends Component {
         })
         .then(res => res.json())
         .then(res => {
-          console.log(res.likes);
-          console.log(RecipeStore.recipe.id);
           this.setState({
             liked: (undefined !== res.likes.find(function(rec){
               return rec.id === parseInt(RecipeStore.recipe.id,10)
@@ -70,7 +67,6 @@ const Recipe = observer( class Recipe extends Component {
       });
     })
     .catch(error => {
-      console.log(error);
       this.setState({
         title:"404: Receptet kunde inte hittas",
         description: error
@@ -169,6 +165,7 @@ const Recipe = observer( class Recipe extends Component {
         style={this.state.style}>
         <small>{ RecipeStore.recipe.Likes }</small>
         <img
+          alt="oven-like"
           src="/img/oven-like.svg"
           id="ovenmitt-style"/>
       </Button>);

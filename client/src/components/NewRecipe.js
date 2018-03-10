@@ -48,12 +48,7 @@ class NewRecipe extends Component {
     .then(res => res.json())
     .then(res => this.setState({units: res.recipe}));
   }
-  componentDidUpdate(prevProps, prevState) {
-   // console.log("state: ");
-   // console.log(this.state);
-     console.log(this.state.ingredients);
 
-  }
   handleChange({ target }) {
     this.setState({
       [target.name]: target.value

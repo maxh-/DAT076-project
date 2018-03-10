@@ -4,19 +4,15 @@ import { Glyphicon } from 'react-bootstrap';
 
 /**
  * Display a loading spinner.
- * 
- * example: 
+ *
+ * example:
  *   <LoadingSpinner
  *    name="three-bounce"
  *    show={this.state.showSpinner}
  *    done={this.state.success}
  *    fail={this.state.fail}/>
  */
-class LoadingSpinner extends Component {
-  constructor(props) {
-    super(props);
-  }
-  
+class LoadingSpinner extends Component {  
   render() {
     if (this.props.fail) return <Glyphicon glyph="remove" />;
     if (this.props.done) return <Glyphicon glyph="ok" />;

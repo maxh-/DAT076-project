@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import {  Button,  ListGroup, ListGroupItem, ButtonToolbar, Col,
-  DropdownButton, MenuItem, FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
+import {  Button,  ListGroup, ListGroupItem, Col,
+  FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
 import Auth from '../util/AuthService';
 import './css/MySavedRecipes.css';
 
@@ -93,7 +93,7 @@ if(target.value === "Nam") {
    let idArray = [];
    let timeArray =[];
    fav.sort(function(a,b){
-     return parseInt(a.timeToComplete) - parseInt(b.timeToComplete);
+     return parseInt(a.timeToComplete,10) - parseInt(b.timeToComplete,10);
    });
 
    for(var i=0; i<fav.length; i++) {
@@ -176,10 +176,7 @@ for(var k =0; k<this.state.favourites.length; k++) {
 getFavourites() {
   var favs = this.state.favourites;
   var time = this.state.time;
-  var id = this.state.id;
   let favItems = [];
-  let timeItems = [];
-
   for(var i = 0; i<favs.length; i++) {
     favItems.push(<ListGroupItem key={i}
       className="l-g-i"
