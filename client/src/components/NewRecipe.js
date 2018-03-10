@@ -380,7 +380,6 @@ class NewRecipe extends Component {
   renderError() {
     if (this.state.showError) {
       return (
-        <Row>
           <Panel bsStyle="danger">
             <Panel.Heading>
               <Panel.Title componentClass="h3">Fel:</Panel.Title>
@@ -389,8 +388,7 @@ class NewRecipe extends Component {
               {this.state.message}
             </Panel.Body>
           </Panel>
-        </Row>
-      );
+        );
     } else {
       return null;
     }
@@ -561,10 +559,12 @@ class NewRecipe extends Component {
               <ol id="noListStyle"> { stpsItems } </ol>
             </Col>
           </FormGroup>
-          <Col sm={2}></Col>
-          <Col sm={10}>
-            {this.renderError()}
-          </Col>
+          <Row>
+            <Col sm={2} className="error-row"></Col>
+            <Col sm={10} className="error-row">
+              {this.renderError()}
+            </Col>
+          </Row>
           <Col sm={2}></Col>
           <Col id="submitCol" sm={8} xs={10}>
             <ButtonToolbar >
