@@ -48,30 +48,30 @@ const Browse = observer(class Browse extends Component {
 
   async addFilter({ target }) {
 	 if(target.value !== undefined) {
+
 			if(!this.state.filter.includes(parseInt(target.value,10))) {
-	  		await this.setState({
-		  		filter: this.state.filter.concat(parseInt(target.value,10))
-		  	});
+	  		await this.setState(prevState => ({
+		  		filter: prevState.filter.concat(parseInt(target.value,10))
+		  	}));
+				this.setState({ searchHeader:"Sökresultat" });
+				await RecipeStore.searchFor(this.state.filter, this.state.searchWord);
 			}
 			else {
-				await this.setState({
-					filter: this.state.filter.filter(word => word !== parseInt(target.value,10))
-				});
+				await this.setState(prevState => ({
+					filter: prevState.filter.filter(word => word !== parseInt(target.value,10))
+				}));
+				if(this.state.filter.length === 0 && this.state.searchWord.length===0) {
+					this.setState({ searchHeader:"Topplista" });
+					await RecipeStore.getAll();
+				}
+				else {
+					this.setState({ searchHeader:"Sökresultat" });
+					await RecipeStore.searchFor([], this.state.searchWord);
+				}
 			}
 		}
-    if(this.state.filter.length>0) {
-      this.setState({ searchHeader:"Sökresultat" });
-      RecipeStore.searchFor(this.state.filter, this.state.searchWord);
-    }
-    else if(this.state.filter.length === 0 && this.state.searchWord.length===0) {
-      this.setState({ searchHeader:"Topplista" });
-      RecipeStore.getAll();
-    }
-    else {
-      this.setState({ searchHeader:"Sökresultat" });
-      RecipeStore.searchFor([], this.state.searchWord);
-    }
   }
+
   showRecipeCols() {
     let recipeCols = [];
     RecipeStore.recipes.forEach(function(recipe) {
