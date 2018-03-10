@@ -17,20 +17,20 @@ class EditRecipeStore {
       otherTags: [], // selected "regular" tags
       update: action(async () => {
         // fetch & filter tags according to type
-        await get(`/recipe/${this.id}`).then(res => {
+        await get(`/api/recipe/${this.id}`).then(res => {
           this.recipe = extend(res.data.recipe, {ingredients: []});
           this.recipe['ingredients'] = res.data.RecipeIngredients;
           this.mealType = getMealType(res.data.recipe.Tags);
         });
-        await get(`/tag`).then(res => {
+        await get(`/api/tag`).then(res => {
           this.allTags = res.data.tags.filter(tag => {
             return ![1, 2, 3, 4].includes(tag.id);
           })
           this.allMealTypes = filterTags(res.data.tags, [1, 2, 3, 4]);
         });
         this.updateTags();
-        get('/unit').then(res => this.units = res.data.recipe);
-        get('/ingredient').then(res => this.allIngredients = res.data.recipe);
+        get('/api/unit').then(res => this.units = res.data.recipe);
+        get('/api/ingredient').then(res => this.allIngredients = res.data.recipe);
       }),
       updateTags: () => {
         // update tags

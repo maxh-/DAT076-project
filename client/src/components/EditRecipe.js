@@ -74,8 +74,6 @@ const EditRecipe = observer(class EditRecipe extends Component {
           <h2>Redigera recept</h2>
           <hr />
 
-          {this.renderError()}
-
           <form>
 
             {/**  Titel **/}
@@ -182,8 +180,10 @@ const EditRecipe = observer(class EditRecipe extends Component {
             </FormGroup>
 
           </form>
+
+          {this.renderError()}
+
           <Button className="btn-lg btn-primary" onClick={this.submitRecipe}>Spara ändringar</Button>
-          <pre>{ JSON.stringify(this.store.recipe, null, 2) }</pre>
         </Col>
       </div>
     );
@@ -255,9 +255,10 @@ const EditRecipe = observer(class EditRecipe extends Component {
           'Authorization': `jwt ${Auth.token}`
         },
         method: 'PUT',
-        body: newRecipe
+        body: JSON.stringify(newRecipe)
       }).then(res => res.json()).then(body => {
         console.log(body);
+        alert('Dina ändringar är sparade!');
       })
     }
   }
@@ -286,8 +287,15 @@ const formatRecipe = (recipe) => {
   newRecipe.title = recipe.title;
   newRecipe.timeToComplete = recipe.timeToComplete;
   newRecipe.tweet = recipe.tweet;
-  newRecipe.steps = recipe.Steps;
-  newRecipe.tags = recipe.Tags;
+  newRecipe.steps = recipe.Steps.map(step => {
+    return {
+      instruction: step.instruction,
+      number: step.number
+    }
+  });
+  newRecipe.tags = recipe.Tags.map(tag => {
+    return tag.id;
+  });
   newRecipe.ingredients = recipe.RecipeIngredients.map(ingredient => {
     return {
       number: ingredient.number,
