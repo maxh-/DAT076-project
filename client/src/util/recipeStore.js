@@ -37,24 +37,16 @@ class RecipeStore {
     let tag = "";
     let term = "";
 
-    if(tags.length === 0) {
-      tag = "";
-    }
-    else {
-      tag = "tags="+tags.join();
+    if(tags.length === 0) { tag = ""; }
+    else                  { tag = "tags="+tags.join(); }
+    if(searchTerm.length === 0) { term = ""; }
+    else                        { term = '&q=' + searchTerm; }
 
-    }
-    if(searchTerm.length === 0) {
-      term = "";
-    }
-    else {
-      term = '&q=' + searchTerm;
-    }
     fetch('/api/recipe/search?'+tag+term, {
       method: 'GET',
     })
       .then(res => res.json())
-      .then((body) => {
+      .then(body => {
         if(body.success && body.recipes) {
           this.recipes = body.recipes;
         }
