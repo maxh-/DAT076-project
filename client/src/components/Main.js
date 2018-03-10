@@ -22,10 +22,11 @@ class Main extends Component {
       <main>
         <Switch>
           <Route exact path='/' component={Browse}/>
-          <Route path='/recipe/:id' component={Recipe} />
+          <Route exact path='/recipe/:id' component={Recipe} />
           <Route exact path='/register' component={Register}/>
           <Route exact path='/login' component={Login}/>
-          <Route path='/publicprofile/:id' component={PublicProfile}/>
+          <Route exact path='/publicprofile/:id' component={PublicProfile}/>
+          <Route exact path='/recipe/:id/edit' component={EditRecipe} />
 	        <PrivateRoute exact path='/pages' component={MyPages}/>
       	  <PrivateRoute exact path='/new' component={NewRecipe}/>
 	        <PrivateRoute exact path='/profile' component={MyProfile}/>
