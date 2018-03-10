@@ -1,22 +1,18 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
-import { put } from 'axios';
 import EditRecipeStore from '../util/editRecipeStore';
 import {
   FormGroup,
   ControlLabel,
   FormControl,
   HelpBlock,
-  Form,
   Col,
   Row,
   Button,
-  InputGroup,
   Glyphicon,
   Table,
   Panel
 } from 'react-bootstrap';
-import classNames from 'classnames';
 import './css/EditRecipe.css';
 import Auth from '../util/AuthService';
 
@@ -258,7 +254,11 @@ const EditRecipe = observer(class EditRecipe extends Component {
         body: JSON.stringify(newRecipe)
       }).then(res => res.json()).then(body => {
         console.log(body);
-        alert('Dina ändringar är sparade!');
+        if (body.success) {
+          alert('Dina ändringar är sparade!');
+        } else {
+          alert('Kunde inte spara. Kontrollera att alla fält är korrekt ifyllda.');
+        }
       })
     }
   }
@@ -330,7 +330,7 @@ const TagButton = observer(class TagButton extends Component {
   }
 
   onClick({ target }) {
-    const id = parseInt(target.id);
+    const id = parseInt(target.id, 10);
     if (this.state.checked) {
       this.store.recipe.Tags = this.store.recipe.Tags.filter(tag => {
         return tag.id !== id;
@@ -470,9 +470,7 @@ const IngredientList = observer(class Ingredients extends Component {
   }
 
   deleteIngredient({ target }) {
-    //const id = parseInt(target.id);
-    console.log(this.store.recipe.RecipeIngredients)
-    const number = parseInt(target.id);
+    const number = parseInt(target.id, 10);
     // remove ingredient from recipe
     this.store.recipe.RecipeIngredients =
       this.store.recipe.RecipeIngredients.filter(ingredient => {
@@ -481,13 +479,14 @@ const IngredientList = observer(class Ingredients extends Component {
     // adjust ingredient indices
     this.store.recipe.RecipeIngredients.map(ingredient => {
       if (ingredient.number > number) ingredient.number--;
+      return ingredient.number;
     });
   }
 
   addIngredient(e) {
     const ingredientName  = this.ingredient.value;
     const amount          = this.amount.value;
-    const UnitId          = parseInt(this.unit.value);
+    const UnitId          = parseInt(this.unit.value, 10);
     
     if (this.validateNewIngredient()) {
       this.store.recipe.RecipeIngredients.push({
@@ -615,11 +614,12 @@ const StepsList = observer(class StepsList extends Component {
 
   deleteStep({ target }) {
     console.log(target.id);
-    const id = parseInt(target.id);
+    const id = parseInt(target.id, 10);
     this.store.recipe.Steps =
       this.store.recipe.Steps.filter(step => step.number !== id);
     this.store.recipe.Steps.map(step => {
       if (step.number > id) step.number--;
+      return step.number;
     });
   }
 
@@ -631,7 +631,7 @@ const StepsList = observer(class StepsList extends Component {
   }
 
   handleChange({ target }) {
-    const id = parseInt(target.id);
+    const id = parseInt(target.id, 10);
     this.store.recipe.Steps.find(step => step.number === id).instruction = 
       target.value;
   }
