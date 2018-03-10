@@ -144,21 +144,20 @@ class NewRecipe extends Component {
       .then(res => res.json())
       .then(async (res) => {
         console.log(res);
-        let isSuccess = res.success;
-        if (!isSuccess) return false;
-        if (!this.state.image) return isSuccess;
+        let result = res.success;
+        if (!result) return res;
+        if (!this.state.image) return res;
         console.log('uploading image...');
-        isSuccess = await this.submitImage(this.state.image, res.recipe.id);
-        console.log(isSuccess);
-        isSuccess = isSuccess.success;
-        return isSuccess;
+        await this.submitImage(this.state.image, res.recipe.id);
+        return res;
       })
-      .then(isSuccess => {
-        if(isSuccess === true) {
-          alert("Ditt recept är skapat!");
-          window.location = '/saved';
+      .then(result => {
+        console.log(result);
+        if (result.success) {
+          alert('Receptet är sparat!')
+          window.location = `/recipe/${result.recipe.id}`;
         } else {
-          alert("Något gick fel.");
+          alert('Receptet är inte sparat. Kontrollera att alla fält är korrekt ifyllda.');
         }
       });
   }

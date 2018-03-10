@@ -45,7 +45,8 @@ async getUser() {
          .then(res => res.json())
          .then(res => res.message.forEach((value) => {
            recipes.push(value)
-         }));
+         }))
+         .catch(error => window.location = '/404');
              this.setState({
                  recipes: recipes, userId: this.props.match.params.id
                });
