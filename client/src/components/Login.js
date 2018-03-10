@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router';
 import { observer } from 'mobx-react';
 import {
   FormGroup,
@@ -16,7 +15,7 @@ import Auth from '../util/AuthService';
 const Login = observer(class Login extends Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
       email: '',
       password: ''
@@ -43,7 +42,7 @@ const Login = observer(class Login extends Component {
     if (Auth.isLoggedIn) {
       this.props.history.push('/');
     }
-    
+
     return (
       <div className="login">
         <Row>
@@ -89,4 +88,3 @@ const Login = observer(class Login extends Component {
 });
 
 export default Login;
-

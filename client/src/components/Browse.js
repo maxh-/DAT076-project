@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import { Glyphicon, Grid, Row, Col, Button, InputGroup,
-	FormControl, DropdownButton, Label,
+	FormControl, DropdownButton,
 	ToggleButtonGroup, ToggleButton,
 	PageHeader, ButtonToolbar } from 'react-bootstrap';
 import './css/Browse.css';
@@ -28,12 +28,10 @@ const Browse = observer(class Browse extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.addFilter = this.addFilter.bind(this);
   }
+
   componentDidMount() {
 		this.setState({searchHeader:"Topplista"});
   }
-  componentDidUpdate(prevProps, prevState) {
-    console.log(this.state.filter);
-	}
 
   handleChangeSearch({ target }) {
     this.setState({
@@ -77,24 +75,17 @@ const Browse = observer(class Browse extends Component {
   showRecipeCols() {
     let recipeCols = [];
     RecipeStore.recipes.forEach(function(recipe) {
-      let bgStyle = {
-        backgroundImage: 'url(' + '/img/'+recipe.id+'.jpg' + ')'
-      };
-      let imgStyle = {
+      let ovenmittStyle = {
         height:"32px",
         paddingBottom:"7px",
 				paddingLeft:"5px"
-      };
-      let spanRightStyle = {
-        marginLeft:"20px"
       };
       recipeCols.push(
         <Col className="grand-parent" xs={12} sm={6} lg={4}
             key={recipe.id}>
 						<a href={'/recipe/' + recipe.id } >
 					<div className="parent">
-	          <div className="child" style={bgStyle} >
-	          </div>
+						<BrowseImage id={recipe.id} />
 	          <div className="op">
 							<div>
 		              <span>
@@ -103,7 +94,11 @@ const Browse = observer(class Browse extends Component {
 
 		              <span id="span-right">
 		                   { recipe.Likes }
-		                <img src="/img/oven-like.svg"  style={imgStyle} className="pl"/>
+		                <img
+											alt={recipe.id}
+											src="/img/oven-like.svg"
+											style={ovenmittStyle}
+											className="pl"/>
 		              </span>
 		          </div>
 						</div>
@@ -124,7 +119,6 @@ const Browse = observer(class Browse extends Component {
   }
 	showTags() {
 		let tags = []
-		console.log(RecipeStore.getMyTags(this.state.filter));
 		RecipeStore.getMyTags(this.state.filter).forEach(function(tag) {
 			tags.push(
 					<span><b>#</b>{ tag }</span>
@@ -165,7 +159,7 @@ const Browse = observer(class Browse extends Component {
 		  		</form>
           <ButtonToolbar>
             <Col xs={3}>
-              <DropdownButton title="Måltid" className="btns">
+              <DropdownButton title="Måltid" className="btns" id="a">
     			      <ToggleButtonGroup type="radio" name="meal"
                     value={this.state.filter}
         						onClick={this.addFilter.bind(this)}>
@@ -177,7 +171,7 @@ const Browse = observer(class Browse extends Component {
               </DropdownButton>
             </Col>
             <Col xs={3}>
-             	<DropdownButton title="Rättyp" className="btns">
+             	<DropdownButton title="Rättyp" className="btns" id="b">
   		          <ToggleButtonGroup type="radio" name="filter"
                       value={this.state.filter}
                       onClick={this.addFilter.bind(this)} >
@@ -188,7 +182,7 @@ const Browse = observer(class Browse extends Component {
               </DropdownButton>
             </Col>
             <Col xs={3}>
-              <DropdownButton title="Ingrediens" className="btns">
+              <DropdownButton title="Ingrediens" className="btns" id="c">
   		          <ToggleButtonGroup type="radio" name="filter"
   		      					value={this.state.filter}
           						onClick={this.addFilter.bind(this)}>
@@ -202,7 +196,7 @@ const Browse = observer(class Browse extends Component {
               </DropdownButton>
             </Col>
             <Col xs={3}>
-              <DropdownButton title="Specialkost" className="btns">
+              <DropdownButton title="Specialkost" className="btns" id="d">
                 <ToggleButtonGroup type="radio" name="filter"
                       value={this.state.filter}
                       onClick={this.addFilter.bind(this)}>
@@ -233,5 +227,40 @@ const Browse = observer(class Browse extends Component {
     );
   }
 });
+
+const BrowseImage = observer(class BrowseImage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      style: {
+        background: "url('/img/food.png')", // default image
+				backgroundAttachment: "fixed"
+      }
+    }
+  }
+
+  async componentDidMount() {
+    // load recipe image & update styles if it exists
+    const image = `/img/${this.props.id}.jpg`;
+    const res = await fetch(image);
+    if (res.ok) this.setState({
+      style: {
+        ...this.state.style,
+        background: "url(" + image + ")",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
+        backgroundSize: "cover",
+      }
+    })
+  }
+
+  render() {
+    return (
+			<div className="child" style={this.state.style}></div>
+
+		);
+  }
+});
+
 
 export default Browse;

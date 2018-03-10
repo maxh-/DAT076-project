@@ -1,14 +1,7 @@
 import React, { Component } from 'react';
-import Auth from '../util/AuthService';
 import './css/PublicProfile.css';
 import { observer } from 'mobx-react';
-import {
-  Row, Col, Modal, Button, FormGroup,
-  ControlLabel, FormControl, HelpBlock,
-  Glyphicon,Table, Grid
-} from 'react-bootstrap';
-import  {get} from 'axios';
-import RecipeStore from '../util/recipeStore';
+import { Row, Col, Grid } from 'react-bootstrap';
 
 const PublicProfile = observer(class PublicProfile extends Component {
 
@@ -63,38 +56,28 @@ async getUser() {
                       },
                       method: 'GET'
                     })
-                    .then(res => res.json())
-                    .then(res => console.log(res));;
 
 }
 
   showRecipes() {
     let grid = [];
     let recipes =this.state.recipes;
-    console.log(recipes);
-
     recipes.forEach(function(recipe) {
       let backGround = {
-        backgroundImage: 'url(' + '/img/'+recipe.id+'.jpg' + ')'
-      };
-      let imgStyle = {
-        height:"20px",
-        paddingBottom:"5px",
-      };
-      let spanRightStyle = {
-        marginLeft:"20px"
+        backgroundImage: 'url(/img/'+recipe.id+'.jpg)'
       };
       grid.push(
         <Col className="Parent" xs={12} sm={6} lg={4}
             key={recipe.id}>
           <div className="Child" style={backGround} >
-          </div>
+
           <div className="Op">
             <a href={'/recipe/' + recipe.id } >
               <span>
                 { recipe.title }
               </span>
             </a>
+          </div>
           </div>
         </Col>
       );

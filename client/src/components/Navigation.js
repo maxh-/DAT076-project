@@ -4,8 +4,7 @@ import {
   Nav,
   NavItem,
   NavDropdown,
-  MenuItem,
-  Glyphicon
+  MenuItem
 } from 'react-bootstrap';
 import { observer } from 'mobx-react';
 import './css/Navigation.css';

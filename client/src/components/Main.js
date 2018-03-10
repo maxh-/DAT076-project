@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import Browse from './Browse';
-import Home from './Home';
 import NewRecipe from './NewRecipe';
 import MyPages from './MyPages';
 import MyProfile from './MyProfile';
@@ -13,6 +12,7 @@ import ForgotPass from './ForgotPass';
 import ResetPass from './ResetPass';
 import EditRecipe from './EditRecipe';
 import PublicProfile from './PublicProfile';
+import NotFoundPage from './NotFoundPage';
 
 import PrivateRoute from '../util/PrivateRoute';
 
@@ -22,17 +22,18 @@ class Main extends Component {
       <main>
         <Switch>
           <Route exact path='/' component={Browse}/>
-          <Route path='/register' component={Register}/>
-          <Route path='/login' component={Login}/>
+          <Route path='/recipe/:id' component={Recipe} />
+          <Route exact path='/register' component={Register}/>
+          <Route exact path='/login' component={Login}/>
           <Route path='/publicprofile/:id' component={PublicProfile}/>
-          <Route exact path='/recipe/:id' component={Recipe} />
-          <Route path='/forgotpass' component={ForgotPass}/>
-          <Route path='/resetpass/:token' component={ResetPass}/>
-          <PrivateRoute path='/recipe/:id/edit' component={EditRecipe} />
-      	  <PrivateRoute path='/pages' component={MyPages}/>
-      	  <PrivateRoute path='/new' component={NewRecipe}/>
-      	  <PrivateRoute path='/profile' component={MyProfile}/>
-      	  <PrivateRoute path='/saved' component={MySavedRecipes}/>
+	        <PrivateRoute exact path='/pages' component={MyPages}/>
+      	  <PrivateRoute exact path='/new' component={NewRecipe}/>
+	        <PrivateRoute exact path='/profile' component={MyProfile}/>
+	        <PrivateRoute exact path='/saved' component={MySavedRecipes}/>
+          <Route exact path='/forgotpass' component={ForgotPass}/>
+          <Route exact path='/resetpass/:token' component={ResetPass}/>
+          <Route exact path='/404' component={NotFoundPage} />
+          <Route component={NotFoundPage} />
     		</Switch>
       </main>
     );

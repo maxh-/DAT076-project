@@ -77,7 +77,6 @@ class RecipeStore {
     tgs.forEach(function(tg){
       ts.push(tags.find(function(tag){ return tag.id===tg; }).tag)
     });
-    console.log(ts)
     return ts;
   }
 

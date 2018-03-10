@@ -15,14 +15,14 @@
 .parent {
 	padding: 0;
 	height: 300px;
-    overflow: hidden;
-    position: relative;
+  overflow: hidden;
+  position: relative;
 	cursor: pointer;
-    display: flex;
-		border-radius: 3px;
-		-webkit-box-shadow: 0 0 3px 2px #ccc;  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
-	  -moz-box-shadow:    0 0 3px 2px #ccc;  /* Firefox 3.5 - 3.6 */
-	  box-shadow:         0 0 3px 2px #ccc;  /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+  display: flex;
+	border-radius: 3px;
+	box-shadow:         0 0 3px 2px #ccc;  /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+	-webkit-box-shadow: 0 0 3px 2px #ccc;  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+  -moz-box-shadow:    0 0 3px 2px #ccc;  /* Firefox 3.5 - 3.6 */
 }
 .container {
 	width: 99%;
@@ -30,20 +30,19 @@
 .child {
 	width: 100%;
 	background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    -webkit-transition: all .2s;
-    -moz-transition: all .2s;
-    -o-transition: all .2s;
-    transition: all .2s;
+  background-size: cover;
+  background-repeat: no-repeat;
+	transition: all .2s;
+  -webkit-transition: all .2s;
+  -moz-transition: all .2s;
+  -o-transition: all .2s;
 }
-
 .parent:hover .child, .parent:focus .child {
-    -ms-transform: 		scale(1.03);
-    -moz-transform: 	scale(1.03);
-    -webkit-transform: 	scale(1.03);
-    -o-transform: 		scale(1.03);
-    transform: 			scale(1.03);
+  -ms-transform: 		scale(1.02);
+  -moz-transform: 	scale(1.02);
+  -webkit-transform: 	scale(1.02);
+  -o-transform: 		scale(1.02);
+  transform: 			scale(1.02);
 }
 .btn-toolbar {
 	margin: 0;
@@ -59,11 +58,11 @@
 
 }
 .child:before {
-    content: "";
-    display: none;
-    position: absolute;
-    top: 0;
-    left: 0;
+  content: "";
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 .op {
 	border-top-right-radius: 4px;
@@ -84,7 +83,7 @@
   font-family: 'Lora', serif;
  	font-size: 28px;
 	padding-left: 20px;
- }
+}
 .op {
 	width: 100%;
 	text-align: left;
