@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Col, FormGroup, ControlLabel, FormControl,
   Button, ButtonToolbar, InputGroup, Glyphicon, ToggleButton,
-  ListGroup, ListGroupItem, ToggleButtonGroup,   }  from 'react-bootstrap';
+  ListGroup, ListGroupItem, ToggleButtonGroup, Row, Panel   }  from 'react-bootstrap';
 import './css/NewRecipe.css';
 import Auth from '../util/AuthService';
 
@@ -23,7 +23,9 @@ class NewRecipe extends Component {
       unit: "",
       description: "",
       meal: 1,
-      units: []
+      units: [],
+      showError: false,
+      message: ''
     }
     window.submit = this.submitImage;
     this.handleChange = this.handleChange.bind(this);
@@ -122,45 +124,49 @@ class NewRecipe extends Component {
   }
   handleSubmit(e) {
     e.preventDefault();
-    console.log("Submit!!");
-    let bod = JSON.stringify({
-      title: this.state.title,
-      timeToComplete: this.state.time,
-      tweet : this.state.description,
-      steps: this.state.steps,
-      tags: this.state.tags.concat(parseInt(this.state.meal,10)),
-      ingredients: this.state.ingredients
-    });
-    console.log(Auth.token);
+    const success = this.validateRecipe();
+    if (success) {
 
-    fetch('/api/recipe/', {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'JWT '+ Auth.token
-      },
-      method: 'POST',
-      body: bod
-    })
-      .then(res => res.json())
-      .then(async (res) => {
-        console.log(res);
-        let isSuccess = res.success;
-        if (!isSuccess) return false;
-        if (!this.state.image) return isSuccess;
-        console.log('uploading image...');
-        isSuccess = await this.submitImage(this.state.image, res.recipe.id);
-        console.log(isSuccess);
-        isSuccess = isSuccess.success;
-        return isSuccess;
-      })
-      .then(isSuccess => {
-        if(isSuccess === true) {
-          alert("Ditt recept är skapat!");
-          window.location = '/saved';
-        } else {
-          alert("Något gick fel.");
-        }
+      console.log("Submit!!");
+      let bod = JSON.stringify({
+        title: this.state.title,
+        timeToComplete: this.state.time,
+        tweet : this.state.description,
+        steps: this.state.steps,
+        tags: this.state.tags.concat(parseInt(this.state.meal,10)),
+        ingredients: this.state.ingredients
       });
+      console.log(Auth.token);
+
+      fetch('/api/recipe/', {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'JWT '+ Auth.token
+        },
+        method: 'POST',
+        body: bod
+      })
+        .then(res => res.json())
+        .then(async (res) => {
+          console.log(res);
+          let isSuccess = res.success;
+          if (!isSuccess) return false;
+          if (!this.state.image) return isSuccess;
+          console.log('uploading image...');
+          isSuccess = await this.submitImage(this.state.image, res.recipe.id);
+          console.log(isSuccess);
+          isSuccess = isSuccess.success;
+          return isSuccess;
+        })
+        .then(isSuccess => {
+          if(isSuccess === true) {
+            alert("Ditt recept är skapat!");
+            window.location = '/saved';
+          } else {
+            alert("Något gick fel.");
+          }
+        });
+      }
   }
 
   async submitImage(image, id) {
@@ -231,34 +237,60 @@ class NewRecipe extends Component {
   }
 
   addIngredient(e) {
-    let number = this.state.number;
-    let ingredient  = this.ingredient.value;
-    let amount    = this.amount.value;
-    let UnitId    = this.unit.value;
-    console.log(UnitId);
-    this.setState(prevState => ({
-      ingredients: prevState.ingredients.concat({number, amount, UnitId, ingredient}),
-      number: prevState.number+1
-    }));
-    this.ingredient.value = "";
-    this.amount.value = "";
-    this.unit.value = "1";
-  }
-
-  addTags({ target }) {
-    if(target.value !== undefined) {
-      if(!this.state.tags.includes(parseInt(target.value,10))) {
-        this.setState({
-          tags: this.state.tags.concat(parseInt(target.value,10))
-        });
-      }
-      else {
-        this.setState({
-          tags: this.state.tags.filter(word => word !== parseInt(target.value,10))
-        });
-      }
+    const number = this.state.number;
+    const ingredient  = this.ingredient.value;
+    const amount    = this.amount.value;
+    const UnitId    = this.unit.value;
+    const success = this.validateNewIngredient(ingredient, amount);
+    if(success) {
+      this.setState(prevState => ({
+        ingredients: prevState.ingredients.concat({number, amount, UnitId, ingredient}),
+        number: prevState.number+1
+      }));
+      this.ingredient.value = "";
+      this.amount.value = "";
+      this.unit.value = "1";
     }
   }
+
+    validateNewIngredient(ingredientName, amount) {
+      this.setState({
+        showError: false,
+        errorMessage: ''
+      });
+
+      if (!/[a-zåäö]+/i.test(ingredientName.replace(/ /g, ''))) {
+        this.setState({
+          showError: true,
+          message: 'Ingrediensnamn kan bara bestå av bokstäver och mellanslag.'
+        })
+        return false;
+      }
+
+      if (!/[\d]+/.test(amount)) {
+        this.setState({
+          showError: true,
+          message: 'Mängd kan bara bestå av siffror.'
+        })
+        return false;
+      }
+      return true;
+    }
+
+    addTags({ target }) {
+      if(target.value !== undefined) {
+        if(!this.state.tags.includes(parseInt(target.value,10))) {
+          this.setState({
+            tags: this.state.tags.concat(parseInt(target.value,10))
+          });
+        }
+        else {
+          this.setState({
+            tags: this.state.tags.filter(word => word !== parseInt(target.value,10))
+          });
+        }
+      }
+    }
 
   createIngredients(ing) {
     let targ  = this.state.units.filter(function(un){
@@ -303,6 +335,70 @@ class NewRecipe extends Component {
               </li>
   }
 
+  validateRecipe() {
+    this.setState({
+      showError: false,
+      message: ''
+    });
+
+    const title = this.state.title;
+    const steps = this.state.steps;
+    const tweet = this.state.description;
+    const ingredients = this.state.ingredients;
+
+    if (title.length === 0 || !/[\w]+/.test(title)) {
+      this.setState({
+        showError: true,
+        message: 'Ogiltig titel. Titeln får inte vara tom.'
+      });
+      return false;
+    }
+
+    if (tweet.length === 0 || !/[\w]+/.test(tweet)) {
+      this.setState({
+        showError: true,
+        message: 'Ogiltig beskrivning. Beskrivningen får inte vara tom.'
+      });
+      return false;
+    }
+
+    if (ingredients.length === 0) {
+      this.setState({
+        showError: true,
+        message: 'Ett recept måste ha minst en ingrediens.'
+      });
+      return false;
+    }
+
+    if (steps.length === 0) {
+      this.setState({
+        showError: true,
+        message: 'Ett recept måste ha minst ett steg.'
+      });
+      return false;
+    }
+
+    return true;
+  }
+
+  renderError() {
+    if (this.state.showError) {
+      return (
+        <Row>
+          <Panel bsStyle="danger">
+            <Panel.Heading>
+              <Panel.Title componentClass="h3">Fel:</Panel.Title>
+            </Panel.Heading>
+            <Panel.Body>
+              {this.state.message}
+            </Panel.Body>
+          </Panel>
+        </Row>
+      );
+    } else {
+      return null;
+    }
+  }
 
   // render component
   render() {
@@ -470,16 +566,14 @@ class NewRecipe extends Component {
             </Col>
           </FormGroup>
           <Col sm={2}></Col>
+          <Col sm={10}>
+            {this.renderError()}
+          </Col>
+          <Col sm={2}></Col>
           <Col id="submitCol" sm={8} xs={10}>
             <ButtonToolbar >
               <Button bsStyle="primary" bsSize="large"  onClick={this.handleSubmit.bind(this)}>
                 Publicera
-              </Button>
-              <Button bsSize="large" disabled  /*onClick={}*/>
-                Spara utkast
-              </Button>
-              <Button bsSize="large" disabled /*onClick={}*/>
-                Släng
               </Button>
             </ButtonToolbar>
           </Col>
