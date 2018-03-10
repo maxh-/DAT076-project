@@ -70,13 +70,14 @@ async getUser() {
         <Col className="Parent" xs={12} sm={6} lg={4}
             key={recipe.id}>
           <div className="Child" style={backGround} >
-          </div>
+
           <div className="Op">
             <a href={'/recipe/' + recipe.id } >
               <span>
                 { recipe.title }
               </span>
             </a>
+          </div>
           </div>
         </Col>
       );
