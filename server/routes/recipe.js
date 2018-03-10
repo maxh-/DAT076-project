@@ -14,7 +14,14 @@ router.get('/', async (req, res, next) => {
 });
 
 /* POST create a recipe*/
-router.post('/', isAuthenticated, checkSchema(recipeSchema.create), oneOf([
+router.post('/', isAuthenticated, checkSchema(recipeSchema.create), check('ingredients').custom((values) => {
+  console.log(values);
+  const unique = (new Set(values.ingredient)).size !== values.lengthK;
+  if(unique){
+    throw new Error('Ingredients must be unique');
+  }
+  return unique;
+}), oneOf([
   check('ingredients.*.ingredient').exists().not().isEmpty().matches(/^[a-zåäöA-ZÅÄÖ\s]*$/),
   check('ingredients.*.IngredientId').exists().isInt()
 ]), validate, async (req, res, next) => {
@@ -60,9 +67,20 @@ router.get('/:id', async (req, res, next) => {
 
 
 /* PUT update a recipe. */
-router.put('/:id', isAuthenticated, checkSchema(recipeSchema.update), validate, async (req, res, next) => {
+router.put('/:id', isAuthenticated, checkSchema(recipeSchema.update), check('ingredients').custom((values) => {
+  console.log(values);
+  const unique = (new Set(values.ingredient)).size !== values.lengthK;
+  if(unique){
+    throw new Error('Ingredients must be unique');
+  }
+  return unique;
+}), oneOf([
+  check('ingredients.*.ingredient').exists().not().isEmpty().matches(/^[a-zåäöA-ZÅÄÖ\s]*$/),
+  check('ingredients.*.IngredientId').exists().isInt()
+]), validate, async (req, res, next) => {
   const response = await recipeController.update(req.body, req.params.id, req.user.id);
   res.status(response.code).json(response);
 });
+
 
 module.exports = router;
