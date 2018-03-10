@@ -126,8 +126,6 @@ class NewRecipe extends Component {
     e.preventDefault();
     const success = this.validateRecipe();
     if (success) {
-
-      console.log("Submit!!");
       let bod = JSON.stringify({
         title: this.state.title,
         timeToComplete: this.state.time,
@@ -136,8 +134,6 @@ class NewRecipe extends Component {
         tags: this.state.tags.concat(parseInt(this.state.meal,10)),
         ingredients: this.state.ingredients
       });
-      console.log(Auth.token);
-
       fetch('/api/recipe/', {
         headers: {
           'Content-Type': 'application/json',
