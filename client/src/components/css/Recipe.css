@@ -133,3 +133,11 @@
 #steps-list {
 
 }
+
+.showIngrs-div-modal {
+	width: 60%
+}
+
+#ingredients-list-modal {
+	text-align-last: left;
+}
