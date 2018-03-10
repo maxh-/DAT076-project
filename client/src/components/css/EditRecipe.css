@@ -1,0 +1,29 @@
+.edit-recipe {
+    text-align: left;
+}
+
+.btn-toolbar>.btn {
+    margin-top: 5px;
+    border-radius: 0px;
+}
+
+.clickable-row:hover {
+    cursor: pointer;
+}
+
+.small-padding {
+    padding: 1px;
+}
+
+.add-btn {
+    padding-right: 0px;
+    padding-left: 5px;
+}
+
+.step {
+    margin-bottom: 5px;
+}
+
+.edit-recipe label {
+    font-size: 1.3em;
+}

@@ -75,10 +75,7 @@ const Browse = observer(class Browse extends Component {
   showRecipeCols() {
     let recipeCols = [];
     RecipeStore.recipes.forEach(function(recipe) {
-      let bgStyle = {
-        backgroundImage: 'url(/img/'+recipe.id+'.jpg)'
-      };
-      let imgStyle = {
+      let ovenmittStyle = {
         height:"32px",
         paddingBottom:"7px",
 				paddingLeft:"5px"
@@ -88,8 +85,7 @@ const Browse = observer(class Browse extends Component {
             key={recipe.id}>
 						<a href={'/recipe/' + recipe.id } >
 					<div className="parent">
-	          <div className="child" style={bgStyle} >
-	          </div>
+						<BrowseImage id={recipe.id} />
 	          <div className="op">
 							<div>
 		              <span>
@@ -101,7 +97,7 @@ const Browse = observer(class Browse extends Component {
 		                <img
 											alt={recipe.id}
 											src="/img/oven-like.svg"
-											style={imgStyle}
+											style={ovenmittStyle}
 											className="pl"/>
 		              </span>
 		          </div>
@@ -231,5 +227,40 @@ const Browse = observer(class Browse extends Component {
     );
   }
 });
+
+const BrowseImage = observer(class BrowseImage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      style: {
+        background: "url('/img/food.png')", // default image
+				backgroundAttachment: "fixed"
+      }
+    }
+  }
+
+  async componentDidMount() {
+    // load recipe image & update styles if it exists
+    const image = `/img/${this.props.id}.jpg`;
+    const res = await fetch(image);
+    if (res.ok) this.setState({
+      style: {
+        ...this.state.style,
+        background: "url(" + image + ")",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
+        backgroundSize: "cover",
+      }
+    })
+  }
+
+  render() {
+    return (
+			<div className="child" style={this.state.style}></div>
+
+		);
+  }
+});
+
 
 export default Browse;
