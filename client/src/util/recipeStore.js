@@ -1,7 +1,7 @@
 import { extendObservable } from 'mobx';
 
 class RecipeStore {
-  constructor() {    
+  constructor() {
     extendObservable(this, {
       recipes: [],
       recipe: [],
@@ -11,8 +11,8 @@ class RecipeStore {
       image: ""
     });
   }
-  getOne(id) {
-    fetch('/recipe/'+id, {
+  async getOne(id) {
+    await fetch('/api/recipe/'+id, {
       method: 'GET',
     })
       .then(res => res.json())
@@ -22,27 +22,8 @@ class RecipeStore {
         }
       });
   }
-  like(id,token) {
-    fetch('/recipe/'+id+'/like', {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'JWT '+ token
-        },
-        method: 'POST',
-        body: JSON.stringify({
-          kind : "up" 
-        })
-    })
-    .then((body) => {
-      if(body.ok) {
-        this.getOne(id);
-        return this.recipe.Likes;
-      }
-    })
-    .catch(error => console.log(error));
-  }
   getAll() {
-    fetch('/recipe/top?limit=12', {
+    fetch('/api/recipe/top?limit=12', {
       method: 'GET',
     })
       .then(res => res.json())
@@ -58,18 +39,18 @@ class RecipeStore {
 
     if(tags.length === 0) {
       tag = "";
-    } 
+    }
     else {
       tag = "tags="+tags.join();
 
     }
     if(searchTerm.length === 0) {
       term = "";
-    } 
+    }
     else {
       term = '&q=' + searchTerm;
     }
-    fetch('/recipe/search?'+tag+term, {
+    fetch('/api/recipe/search?'+tag+term, {
       method: 'GET',
     })
       .then(res => res.json())
@@ -80,7 +61,7 @@ class RecipeStore {
       });
   }
   getTags() {
-   fetch('/tag/', {
+   fetch('/api/tag/', {
       method: 'GET',
     })
       .then(res => res.json())
@@ -91,14 +72,15 @@ class RecipeStore {
       });
   }
   getMyTags(tgs){
-    let ts="";
+    let ts=[];
     let tags = this.tags;
     tgs.forEach(function(tg){
-      ts += "#"+(tags.find(function(tag){ return tag.id===tg; })).tag
+      ts.push(tags.find(function(tag){ return tag.id===tg; }).tag)
     });
+    console.log(ts)
     return ts;
   }
-      
+
 
 }
 const Store = new RecipeStore();

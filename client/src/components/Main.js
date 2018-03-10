@@ -11,7 +11,12 @@ import Register from './Register';
 import Login from './Login';
 import ForgotPass from './ForgotPass';
 import ResetPass from './ResetPass';
+<<<<<<< HEAD
 import EditRecipe from './EditRecipe';
+=======
+import PublicProfile from './PublicProfile';
+
+>>>>>>> develop
 
 import PrivateRoute from '../util/PrivateRoute';
 
@@ -20,10 +25,10 @@ class Main extends Component {
     return (
       <main>
         <Switch>
-          <Route exact path='/' component={Home}/>
-          <Route path='/browse' component={Browse}/>
+          <Route exact path='/' component={Browse}/>
           <Route path='/register' component={Register}/>
           <Route path='/login' component={Login}/>
+          <Route path='/publicprofile/:id' component={PublicProfile}/>
           <Route exact path='/recipe/:id' component={Recipe} />
           <Route path='/forgotpass' component={ForgotPass}/>
           <Route path='/resetpass/:token' component={ResetPass}/>

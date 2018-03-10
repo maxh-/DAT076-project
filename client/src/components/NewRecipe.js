@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Col, FormGroup, ControlLabel, FormControl,
   Button, ButtonToolbar, InputGroup, Glyphicon, ToggleButton,
-  ListGroup, ListGroupItem, ToggleButtonGroup,   } from 'react-bootstrap';
+  ListGroup, ListGroupItem, ToggleButtonGroup,   }  from 'react-bootstrap';
 import './css/NewRecipe.css';
 import Auth from '../util/AuthService';
 
@@ -23,7 +23,7 @@ class NewRecipe extends Component {
       unit: "",
       description: "",
       meal: 1,
-      units: []      
+      units: []
     }
     window.submit = this.submitImage;
     this.handleChange = this.handleChange.bind(this);
@@ -37,12 +37,12 @@ class NewRecipe extends Component {
 
   componentDidMount() {
     //hämta tags, units etc
-    fetch('/tag/',{
+    fetch('/api/tag/',{
       method: 'GET',
     })
     .then(res => res.json())
     .then(res => this.setState({availableTags: res.tags}));
-    fetch('/unit/',{
+    fetch('/api/unit/',{
       method: 'GET',
     })
     .then(res => res.json())
@@ -51,7 +51,7 @@ class NewRecipe extends Component {
   componentDidUpdate(prevProps, prevState) {
    // console.log("state: ");
    // console.log(this.state);
-     console.log(this.state.tags);
+     console.log(this.state.ingredients);
 
   }
   handleChange({ target }) {
@@ -138,7 +138,7 @@ class NewRecipe extends Component {
     });
     console.log(Auth.token);
 
-    fetch('/recipe/', {
+    fetch('/api/recipe/', {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'JWT '+ Auth.token
@@ -173,7 +173,7 @@ class NewRecipe extends Component {
     await data.append('file', image);
     await data.append('name', id + '.jpg'); // add extension so backend doesn't complain
     console.log('submitting data:', data);
-    return fetch('/upload', {
+    return fetch('/api/upload', {
       method: 'POST',
       body: data
     })
@@ -265,7 +265,6 @@ class NewRecipe extends Component {
     }
   }
 
-
   createIngredients(ing) {
     let targ  = this.state.units.filter(function(un){
       return parseInt(un.id,10) === parseInt(ing.UnitId,10);
@@ -274,7 +273,8 @@ class NewRecipe extends Component {
 
     return    <ListGroupItem
                   onClick={this.handleClick.bind(this,'del',parseInt(ing['number'],10), 'ingredient')}
-                  key={ing['number']}>
+                  key={ing['number']}
+                  className="ing">
                 <Col xs={6}>
                   <b>{ing['ingredient']} </b>
                 </Col>
@@ -495,4 +495,3 @@ class NewRecipe extends Component {
 }
 
 export default NewRecipe;
-

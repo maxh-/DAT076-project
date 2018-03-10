@@ -9,11 +9,11 @@ class UserRecipeStore {
       update: action(async () => {
         const id = this.id;
         this.recipes = [];
-        this.recipes = await get(`/user/${id}/recipes`).then(res => {
-          return res.data.message
-        })
+        this.recipes = await get(`/api/user/${id}/recipes`).then(res => {
+          return res.data.message;
+        });
       })
-    })
+    });
   }
 }
 

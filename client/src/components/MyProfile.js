@@ -96,7 +96,7 @@ const MyProfile = observer(class MyProfile extends Component {
                   <Button className="btn btn-primary"
                           onClick={this.handleSubmit}>
                     Spara
-                  </Button>                  
+                  </Button>
                 </div>
                 <LoadingSpinner
                   className="pull-left"
@@ -133,7 +133,7 @@ const MyProfile = observer(class MyProfile extends Component {
       [target.name]: target.value
     });
     console.log(this.state);
-  }  
+  }
 
   async handleSubmit() {
     // show loading icon

@@ -1,6 +1,5 @@
 const express = require('express');
 const path = require('path');
-const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
@@ -22,6 +21,8 @@ const tag = require('./server/routes/tag');
 const unit = require('./server/routes/unit');
 const upload = require('./server/routes/upload');
 
+const baseUrl = process.env.NODE_ENV == 'production' ? '' : '/api';
+
 const app = express();
 
 app.use(logger('dev'));
@@ -36,15 +37,15 @@ app.use(passportConfig.initialize());
 
 
 // routes
-app.use('/welcome', welcome);
-app.use('/auth', auth);
-app.use('/recipe', recipe);
-app.use('/user/me', isAuthenticated, userMe);
-app.use('/user', user);
-app.use('/ingredient', ingredient);
-app.use('/tag', tag);
-app.use('/unit', unit);
-app.use('/upload', upload);
+app.use(baseUrl + '/welcome', welcome);
+app.use(baseUrl + '/auth', auth);
+app.use(baseUrl + '/recipe', recipe);
+app.use(baseUrl + '/user/me', isAuthenticated, userMe);
+app.use(baseUrl + '/user', user);
+app.use(baseUrl + '/ingredient', ingredient);
+app.use(baseUrl + '/tag', tag);
+app.use(baseUrl + '/unit', unit);
+app.use(baseUrl + '/upload', upload);
 
 
 app.use(function (req, res, next) {

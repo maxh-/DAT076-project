@@ -19,7 +19,7 @@ class Auth {
 
   login(email, password) {
     return new Promise((resolve, reject) => {
-      fetch('/auth/login', {
+      fetch('/api/auth/login', {
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
@@ -51,7 +51,7 @@ class Auth {
         lastName === Storage.user.lastName) return false;
 
     // update user in db
-    const result = await fetch('/user/me', {
+    const result = await fetch('/api/user/me', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -5,8 +5,8 @@ const multer = require('multer');
  * Stores files POSTed to /upload.
  * Put the file in field 'file' and the name in field 'name'.
  */
-
-const UPLOAD_DIR = __dirname + '/../../public/img/';
+const img_dir = process.env.NODE_ENV == 'production' ? '/../../client/build/img/': '/../../client/public/img/';
+const UPLOAD_DIR = __dirname + img_dir;
 const MAX_SIZE = 5242880; // 5 mb
 const ALLOWED_EXT = [
   'jpg',

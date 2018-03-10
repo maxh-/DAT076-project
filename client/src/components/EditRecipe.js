@@ -254,7 +254,7 @@ const EditRecipe = observer(class EditRecipe extends Component {
           'Content-Type': 'application/json',
           'Authorization': `jwt ${Auth.token}`
         },
-        method: 'POST',
+        method: 'PUT',
         body: newRecipe
       }).then(res => res.json()).then(body => {
         console.log(body);
