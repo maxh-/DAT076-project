@@ -38,7 +38,7 @@ exports.register = {
       errorMessage: "missing from body"
     },
     matches: {
-      options: /^[a-zåäöA-ZÅÄÖ\s]*$/,
+      options: /^[a-zåäöA-ZÅÄÖ\s]+$/,
       errorMessage: "must only contain letters"
     }
   },
@@ -49,7 +49,7 @@ exports.register = {
       errorMessage: "missing from body"
     },
     matches: {
-      options: /^[a-zåäöA-ZÅÄÖ\s]*$/,
+      options: /^[a-zåäöA-ZÅÄÖ\s]+$/,
       errorMessage: "must only contain letters"
     }
   }
