@@ -11,12 +11,8 @@ import Register from './Register';
 import Login from './Login';
 import ForgotPass from './ForgotPass';
 import ResetPass from './ResetPass';
-<<<<<<< HEAD
 import EditRecipe from './EditRecipe';
-=======
 import PublicProfile from './PublicProfile';
-
->>>>>>> develop
 
 import PrivateRoute from '../util/PrivateRoute';
 
