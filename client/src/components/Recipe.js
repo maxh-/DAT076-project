@@ -121,16 +121,22 @@ const Recipe = observer( class Recipe extends Component {
   closeCookingMode(e){
     this.setState({show:false});
   }
-  switchItem(e){
+  switchItemViaSpace(e){
     if(e.key === " "){
-      const nextIndex = (this.state.stepIndex%RecipeStore.recipe.Steps.length)+1;
-      this.setState(prevState => ({
-        step: RecipeStore.recipe.Steps.find(function(instr) {
-          return instr.number===nextIndex
-        }),
-        stepIndex: prevState.stepIndex+1
-      }));
+      this.switchItem();
     }
+  }
+  switchItemViaClick(){
+    this.switchItem();
+  }
+  switchItem(e){
+    const nextIndex = (this.state.stepIndex%RecipeStore.recipe.Steps.length)+1;
+    this.setState(prevState => ({
+      step: RecipeStore.recipe.Steps.find(function(instr) {
+        return instr.number===nextIndex
+      }),
+      stepIndex: prevState.stepIndex+1
+    }));
   }
 
 
@@ -315,9 +321,10 @@ const Recipe = observer( class Recipe extends Component {
             onHide={this.closeCookingMode.bind(this)}>
           <Modal.Header closeButton>
             <Modal.Title>{RecipeStore.recipe.title}</Modal.Title>
-            <span> Växla instruktion med <b>mellanslag</b></span>
+            <span> Växla instruktion med <b>mellanslag</b> eller <b>klick</b></span>
           </Modal.Header>
-          <Modal.Body id="modalBody">
+          <Modal.Body id="modalBody"
+              onClick={this.switchItemViaClick.bind(this)}>
             <div>
               <h1>{this.state.step.number}</h1>
               <hr/>
