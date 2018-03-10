@@ -6,7 +6,7 @@ exports.update = {
       errorMessage: "missing from body"
     },
     matches: {
-      options: /^[a-zåäöA-ZÅÄÖ\s]*$/,
+      options: /^[a-zåäöA-ZÅÄÖ]+[a-zåäöA-ZÅÄÖ\s]+$/,
       errorMessage: "must only contain letters"
     }
   },
@@ -17,7 +17,7 @@ exports.update = {
       errorMessage: "missing from body"
     },
     matches: {
-      options: /^[a-zåäöA-ZÅÄÖ\s]*$/,
+      options: /^[a-zåäöA-ZÅÄÖ]+[a-zåäöA-ZÅÄÖ\s]+$/,
       errorMessage: "must only contain letters"
     }
   }

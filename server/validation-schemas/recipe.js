@@ -6,7 +6,7 @@ exports.create = {
       errorMessage: "missing from body"
     },
     matches: {
-      options: /^[a-zåäöA-ZÅÄÖ\s]*$/,
+      options: /^\S+[\S\s.,!?'"#]*$/,
       errorMessage: "must only contain letters"
     }
   },
@@ -17,7 +17,7 @@ exports.create = {
       errorMessage: "missing from body"
     },
     matches: {
-      options: /^[a-zåäöA-ZÅÄÖ\s]*$/,
+      options: /^\S+[\S\s.,!?'"#]*$/,
       errorMessage: "must only contain letters"
     }
   },
@@ -49,7 +49,7 @@ exports.create = {
       errorMessage: "Steps must have an instruction"
     },
     matches: {
-      options: /^[a-zåäöA-ZÅÄÖ\s]*$/,
+      options: /^\S+[\S\s.,!?'"#]*$/,
       errorMessage: "must only contain letters"
     }
   },
@@ -132,7 +132,7 @@ exports.update = {
       errorMessage: "missing from body"
     },
     matches: {
-      options: /^[a-zåäöA-ZÅÄÖ\s]*$/,
+      options: /^\S+[\S\s.,!?'"#]*$/,
       errorMessage: "must only contain letters"
     }
   },
@@ -143,7 +143,7 @@ exports.update = {
       errorMessage: "missing from body"
     },
     matches: {
-      options: /^[a-zåäöA-ZÅÄÖ\s]*$/,
+      options: /^\S+[\S\s.,!?'"#]*$/,
       errorMessage: "must only contain letters"
     }
   },
@@ -175,7 +175,7 @@ exports.update = {
       errorMessage: "Steps must have an instruction"
     },
     matches: {
-      options: /^[a-zåäöA-ZÅÄÖ\s]*$/,
+      options: /^\S+[\S\s.,!?'"#]*$/,
       errorMessage: "must only contain letters"
     }
   },
