@@ -14,14 +14,14 @@ router.get('/', async (req, res, next) => {
 });
 
 /* POST create a recipe*/
-router.post('/', isAuthenticated, checkSchema(recipeSchema.create), /*check('ingredients').custom((values) => {
-  console.log(values);
-  const unique = (new Set(values.ingredient)).size !== values.length;
+router.post('/', isAuthenticated, checkSchema(recipeSchema.create), check('ingredients').custom((values) => {
+  const ingredients = values.map((value) => {return value.ingredient ? value.ingredient : value.IngredientId;});
+  const unique = (new Set(ingredients)).size === values.length;
   if(!unique){
     throw new Error('Ingredients must be unique');
   }
   return unique;
-}),*/ oneOf([
+}), oneOf([
   check('ingredients.*.ingredient').exists().not().isEmpty().matches(/^[a-zåäöA-ZÅÄÖ\s]*$/),
   check('ingredients.*.IngredientId').exists().isInt()
 ]), validate, async (req, res, next) => {
