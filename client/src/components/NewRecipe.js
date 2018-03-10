@@ -126,43 +126,39 @@ class NewRecipe extends Component {
     e.preventDefault();
     const success = this.validateRecipe();
     if (success) {
-      let bod = JSON.stringify({
-        title: this.state.title,
-        timeToComplete: this.state.time,
-        tweet : this.state.description,
-        steps: this.state.steps,
-        tags: this.state.tags.concat(parseInt(this.state.meal,10)),
-        ingredients: this.state.ingredients
-      });
       fetch('/api/recipe/', {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'JWT '+ Auth.token
         },
         method: 'POST',
-        body: bod
-      })
-        .then(res => res.json())
-        .then(async (res) => {
-          console.log(res);
-          let isSuccess = res.success;
-          if (!isSuccess) return false;
-          if (!this.state.image) return isSuccess;
-          console.log('uploading image...');
-          isSuccess = await this.submitImage(this.state.image, res.recipe.id);
-          console.log(isSuccess);
-          isSuccess = isSuccess.success;
-          return isSuccess;
+        body: JSON.stringify({
+          title: this.state.title,
+          timeToComplete: this.state.time,
+          tweet : this.state.description,
+          steps: this.state.steps,
+          tags: this.state.tags.concat(parseInt(this.state.meal,10)),
+          ingredients: this.state.ingredients
         })
-        .then(isSuccess => {
-          if(isSuccess === true) {
-            alert("Ditt recept är skapat!");
-            window.location = '/saved';
-          } else {
-            alert("Något gick fel.");
-          }
-        });
-      }
+      })
+      .then(res => res.json())
+      .then(async (res) => {
+        let result = res.success;
+        if (!result) return res;
+        if (!this.state.image) return res;
+        await this.submitImage(this.state.image, res.recipe.id);
+        return res;
+      })
+      .then(result => {
+        console.log(result);
+        if (result.success) {
+          alert('Receptet är sparat!')
+          window.location = `/recipe/${result.recipe.id}`;
+        } else {
+          alert('Receptet är inte sparat. Kontrollera att alla fält är korrekt ifyllda.');
+        }
+      });
+    }
   }
 
   async submitImage(image, id) {
@@ -566,7 +562,7 @@ class NewRecipe extends Component {
             </Col>
           </Row>
           <Col sm={2}></Col>
-          <Col id="submitCol" sm={8} xs={10}>
+          <Col id="submitCol" sm={10} >
             <ButtonToolbar >
               <Button bsStyle="primary" bsSize="large"  onClick={this.handleSubmit.bind(this)}>
                 Publicera
