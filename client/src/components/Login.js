@@ -6,7 +6,8 @@ import {
   ControlLabel,
   Row,
   Col,
-  Button
+  Button,
+  Panel
 } from 'react-bootstrap';
 
 import './css/Login.css';
@@ -18,7 +19,8 @@ const Login = observer(class Login extends Component {
 
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      error: false
     };
   }
 
@@ -35,9 +37,34 @@ const Login = observer(class Login extends Component {
         console.log('login success');
       })
       .catch(() => {
+        this.setState({
+          error: true
+        });
         console.log('login failed');
       });
   }
+
+  renderError() {
+    if (this.state.error) {
+      return (
+          <Row>
+          <Col md={12}>
+          <Panel bsStyle="danger">
+          <Panel.Heading>
+          <Panel.Title componentClass="h3">Fel:</Panel.Title>
+          </Panel.Heading>
+          <Panel.Body>
+          Fel användarnamn eller lösenord.
+        </Panel.Body>
+          </Panel>  
+          </Col>
+          </Row>
+      );
+    } else {
+      return null;
+    }
+  }
+
   render() {
     if (Auth.isLoggedIn) {
       this.props.history.push('/');
@@ -78,8 +105,9 @@ const Login = observer(class Login extends Component {
                 Logga in
               </Button>
               <a href="/forgotpass" >Glömt lösenord</a>
-
-            </form>
+        
+      </form>
+        {this.renderError()}
           </Col>
         </Row>
       </div>
