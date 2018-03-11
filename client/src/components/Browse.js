@@ -270,7 +270,9 @@ const Browse = observer(class Browse extends Component {
               </DropdownButton>
             </Col>
 				  </ButtonToolbar>
-	      	{ this.showTags() }
+					<p id="no-wrap">
+	      		{ this.showTags() }
+					</p>
         </div>
         <div>
 	      </div>

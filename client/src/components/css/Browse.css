@@ -96,6 +96,9 @@
 	padding: 0;
 	margin: 0;
 }
+#no-wrap {
+	word-break: break-all;
+}
 #search .btn-toolbar .col-xs-3 .btn-group .dropdownItem {
 	width: 100%;
 	padding: 0 auto;
