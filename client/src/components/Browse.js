@@ -236,7 +236,6 @@ const Browse = observer(class Browse extends Component {
 									<ToggleButton className="dropdownItem" value={11}>Pizza</ToggleButton>
 									<ToggleButton className="dropdownItem" value={12}>Pasta</ToggleButton>
 									<ToggleButton className="dropdownItem" value={13}>Burgare</ToggleButton>
-									<ToggleButton className="dropdownItem" value={14}>Fisk</ToggleButton>
   				      </ToggleButtonGroup>
               </DropdownButton>
             </Col>
@@ -246,6 +245,7 @@ const Browse = observer(class Browse extends Component {
   		          <ToggleButtonGroup type="radio" name="filter"
   		      					value={this.state.filter}
           						onClick={this.addFilter.bind(this)}>
+									<ToggleButton className="dropdownItem" value={14}>Fisk</ToggleButton>
                   <ToggleButton className="dropdownItem" value={15}>Grönsaker</ToggleButton>
                   <ToggleButton className="dropdownItem" value={16}>Kött</ToggleButton>
                 </ToggleButtonGroup>
