@@ -262,6 +262,7 @@ const Browse = observer(class Browse extends Component {
                       value={this.state.filter}
                       onClick={this.addFilter.bind(this)}>
       			      <ToggleButton className="dropdownItem" value={8}>lakto-vegetarianskt</ToggleButton>
+									<ToggleButton className="dropdownItem" value={18}>Laktosfritt</ToggleButton>
       			      <ToggleButton className="dropdownItem" value={9}>lakto-ovo-vegetarianskt</ToggleButton>
       			      <ToggleButton className="dropdownItem" value={10}>ovo-vegetarianskt</ToggleButton>
                   <ToggleButton className="dropdownItem" value={17}>Glutenfritt</ToggleButton>
