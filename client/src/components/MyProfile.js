@@ -39,76 +39,78 @@ const MyProfile = observer(class MyProfile extends Component {
   // render component
   render() {
     return (
-      <div className="MyProfile">
-        <Row>
-          <Col md={2} className="profilePic">
-            <img src="/img/sample-profile-pic.jpg" alt=""/>
-          </Col>
-          <Col md={10} className="aboutUser">
+      <Row>
+        <Col md={10} mdOffset={1}>
             <Row>
-              <Col>
-                <h2>{Auth.user.firstName} {Auth.user.lastName}<a className="btn btn-default pull-right" onClick={this.handleShowModal}>Ändra</a></h2>
-                <hr />
-                <strong>E-post:</strong> { Auth.user.email }
-                <br />
-                <MyRecipes />
+              <Col md={1} className="profilePic">
+                <img src="/img/sample-profile-pic.jpg" alt=""/>
+              </Col>
+              <Col md={10} xs={10} xsOffset={1} className="aboutUser">
+                <Row>
+                  <Col>
+                    <h2>{Auth.user.firstName} {Auth.user.lastName}<a className="btn btn-default pull-right" onClick={this.handleShowModal}>Ändra</a></h2>
+                    <hr />
+                    <strong>E-post:</strong> { Auth.user.email }
+                    <br />
+                    <MyRecipes />
+                  </Col>
+                </Row>
               </Col>
             </Row>
-          </Col>
-        </Row>
 
-        <div className="modal-container" style={{ height: 200 }}>
-          <Modal
-            show={this.state.showEditModal}
-            onHide={this.handleCloseModal}
-            container={this}>
-            <Modal.Header closeButton>
-              <Modal.Title id="contained-modal-title">
-                Redigera profil
-              </Modal.Title>
-            </Modal.Header>
-            <form onSubmit={this.handleSubmit}>
-              <Modal.Body>
-                <FieldGroup
-                  id="editedFirstName"
-                  name="editedFirstName"
-                  type="text"
-                  label="Förnamn"
-                  placeholder={Auth.user.firstName}
-                  value={this.state.editedFirstName}
-                  onChange={this.handleChange}
-                  />
-                <FieldGroup
-                  id="editedLastName"
-                  name="editedLastName"
-                  type="text"
-                  label="Förnamn"
-                  placeholder={Auth.user.lastName}
-                  value={this.state.editedLastName}
-                  onChange={this.handleChange}
-                  />
-              </Modal.Body>
-              <Modal.Footer>
-                <div className="btn-toolbar">
-                  <Button onClick={this.handleCloseModal}>
-                    Avbryt
-                  </Button>
-                  <Button className="btn btn-primary"
-                          onClick={this.handleSubmit}>
-                    Spara
-                  </Button>
-                </div>
-                <LoadingSpinner
-                  className="pull-left"
-                  show={this.state.loading}
-                  done={this.state.done}
-                  fail={this.state.fail}
-                  name="three-bounce"/>
-              </Modal.Footer>
-            </form>
-          </Modal>
-        </div>
-      </div>
+            <div className="modal-container">
+              <Modal
+                show={this.state.showEditModal}
+                onHide={this.handleCloseModal}
+                container={this}>
+                <Modal.Header closeButton>
+                  <Modal.Title id="contained-modal-title">
+                    Redigera profil
+                  </Modal.Title>
+                </Modal.Header>
+                <form onSubmit={this.handleSubmit}>
+                  <Modal.Body>
+                    <FieldGroup
+                      id="editedFirstName"
+                      name="editedFirstName"
+                      type="text"
+                      label="Förnamn"
+                      placeholder={Auth.user.firstName}
+                      value={this.state.editedFirstName}
+                      onChange={this.handleChange}
+                      />
+                    <FieldGroup
+                      id="editedLastName"
+                      name="editedLastName"
+                      type="text"
+                      label="Förnamn"
+                      placeholder={Auth.user.lastName}
+                      value={this.state.editedLastName}
+                      onChange={this.handleChange}
+                      />
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <div className="btn-toolbar">
+                      <Button onClick={this.handleCloseModal}>
+                        Avbryt
+                      </Button>
+                      <Button className="btn btn-primary"
+                              onClick={this.handleSubmit}>
+                        Spara
+                      </Button>
+                    </div>
+                    <LoadingSpinner
+                      className="pull-left"
+                      show={this.state.loading}
+                      done={this.state.done}
+                      fail={this.state.fail}
+                      name="three-bounce"/>
+                  </Modal.Footer>
+                </form>
+              </Modal>
+            </div>
+        </Col>
+      </Row>
     );
   }
 
