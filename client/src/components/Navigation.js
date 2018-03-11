@@ -78,16 +78,14 @@ const UserNav = observer((props) => {
 // if not logged in
 function GuestNav(props) {
   return (
-    <Nav pullRight>
-      <Nav>
-        <NavItem href="/login">
-          Logga in
-        </NavItem>
-        <NavItem href="/register" className="register-button">
-          Registrera
-        </NavItem>
-      </Nav>
-    </Nav>
+    <ul className="nav navbar-nav navbar-right">
+      <li><a href="/profile">
+        <Glyphicon glyph="log-in" /> Logga in
+      </a></li>
+      <li><a href="/register" className="register-button">
+        Registrera
+      </a></li>
+    </ul>
   );
 }
 
