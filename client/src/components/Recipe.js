@@ -183,7 +183,7 @@ const Recipe = observer( class Recipe extends Component {
       return (
         <div>
           <Row>
-            <Col sm={8} smOffset={2}>
+            <Col sm={10} smOffset={1}>
               <Row>
                 <Col xs={12} sm={5} id='left-span'>
                   <span >
