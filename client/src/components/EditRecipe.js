@@ -30,6 +30,8 @@ const EditRecipe = observer(class EditRecipe extends Component {
       showError: false,
       message: ''
     }
+
+    if (!Auth.user) window.location = `/recipe/${this.id}`;
   }
 
   componentDidMount() {
