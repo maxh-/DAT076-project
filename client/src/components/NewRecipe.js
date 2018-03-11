@@ -212,17 +212,46 @@ class NewRecipe extends Component {
     });
     return uns;
   }
-
+  stepError(fail) {
+    if(fail) {
+      this.setState({ stepFail: true });
+    }
+    else {
+      this.setState({ stepFail: false });
+    }
+  }
+  renderStepError(){
+    if(this.state.stepFail) {
+      return (
+          <Panel bsStyle="danger">
+            <Panel.Heading>
+              <Panel.Title componentClass="h3">Fel:</Panel.Title>
+            </Panel.Heading>
+            <Panel.Body>
+              Steget innehåller för många tecken (max 250 st)
+            </Panel.Body>
+          </Panel>
+        );
+    } else {
+      return null;
+    }
+  }
   addStep(e) {
     if(e.key === 'Enter'){
       let number = this.state.stepIndex;
       let instruction = this.stp.value;
-      if(instruction.length > 1) {
-        this.setState(prevState => ({
-          steps: prevState.steps.concat({instruction, number}),
-          stepIndex: prevState.stepIndex+1,
-        }));
-        this.stp.value = "";
+      if(instruction.length>250) {
+        this.stepError(true);
+      }
+      else {
+        if(instruction.length>1) {
+          this.stepError(false);
+          this.setState(prevState => ({
+            steps: prevState.steps.concat({instruction, number}),
+            stepIndex: prevState.stepIndex+1,
+          }));
+          this.stp.value = "";
+        }
       }
       e.preventDefault();
     }
@@ -560,6 +589,7 @@ class NewRecipe extends Component {
               <Row>
                 <Col sm={2} className="error-row"></Col>
                 <Col sm={10} className="error-row">
+                  {this.renderStepError()}
                   {this.renderError()}
                 </Col>
               </Row>
