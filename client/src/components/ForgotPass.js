@@ -46,7 +46,7 @@ onSubmit(e) {
     return (
       <div className="forgotpass">
         <Row>
-          <Col md={7}>
+          <Col sm={8} smOffset={2} md={6} mdOffset={3}>
             <h2>Återställ Lösenord</h2>
             <hr />
             <form onSubmit={this.onSubmit.bind(this)}>

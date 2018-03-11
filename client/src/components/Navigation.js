@@ -71,18 +71,6 @@ const UserNav = observer((props) => {
           <Glyphicon glyph="log-out" /> Logga ut
         </a></li>
       </ul>
-    {/**<Nav pullRight>
-      <Navbar.Text>
-        Signed in as: <Navbar.Link href="/profile">{Auth.user.firstName + ' ' + Auth.user.lastName}</Navbar.Link>
-      </Navbar.Text>
-      <NavDropdown title="Mina sidor" id="basic-nav-dropdown">
-        <MenuItem href="/new">Nytt recept</MenuItem>
-        <MenuItem href="/profile">Min profil</MenuItem>
-        <MenuItem href="/saved">Mina sparade recept</MenuItem>
-        <MenuItem onClick={() => {Auth.logout() && window.location.reload(); }}>Logga ut</MenuItem>
-        <MenuItem divider />
-      </NavDropdown>
-    </Nav>**/}
     </div>
   );
 });
@@ -95,7 +83,7 @@ function GuestNav(props) {
         <NavItem href="/login">
           Logga in
         </NavItem>
-        <NavItem href="/register">
+        <NavItem href="/register" className="register-button">
           Registrera
         </NavItem>
       </Nav>
