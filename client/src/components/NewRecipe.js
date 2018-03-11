@@ -398,179 +398,183 @@ class NewRecipe extends Component {
     var stpsItems = stps.map(this.createSteps);
 
     return (
-      <div id="mainContainer" onSubmit={this.handleSubmit.bind(this)} >
-        <Form horizontal>
-          <FormGroup controlId="titel">
-            <Col componentClass={ControlLabel} sm={2}>
-              Titel
-            </Col>
-            <Col sm={10}>
-              <FormControl type="text" placeholder="Titel" name="title"
-                  value={this.state.title}
-                  onChange={this.handleChange.bind(this)} />
-            </Col>
-          </FormGroup>
+      <Row>
+        <Col md={10} mdOffset={1}>
+          <div onSubmit={this.handleSubmit.bind(this)} >
+            <Form horizontal>
+              <FormGroup controlId="titel">
+                <Col componentClass={ControlLabel} sm={2}>
+                  Titel
+                </Col>
+                <Col sm={10}>
+                  <FormControl type="text" placeholder="Titel" name="title"
+                      value={this.state.title}
+                      onChange={this.handleChange.bind(this)} />
+                </Col>
+              </FormGroup>
 
-          <FormGroup controlId="fil">
-            <Col componentClass={ControlLabel} sm={2}>
-              Bild
-            </Col>
-            <Col sm={10}>
-              <FormControl label="File" type="file" onChange={this.storeImage.bind(this)}/>
-            </Col>
-          </FormGroup>
+              <FormGroup controlId="fil">
+                <Col componentClass={ControlLabel} sm={2}>
+                  Bild
+                </Col>
+                <Col sm={10}>
+                  <FormControl label="File" type="file" onChange={this.storeImage.bind(this)}/>
+                </Col>
+              </FormGroup>
 
-          <FormGroup controlId="formControlsSelect">
-            <Col sm={2} componentClass={ControlLabel}>
-                Tidsåtgång
-            </Col>
-            <Col sm={10}>
-                <FormControl componentClass="select"
-                    placeholder="select"
-                    value={this.state.time}
-                    onChange={this.handleChange.bind(this)}
-                    name="time"
-                    defaultValue={15}>
-  }               <option value={15}>0:15</option>
-                  <option value={30}>0:30</option>
-                  <option value={45}>0:45</option>
-                  <option value={60}>1:00</option>
-                  <option value={90}>1:30</option>
-                  <option value={120}>2:00</option>
-                  <option value={240}>4:00</option>
-                  <option value={480}>8:00</option>
-                  <option value={1440}>24:00+</option>
-                </FormControl>
-            </Col>
-          </FormGroup>
+              <FormGroup controlId="formControlsSelect">
+                <Col sm={2} componentClass={ControlLabel}>
+                    Tidsåtgång
+                </Col>
+                <Col sm={10}>
+                    <FormControl componentClass="select"
+                        placeholder="select"
+                        value={this.state.time}
+                        onChange={this.handleChange.bind(this)}
+                        name="time"
+                        defaultValue={15}>
+      }               <option value={15}>0:15</option>
+                      <option value={30}>0:30</option>
+                      <option value={45}>0:45</option>
+                      <option value={60}>1:00</option>
+                      <option value={90}>1:30</option>
+                      <option value={120}>2:00</option>
+                      <option value={240}>4:00</option>
+                      <option value={480}>8:00</option>
+                      <option value={1440}>24:00+</option>
+                    </FormControl>
+                </Col>
+              </FormGroup>
 
-          <FormGroup controlId="formControlsSelect">
-            <Col sm={2} componentClass={ControlLabel}>
-                Måltid
-            </Col>
-            <Col sm={10}>
-                <FormControl componentClass="select"
-                    placeholder="select"
-                    value={this.state.meal}
-                    onChange={this.handleChange.bind(this)}
-                    name="meal"
-                    defaultValue={1}>
-                  <option value={1}>Förrätt</option>
-                  <option value={2}>Huvudrätt</option>
-                  <option value={3}>Efterrätt</option>
-                  <option value={4}>Mellanmål</option>
-                </FormControl>
-            </Col>
-          </FormGroup>
+              <FormGroup controlId="formControlsSelect">
+                <Col sm={2} componentClass={ControlLabel}>
+                    Måltid
+                </Col>
+                <Col sm={10}>
+                    <FormControl componentClass="select"
+                        placeholder="select"
+                        value={this.state.meal}
+                        onChange={this.handleChange.bind(this)}
+                        name="meal"
+                        defaultValue={1}>
+                      <option value={1}>Förrätt</option>
+                      <option value={2}>Huvudrätt</option>
+                      <option value={3}>Efterrätt</option>
+                      <option value={4}>Mellanmål</option>
+                    </FormControl>
+                </Col>
+              </FormGroup>
 
-          <FormGroup controlId="beskrivning">
-            <Col sm={2} componentClass={ControlLabel}>
-              Beskrivning
-            </Col>
-            <Col sm={10}>
-              <FormControl componentClass="textarea"
-                  placeholder="Beskrivning"
-                  name="description"
-                  value={this.state.description}
-                  onChange={this.handleChange.bind(this)}/>
-            </Col>
-          </FormGroup>
+              <FormGroup controlId="beskrivning">
+                <Col sm={2} componentClass={ControlLabel}>
+                  Beskrivning
+                </Col>
+                <Col sm={10}>
+                  <FormControl componentClass="textarea"
+                      placeholder="Beskrivning"
+                      name="description"
+                      value={this.state.description}
+                      onChange={this.handleChange.bind(this)}/>
+                </Col>
+              </FormGroup>
 
-          <FormGroup>
-            <Col sm={2} componentClass={ControlLabel}>
-              Taggar
-            </Col>
-            <Col sm={10}>
-              <ToggleButtonGroup name="tags"
-                type="checkbox"
-                value={this.state.tags}
-                onClick={this.addTags.bind(this)} >
-                { this.makeTags() }
-              </ToggleButtonGroup>
-            </Col>
-          </FormGroup>
+              <FormGroup>
+                <Col sm={2} componentClass={ControlLabel}>
+                  Taggar
+                </Col>
+                <Col sm={10}>
+                  <ToggleButtonGroup name="tags"
+                    type="checkbox"
+                    value={this.state.tags}
+                    onClick={this.addTags.bind(this)} >
+                    { this.makeTags() }
+                  </ToggleButtonGroup>
+                </Col>
+              </FormGroup>
 
-          <FormGroup
-            controlId="formBasicText">
-            <Col xs={12} componentClass={ControlLabel} sm={2}>
-                Ingredienser
-            </Col>
-            <Col xs={12} sm={10}>
-              <Col sm={6} className="noPadding">
-                <FormControl
-                  type="text"
-                  placeholder="Ingrediens"
-                  inputRef={(a) => this.ingredient = a}
-                />
+              <FormGroup
+                controlId="formBasicText">
+                <Col xs={12} componentClass={ControlLabel} sm={2}>
+                    Ingredienser
+                </Col>
+                <Col xs={12} sm={10}>
+                  <Col sm={6} className="noPadding">
+                    <FormControl
+                      type="text"
+                      placeholder="Ingrediens"
+                      inputRef={(a) => this.ingredient = a}
+                    />
+                  </Col>
+                  <Col xs={4} sm={2} className="noPadding">
+                    <FormControl
+                      type="text"
+                      placeholder="Mängd"
+                      inputRef={(b) => this.amount = b}
+                    />
+                  </Col>
+                  <Col xs={4} sm={2} className="noPadding">
+                    <FormControl
+                        componentClass="select"
+                        defaultValue="l"
+                        inputRef={(c) => this.unit = c }
+                        onChange={this.handleChange.bind(this)}
+                        name="UnitId">
+                      { this.makeUnits() }
+                    </FormControl>
+                  </Col>
+                  <Col xs={4} sm={2} className="noPadding">
+                    <Button onClick={this.addIngredient.bind(this,'in')} className="fillWidth">
+                      Lägg till
+                    </Button>
+                  </Col>
+                </Col>
+
+                <Col sm={2}> </Col>
+
+                <Col sm={10}>
+                  <ListGroup>
+                    { ingrsItems }
+                  </ListGroup>
+                </Col>
+              </FormGroup>
+
+              <FormGroup>
+                <Col componentClass={ControlLabel} sm={2}>
+                    Steg
+                </Col>
+                <Col sm={10}>
+                  <FormControl
+                    componentClass="textarea"
+                    placeholder="Enter Step"
+                    name="instruction"
+                    inputRef={(a) => this.stp = a}
+                    onKeyPress={this.addStep.bind(this)}
+                  />
+                </Col>
+                <Col sm={2}> </Col>
+
+                <Col sm={10}>
+                  <ol id="noListStyle"> { stpsItems } </ol>
+                </Col>
+              </FormGroup>
+              <Row>
+                <Col sm={2} className="error-row"></Col>
+                <Col sm={10} className="error-row">
+                  {this.renderError()}
+                </Col>
+              </Row>
+              <Col sm={2}></Col>
+              <Col id="submitCol" sm={10} >
+                <ButtonToolbar >
+                  <Button bsStyle="primary" bsSize="large"  onClick={this.handleSubmit.bind(this)}>
+                    Publicera
+                  </Button>
+                </ButtonToolbar>
               </Col>
-              <Col xs={4} sm={2} className="noPadding">
-                <FormControl
-                  type="text"
-                  placeholder="Mängd"
-                  inputRef={(b) => this.amount = b}
-                />
-              </Col>
-              <Col xs={4} sm={2} className="noPadding">
-                <FormControl
-                    componentClass="select"
-                    defaultValue="l"
-                    inputRef={(c) => this.unit = c }
-                    onChange={this.handleChange.bind(this)}
-                    name="UnitId">
-                  { this.makeUnits() }
-                </FormControl>
-              </Col>
-              <Col xs={4} sm={2} className="noPadding">
-                <Button onClick={this.addIngredient.bind(this,'in')} className="fillWidth">
-                  Lägg till
-                </Button>
-              </Col>
-            </Col>
-
-            <Col sm={2}> </Col>
-
-            <Col sm={10}>
-              <ListGroup>
-                { ingrsItems }
-              </ListGroup>
-            </Col>
-          </FormGroup>
-
-          <FormGroup>
-            <Col componentClass={ControlLabel} sm={2}>
-                Steg
-            </Col>
-            <Col sm={10}>
-              <FormControl
-                componentClass="textarea"
-                placeholder="Enter Step"
-                name="instruction"
-                inputRef={(a) => this.stp = a}
-                onKeyPress={this.addStep.bind(this)}
-              />
-            </Col>
-            <Col sm={2}> </Col>
-
-            <Col sm={10}>
-              <ol id="noListStyle"> { stpsItems } </ol>
-            </Col>
-          </FormGroup>
-          <Row>
-            <Col sm={2} className="error-row"></Col>
-            <Col sm={10} className="error-row">
-              {this.renderError()}
-            </Col>
-          </Row>
-          <Col sm={2}></Col>
-          <Col id="submitCol" sm={10} >
-            <ButtonToolbar >
-              <Button bsStyle="primary" bsSize="large"  onClick={this.handleSubmit.bind(this)}>
-                Publicera
-              </Button>
-            </ButtonToolbar>
-          </Col>
-        </Form>
-      </div>
+            </Form>
+          </div>
+        </Col>
+      </Row>
     );
   }
 }

@@ -59,7 +59,7 @@ onSubmit(e) {
     return (
       <div className="resetpass">
         <Row>
-          <Col md={7}>
+          <Col sm={8} smOffset={2} md={6} mdOffset={3}>
             <h2>Ange nytt lösenord</h2>
             <hr />
             <form onSubmit={this.onSubmit.bind(this)}>
