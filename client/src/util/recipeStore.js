@@ -33,16 +33,8 @@ class RecipeStore {
         }
       });
   }
-  searchFor(tags, searchTerm) {
-    let tag = "";
-    let term = "";
-
-    if(tags.length === 0) { tag = ""; }
-    else                  { tag = "tags="+tags.join(); }
-    if(searchTerm.length === 0) { term = ""; }
-    else                        { term = '&q=' + searchTerm; }
-
-    fetch('/api/recipe/search?'+tag+term, {
+  searchOnMount(term) {
+    fetch('/api/recipe/search?'+term, {
       method: 'GET',
     })
       .then(res => res.json())
@@ -52,8 +44,29 @@ class RecipeStore {
         }
       });
   }
-  getTags() {
-   fetch('/api/tag/', {
+  searchFor(tags, searchTerm) {
+    let tag = "";
+    let term = "";
+    console.log(tags);
+    if(tags.length === 0) { tag = ""; }
+    else                  { tag = "tags="+tags.join(); }
+    if(searchTerm.length === 0) { term = ""; }
+    else                        { term = '&q=' + searchTerm; }
+    console.log(tag + term);
+
+    fetch('/api/recipe/search?'+tag+term, {
+      method: 'GET',
+    })
+      .then(res => res.json())
+      .then(body => {
+        console.log(body);
+        if(body.success && body.recipes) {
+          this.recipes = body.recipes;
+        }
+      });
+  }
+  async getTags() {
+   await fetch('/api/tag/', {
       method: 'GET',
     })
       .then(res => res.json())
