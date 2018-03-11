@@ -1,8 +1,6 @@
 #mainContainer {
 	padding: 10px 0;
 	width: 100%;
-
-
 }
 #mainContainer {
 	margin: 0 auto;
@@ -135,9 +133,16 @@
 }
 
 .showIngrs-div-modal {
-	width: 60%
+	margin-left: 10px;
+
 }
 
 #ingredients-list-modal {
 	text-align-last: left;
+	width: 100%;
+}
+.ingredient {
+
+}
+.amount-and-unit {
 }

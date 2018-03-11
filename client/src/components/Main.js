@@ -22,6 +22,7 @@ class Main extends Component {
       <main>
         <Switch>
           <Route exact path='/' component={Browse}/>
+          <Route path='/browse/:searchterm' component={Browse}/>
           <Route exact path='/recipe/:id' component={Recipe} />
           <Route exact path='/register' component={Register}/>
           <Route exact path='/login' component={Login}/>

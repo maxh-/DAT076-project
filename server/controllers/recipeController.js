@@ -215,7 +215,7 @@ exports.fuzzyFind = async (params) => {
   }
   // Fuzzy search the relevant recipes
   let searchedRecipes = filteredRecipes;
-  if(query != '' &&  query != undefined){
+  if(query != '' &&  query != undefined && filteredRecipes.length > 0){
     const searcher = new FuzzySearch(filteredRecipes, ['title']);
     searchedRecipes = searcher.search(query);
   }

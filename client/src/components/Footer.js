@@ -1,13 +1,24 @@
 import React, { Component } from 'react';
-import { Navbar } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 import './css/Footer.css';
 
 class Footer extends Component {
   render() {
     return(
-      <Navbar className="Footer" inverse collapseOnSelect>
-          <h3>Footer</h3>
-      </Navbar>
+      <div className="footer">
+        <Row>
+          <Col sm={2} smOffset={1} className="footer-brand">
+            Receptsidan<br />
+            <small>DAT076 projekt</small>
+          </Col>
+          <Col sm={9} className="footer-masthead">
+            Adis Mahmutovic<br />
+            David Berg Marklund<br />
+            Linus Nilsson<br />
+            Max Hansson
+          </Col>
+        </Row>
+      </div>
     );
   }
 }

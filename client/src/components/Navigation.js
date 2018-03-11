@@ -4,7 +4,8 @@ import {
   Nav,
   NavItem,
   NavDropdown,
-  MenuItem
+  MenuItem,
+  Glyphicon
 } from 'react-bootstrap';
 import { observer } from 'mobx-react';
 import './css/Navigation.css';
@@ -16,9 +17,9 @@ const Navigation = observer(class Navigation extends Component {
   // render component
   render() {
     return (
-      <Navbar className="Navv" inverse fixedTop>
-        <Navbar.Brand>
-          <a href="/">Hem</a>
+      <Navbar className="Navv" fixedTop>
+        <Navbar.Brand className="brand">
+          <a href="/">Receptsidan</a>
         </Navbar.Brand>
         <Navbar.Toggle />
         <Navbar.Collapse>
@@ -37,8 +38,40 @@ const Greeting = observer(() => {
 
 // if user is logged in
 const UserNav = observer((props) => {
+  const UserButton = () => {
+    return (
+      <span>
+        <Glyphicon glyph="user" />
+        {' ' + Auth.user.firstName + ' ' + Auth.user.lastName}
+      </span>
+    )
+  }
+
+  const LogoutButton = () => {
+    return (
+      <span>
+        
+      </span>
+    );
+  }
+
   return (
-    <Nav pullRight>
+    <div>
+      <ul className="nav navbar-nav navbar-right">
+        <li><a href="/profile" className="profile-button active">
+          <Glyphicon glyph="user" />{' ' + Auth.user.firstName + ' ' + Auth.user.lastName}
+        </a></li>
+        <li><a href="/new" className="new-button">
+          <Glyphicon glyph="plus" /> Nytt recept
+        </a></li>
+        <li><a href="/saved" className="heart-button">
+          <Glyphicon glyph="heart" className="heart-icon"/> Sparade
+        </a></li>
+        <li><a href="#" className="logout-button" onClick={() => {Auth.logout() && window.location.reload()}}>
+          <Glyphicon glyph="log-out" /> Logga ut
+        </a></li>
+      </ul>
+    {/**<Nav pullRight>
       <Navbar.Text>
         Signed in as: <Navbar.Link href="/profile">{Auth.user.firstName + ' ' + Auth.user.lastName}</Navbar.Link>
       </Navbar.Text>
@@ -49,7 +82,8 @@ const UserNav = observer((props) => {
         <MenuItem onClick={() => {Auth.logout() && window.location.reload(); }}>Logga ut</MenuItem>
         <MenuItem divider />
       </NavDropdown>
-    </Nav>
+    </Nav>**/}
+    </div>
   );
 });
 
