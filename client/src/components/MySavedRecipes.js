@@ -202,11 +202,17 @@ getFavourites() { //Render the favorites in listgroups
         </Row>
         <br/>
         <br/>
-        <ListGroup className="l-g" >
+        <Row>
+        <Col sm={3}></Col>
+        <Col sm={6} >
+        <ListGroup className="l-gg" >
+
           {this.getFavourites()}
           <Button class="btn btn-danger" onClick={this.removeAll.bind(this)}>Ta bort alla recept</Button>
         </ListGroup>
-
+        </Col>
+        <Col sm={2}></Col>
+        </Row>
       </div>
     );
   }
