@@ -37,8 +37,12 @@ body {
 	background-color: #2ecc71;
 }
 
-.plus-icon {
+.navbar-default .navbar-nav .plus-icon {
 	color: #2ecc71;
+}
+
+.navbar-default .navbar-nav .heart-icon {
+	color: #e74c3c;
 }
 
 /**
@@ -55,10 +59,6 @@ body {
 	.navbar-default .navbar-nav>li>a.new-button {
 		background-color: #2ecc71;
     	color: #fff;
-	}
-
-	.navbar-default .navbar-nav .heart-icon {
-		color: #e74c3c;
 	}
 
 	.navbar-default .navbar-nav>li>a.profile-button {
