@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
 import {
   Navbar,
-  Nav,
-  NavItem,
-  NavDropdown,
-  MenuItem,
   Glyphicon
 } from 'react-bootstrap';
 import { observer } from 'mobx-react';
@@ -38,23 +34,6 @@ const Greeting = observer(() => {
 
 // if user is logged in
 const UserNav = observer((props) => {
-  const UserButton = () => {
-    return (
-      <span>
-        <Glyphicon glyph="user" />
-        {' ' + Auth.user.firstName + ' ' + Auth.user.lastName}
-      </span>
-    )
-  }
-
-  const LogoutButton = () => {
-    return (
-      <span>
-        
-      </span>
-    );
-  }
-
   return (
     <div>
       <ul className="nav navbar-nav navbar-right">
