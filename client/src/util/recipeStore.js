@@ -76,16 +76,6 @@ class RecipeStore {
         }
       });
   }
-  getMyTags(tgs){
-    let ts=[];
-    let tags = this.tags;
-    tgs.forEach(function(tg){
-      ts.push(tags.find(function(tag){ return tag.id===tg; }).tag)
-    });
-    return ts;
-  }
-
-
 }
 const Store = new RecipeStore();
 export default Store;
