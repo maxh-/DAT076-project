@@ -8,6 +8,10 @@ exports.update = {
     matches: {
       options: /^[a-zåäöA-ZÅÄÖ\-]+$/,
       errorMessage: "must only contain letters"
+    },
+    isLength: {
+      options: {min: 1, max: 250},
+      errorMessage: "Cant be longer than 250 charactes and not empty"
     }
   },
   lastName: {
@@ -19,6 +23,10 @@ exports.update = {
     matches: {
       options: /^[a-zåäöA-ZÅÄÖ]+[a-zåäöA-ZÅÄÖ\s\-]*$/,
       errorMessage: "must only contain letters"
+    },
+    isLength: {
+      options: {min: 1, max: 250},
+      errorMessage: "Cant be longer than 250 charactes and not empty"
     }
   }
 };
@@ -33,6 +41,10 @@ exports.changePassword = {
     isLength: {
       options: {min: 3},
       errorMessage: "must be atleast 3 characters long"
+    },
+    isLength: {
+      options: {min: 1, max: 250},
+      errorMessage: "Cant be longer than 250 charactes and not empty"
     }
   },
   password: {
@@ -44,6 +56,10 @@ exports.changePassword = {
     isLength: {
       options: {min: 3},
       errorMessage: "must be atleast 3 characters long"
+    },
+    isLength: {
+      options: {min: 1, max: 250},
+      errorMessage: "Cant be longer than 250 charactes and not empty"
     }
   },
   password2:{

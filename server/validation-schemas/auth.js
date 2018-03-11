@@ -7,6 +7,10 @@ exports.register = {
     },
     isEmail: {
       errorMessage: "must be a email"
+    },
+    isLength: {
+      options: {min: 1, max: 127},
+      errorMessage: "Cant be longer than 127 charactes and not empty"
     }
   },
   password: {
@@ -18,6 +22,10 @@ exports.register = {
     isLength: {
       options: {min: 3},
       errorMessage: "must be atleast 3 characters long"
+    },
+    isLength: {
+      options: {min: 1, max: 250},
+      errorMessage: "Cant be longer than 250 charactes and not empty"
     }
   },
   password2:{
@@ -40,6 +48,14 @@ exports.register = {
     matches: {
       options: /^[a-zåäöA-ZÅÄÖ\-]+$/,
       errorMessage: "must only contain letters"
+    },
+    isLength: {
+      options: {min: 1, max: 250},
+      errorMessage: "Cant be longer than 250 charactes and not empty"
+    },
+    isLength: {
+      options: {min: 1, max: 250},
+      errorMessage: "Cant be longer than 250 charactes and not empty"
     }
   },
   lastName: {
@@ -51,7 +67,15 @@ exports.register = {
     matches: {
       options: /^[a-zåäöA-ZÅÄÖ]+[a-zåäöA-ZÅÄÖ\s\-]*$/,
       errorMessage: "must only contain letters"
+    },
+    isLength: {
+      options: {min: 1, max: 250},
+      errorMessage: "Cant be longer than 250 charactes and not empty"
     }
+  },
+  isLength: {
+    options: {min: 1, max: 250},
+    errorMessage: "Cant be longer than 250 charactes and not empty"
   }
 };
 
@@ -64,6 +88,10 @@ exports.forgot = {
     },
     isEmail: {
       errorMessage: "must be a email"
+    },
+    isLength: {
+      options: {min: 1, max: 127},
+      errorMessage: "Cant be longer than 127 charactes and not empty"
     }
   }
 };
@@ -77,6 +105,10 @@ exports.login = {
     },
     isEmail: {
       errorMessage: "must be a email"
+    },
+    isLength: {
+      options: {min: 1, max: 127},
+      errorMessage: "Cant be longer than 127 charactes and not empty"
     }
   },
   password: {
@@ -88,6 +120,10 @@ exports.login = {
     isLength: {
       options: {min: 3},
       errorMessage: "must be atleast 3 characters long"
+    },
+    isLength: {
+      options: {min: 1, max: 250},
+      errorMessage: "Cant be longer than 250 charactes and not empty"
     }
   }
 };
@@ -102,6 +138,10 @@ exports.reset = {
     isLength: {
       options: {min: 3},
       errorMessage: "must be atleast 3 characters long"
+    },
+    isLength: {
+      options: {min: 1, max: 250},
+      errorMessage: "Cant be longer than 250 charactes and not empty"
     }
   },
   password2:{
