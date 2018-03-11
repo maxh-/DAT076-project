@@ -56,6 +56,7 @@ main {
 .btn.btn-primary:hover{
     background-color: #27ae60;
     border-color: #27ae60;
+    outline: none;
 }
 
 .btn.btn-primary.active,
@@ -63,7 +64,9 @@ main {
     background-color: #27ae60;
     border-color: #27ae60;
     box-shadow: inset 0px 7px 20px -8px rgba(0,0,0,0.75);
+    outline: none;
 }
+
 .btn.btn-primary.active.focus,
 .btn.btn-primary.active:focus,
 .btn.btn-primary.active:hover,
@@ -72,8 +75,7 @@ main {
 .btn.btn-primary:active:hover {
     background-color: #27ae60;
     border-color: #27ae60;
-    box-shadow: none;
+    outline: none;
+    box-shadow: inset 0px 7px 20px -8px rgba(0,0,0,0.75);
 }
-
-
 
