@@ -68,15 +68,20 @@ async getUser() {
       grid.push(
         <Col className="Parent" xs={12} sm={6} lg={4}
             key={recipe.id}>
+
           <PublicProfileImage id={recipe.id}/>
+
+          <a href={'/recipe/' + recipe.id } >
           <div className="Op">
-            <a href={'/recipe/' + recipe.id } >
+
               <span>
                 { recipe.title }
               </span>
-            </a>
+
           </div>
+              </a>
         </Col>
+
       );
     });
     return grid;
@@ -135,9 +140,13 @@ const PublicProfileImage = observer(class PublicProfileImage extends Component {
     img.src = image;
   }
 
+  goToImage() {
+    window.location = '/recipe/' + this.props.id;
+  }
+
   render() {
     return (
-			<div className="Child" style={this.state.style}></div>
+			<div className="Child" style={this.state.style} onClick={this.goToImage.bind(this)}></div>
 
 		);
   }
