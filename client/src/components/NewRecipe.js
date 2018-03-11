@@ -521,8 +521,11 @@ class NewRecipe extends Component {
                 </FormControl>
               </Col>
               <Col xs={4} sm={2} className="noPadding">
-                <Button onClick={this.addIngredient.bind(this,'in')} className="fillWidth">
-                  Lägg till
+                <Button
+                 onClick={this.addIngredient.bind(this,'in')}
+                 className="fillWidth btn btn-primary"
+                 >
+                  <Glyphicon glyph="plus" />
                 </Button>
               </Col>
             </Col>
