@@ -48,7 +48,7 @@ const Browse = observer(class Browse extends Component {
 					const searchTerm = search[1][0];
 					await this.setState(prevState => ({
 						filter: filteredTgs,
-						searchWord: searchTerm,
+						searchTerm: searchTerm,
 						searchHeader: "Sökresultat"
 					}));
 					this.searchForm.value = searchTerm;
@@ -60,6 +60,7 @@ const Browse = observer(class Browse extends Component {
 				this.setState({ searchHeader:"Topplista" });
 			}
 		} else {
+			this.setState({ searchHeader:"Topplista" });
 			await RecipeStore.getAll();
 		}
 		await this.setState({
