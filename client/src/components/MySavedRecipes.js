@@ -22,12 +22,12 @@ class MySavedRecipes extends Component {
 
 
   }
-handleClick(i){
+handleClick(i){ //Redirect to the recipe the user clicks on
   let id = this.state.id;
-  window.location = "recipe/ " + id[i];
+  window.location = "recipe/" + id[i];
 }
 async componentDidMount() {
-
+//Get favorites for a user
 let tempArray = [];
 let favArray = [];
 let idArray = [];
@@ -43,7 +43,7 @@ await  fetch('/api/user/me/favorite', {
     .then(res => res.favorites.forEach((value) => {
       tempArray.push(value)
     }));
-
+//Store properties of the recipe in arrays
   for(var j=0; j<tempArray.length; j++) {
     favArray[j] = tempArray[j].title;
     idArray[j] = tempArray[j].id;
@@ -68,7 +68,7 @@ if(target.value === "Nam") {
   this.sortByTime();
 }
 
- sortByName() {
+ sortByName() { //Sort the recipes alphabetically
    let fav = this.state.Obj;
    let titleArray = [];
    let idArray = [];
@@ -87,7 +87,7 @@ if(target.value === "Nam") {
    return this.setState({favourites: titleArray, id: idArray, time: timeArray})
  }
 
- sortByTime() {
+ sortByTime() { //Sort the recipes based on how long time they will take to complete
    let fav = this.state.Obj;
    let titleArray = [];
    let idArray = [];
@@ -104,23 +104,7 @@ if(target.value === "Nam") {
 
   this.setState({favourites: titleArray, id: idArray, time: timeArray})
 }
-/*async fillFavorites() {
-  for(var f=1; f<=8; f++) {
-await fetch('/user/me/favorite', {
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'JWT '+ Auth.token
-    },
-    method: 'POST',
-    body: JSON.stringify({
-      recipeId: f
-    })
-  })
-    .then(res => res.json())
-    .then(res => console.log(res));
-    }
-}
-*/
+
 
 async removeFav(index, e) {
   e.stopPropagation();
@@ -137,7 +121,7 @@ async removeFav(index, e) {
      })
    })
      .then(res => res.json())
-     .then(res => console.log(res))
+     .then(res => console.log(res))//Remove recipes from frontend and backend bases on which index they have in the list
      .then(async () => {
       await this.setState({
         time: this.state.time.filter((function (e, i) {
@@ -151,7 +135,7 @@ async removeFav(index, e) {
   }
 
 async removeAll() {
-
+//Remove all the recipes from front and backend
 for(var k =0; k<this.state.favourites.length; k++) {
   let removeItem = this.state.id[k];
     fetch('/api/user/me/favorite', {
@@ -173,7 +157,7 @@ for(var k =0; k<this.state.favourites.length; k++) {
   }
 
 
-getFavourites() {
+getFavourites() { //Render the favorites in listgroups
   var favs = this.state.favourites;
   var time = this.state.time;
   let favItems = [];
