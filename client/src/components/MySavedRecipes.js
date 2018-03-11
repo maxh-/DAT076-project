@@ -131,7 +131,9 @@ async removeFav(index, e) {
           return i !== index;
         }))
       })
+      window.location.reload();
     });
+
   }
 
 async removeAll() {
@@ -162,7 +164,7 @@ getFavourites() { //Render the favorites in listgroups
   var time = this.state.time;
   let favItems = [];
   for(var i = 0; i<favs.length; i++) {
-    favItems.push(<ListGroupItem key={i}
+    favItems.push(<ListGroupItem key={i} id={i}
       className="l-g-i"
       onClick={this.handleClick.bind(this, i)}
       href="#">{favs[i]}<p>Tidsåtgång: {time[i]} minuter</p>
