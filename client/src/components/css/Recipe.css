@@ -49,6 +49,9 @@
 .jumbotron div .tag-label {
 	padding: 5px;
 }
+#right-span {
+	padding-top: 10px;
+}
 @media (min-width: 768px) {
 	#left-span {
 		text-align: right;

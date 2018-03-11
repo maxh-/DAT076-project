@@ -6,10 +6,19 @@ body {
 	margin-right: 0;
 }
 
-.navbar-default .navbar-brand {
+.navbar-default .navbar-brand,
+.navbar-default .navbar-brand:hover,
+.navbar-default .navbar-brand:focus {
 	color: #27ae60;
 	padding: 23px;
 	padding-bottom: 40px;
+}
+
+.navbar-default .navbar-brand:hover::after {
+	content: 'Hem';
+	font-size: 0.7em;
+	color: #666;
+	margin-left: 10px;
 }
 
 .dropdown-menu>li>a {

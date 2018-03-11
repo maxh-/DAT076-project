@@ -42,3 +42,7 @@ form {
 .editButton:hover {
   border-color: #2ECC71;
 }
+
+.recipe-link {
+  line-height: 30px;
+}
