@@ -51,7 +51,7 @@ const Browse = observer(class Browse extends Component {
 						searchTerm: searchTerm
 					}));
 					this.searchForm.value = searchTerm;
-					//await RecipeStore.searchOnMount(searchFromUrl)
+					await RecipeStore.searchOnMount(searchFromUrl)
 				}
 			}
 			catch(e) {
