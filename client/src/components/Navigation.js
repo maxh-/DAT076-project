@@ -9,8 +9,6 @@ import './css/Navigation.css';
 import Auth from '../util/AuthService';
 
 const Navigation = observer(class Navigation extends Component {
-
-  // render component
   render() {
     return (
       <Navbar className="Navv" fixedTop>
@@ -40,8 +38,8 @@ const UserNav = observer((props) => {
         <li><a href="/profile" className="profile-button active">
           <Glyphicon glyph="user" />{' ' + Auth.user.firstName + ' ' + Auth.user.lastName}
         </a></li>
-        <li><a href="/new" className="new-button">
-          <Glyphicon glyph="plus" /> Nytt recept
+        <li><a href="/new">
+          <Glyphicon glyph="plus" className="plus-icon"/> Nytt recept
         </a></li>
         <li><a href="/saved" className="heart-button">
           <Glyphicon glyph="heart" className="heart-icon"/> Sparade

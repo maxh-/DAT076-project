@@ -37,6 +37,10 @@ body {
 	background-color: #2ecc71;
 }
 
+.plus-icon {
+	color: #2ecc71;
+}
+
 /**
  * For desktop devices.
  */
@@ -59,7 +63,6 @@ body {
 
 	.navbar-default .navbar-nav>li>a.profile-button {
 		color: #777;
-		margin-right: 20px;
 	}
 
 	.navbar-default .navbar-nav>li>a.profile-button:hover {
