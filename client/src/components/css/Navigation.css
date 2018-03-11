@@ -60,8 +60,14 @@ body {
 		margin-right: 10px;
 	}
 
-	.navbar-default .navbar-nav>li>a.log-out {
-		background-color: #e5e5e5;
+	.navbar-default .navbar-nav>li>a.logout-button {
+		background-color: #f0f0f0;
+	}
+
+	.navbar-default .navbar-nav>li.register-button,
+	.navbar-default .navbar-nav>li.register-button>a {
+		background-color: #2ecc71;
+		color: #fff;
 	}
 }
 
