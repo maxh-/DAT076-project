@@ -124,12 +124,12 @@ const Browse = observer(class Browse extends Component {
 
   showRecipeCols() {
     let recipeCols = [];
+		let ovenmittStyle = {
+			height:"32px",
+			paddingBottom:"7px",
+			paddingLeft:"5px"
+		};
     RecipeStore.recipes.forEach(function(recipe) {
-      let ovenmittStyle = {
-        height:"32px",
-        paddingBottom:"7px",
-				paddingLeft:"5px"
-      };
       recipeCols.push(
         <Col className="grand-parent" xs={12} sm={6} lg={4}
           	key={recipe.id}>
@@ -138,10 +138,12 @@ const Browse = observer(class Browse extends Component {
 						<BrowseImage id={recipe.id} />
 	          <div className="op">
 							<div>
-
-	              <span>
-	                { recipe.title }
+								<Col xs={10}>
+	              <span className="op-span-left">
+	                { recipe.title.slice(0,25) }
 	              </span>
+							</Col>
+								<Col xs={2}>
 
 	              <span id="span-right">
                   { recipe.Likes }
@@ -151,7 +153,7 @@ const Browse = observer(class Browse extends Component {
 										style={ovenmittStyle}
 										className="pl"/>
 	              </span>
-
+							</Col>
 		          </div>
 						</div>
 					</div>
