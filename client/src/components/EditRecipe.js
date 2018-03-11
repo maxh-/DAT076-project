@@ -30,6 +30,8 @@ const EditRecipe = observer(class EditRecipe extends Component {
       showError: false,
       message: ''
     }
+
+    if (!Auth.user) window.location = `/recipe/${this.id}`;
   }
 
   componentDidMount() {
@@ -542,7 +544,9 @@ const StepsList = observer(class StepsList extends Component {
     this.store = props.store;
     
     this.state = {
-      newStep: ''
+      newStep: '',
+      error: false,
+      message: ''
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -550,6 +554,27 @@ const StepsList = observer(class StepsList extends Component {
     this.handleChangeNewStep = this.handleChangeNewStep.bind(this);
     this.deleteStep = this.deleteStep.bind(this);
     this.addStep = this.addStep.bind(this);
+  }
+
+  renderError() {
+    if (this.state.error) {
+      return (
+        <Row>
+          <Col md={10}>
+            <Panel bsStyle="danger">
+              <Panel.Heading>
+                <Panel.Title componentClass="h3">Fel:</Panel.Title>
+              </Panel.Heading>
+              <Panel.Body>
+                {this.state.message}
+              </Panel.Body>
+            </Panel>  
+          </Col>
+        </Row>
+      );
+    } else {
+      return null;
+    }
   }
 
   render() {
@@ -581,8 +606,9 @@ const StepsList = observer(class StepsList extends Component {
               );
             })}
           </FormGroup>
+          {this.renderError()} 
           <FormGroup>
-            <Row className="step">                  
+            <Row className="step">         
               <Col md={11}>
                 <FormControl
                   type="text"
@@ -612,6 +638,22 @@ const StepsList = observer(class StepsList extends Component {
     });
   }
 
+  validateStep() {
+    this.setState({
+      error: false,
+      message: ''
+    });
+    if (/^[\S]+[\S\s]*$/.test(this.state.newStep)) {
+      return true;
+    } else {
+      this.setState({
+        error: true,
+        message: 'Kontrollera att steget är korret ifyllt.'
+      })
+      return false;
+    }
+  }
+
   deleteStep({ target }) {
     console.log(target.id);
     const id = parseInt(target.id, 10);
@@ -624,10 +666,15 @@ const StepsList = observer(class StepsList extends Component {
   }
 
   addStep() {
-    this.store.recipe.Steps.push({
-      instruction: this.state.newStep,
-      number: this.store.recipe.Steps.length+1
-    })
+    if (this.validateStep()) {
+      this.store.recipe.Steps.push({
+        instruction: this.state.newStep,
+        number: this.store.recipe.Steps.length+1
+      })
+      this.setState({
+        newStep: ''
+      });
+    }
   }
 
   handleChange({ target }) {

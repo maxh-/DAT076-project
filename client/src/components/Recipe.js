@@ -194,11 +194,11 @@ const Recipe = observer( class Recipe extends Component {
                 <small>Spara</small>
               </Button>
             </span>
-            <span>
+            <span className="no-wrap">
               <Glyphicon glyph=" glyphicon glyphicon-time "  />
               <small> { RecipeStore.recipe.timeToComplete } minuter </small>
             </span>
-            <span>
+            <span className="no-wrap">
               <Glyphicon glyph=" glyphicon glyphicon-user "  />
               <small><a href={link}>{ this.state.author }</a></small>
             </span>

@@ -64,8 +64,8 @@ body {
 		background-color: #f0f0f0;
 	}
 
-	.navbar-default .navbar-nav>li.register-button,
-	.navbar-default .navbar-nav>li.register-button>a {
+	.navbar-default .navbar-nav>li>a.register-button,
+	.navbar-default .navbar-nav>li>a.register-button>a {
 		background-color: #2ecc71;
 		color: #fff;
 	}
