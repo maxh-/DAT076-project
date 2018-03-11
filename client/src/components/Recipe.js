@@ -194,11 +194,11 @@ const Recipe = observer( class Recipe extends Component {
                 <small>Spara</small>
               </Button>
             </span>
-            <span>
+            <span className="no-wrap">
               <Glyphicon glyph=" glyphicon glyphicon-time "  />
               <small> { RecipeStore.recipe.timeToComplete } minuter </small>
             </span>
-            <span>
+            <span className="no-wrap">
               <Glyphicon glyph=" glyphicon glyphicon-user "  />
               <small><a href={link}>{ this.state.author }</a></small>
             </span>
@@ -376,16 +376,20 @@ const RecipeImage = observer(class RecipeImage extends Component {
   async componentDidMount() {
     // load recipe image & update styles if it exists
     const image = `/img/${this.props.id}.jpg`;
-    const res = await fetch(image);
-    if (res.ok) this.setState({
-      style: {
-        ...this.state.style,
-        background: "url(" + image + ")",
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "center",
-        backgroundSize: "cover"
-      }
-    })
+    var img = new Image();
+    img.onload = () => {
+      this.setState({
+        style: {
+          ...this.state.style,
+          background: "url(" + image + ")",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
+          backgroundSize: "cover"
+        }
+      });
+    };
+    img.src = image;
+
   }
 
   render() {
