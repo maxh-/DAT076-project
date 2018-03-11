@@ -95,3 +95,13 @@ main {
     webkit-box-shadow: none;
     box-shadow: none;
 }
+
+input[type="text"], textarea {
+    outline: none;
+    webkit-box-shadow: none;
+    box-shadow:none !important;
+}
+
+.btn{
+    outline: none !important;
+}

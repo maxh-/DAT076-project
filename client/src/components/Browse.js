@@ -301,16 +301,19 @@ const BrowseImage = observer(class BrowseImage extends Component {
   async componentDidMount() {
     // load recipe image & update styles if it exists
     const image = `/img/${this.props.id}.jpg`;
-    const res = await fetch(image);
-    if (res.ok) this.setState({
-      style: {
-        ...this.state.style,
-        background: "url(" + image + ")",
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "center",
-        backgroundSize: "cover",
-      }
-    })
+    var img = new Image();
+    img.onload = () => {
+      this.setState({
+        style: {
+          ...this.state.style,
+          background: "url(" + image + ")",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
+          backgroundSize: "cover"
+        }
+      });
+    };
+    img.src = image;
   }
 
   render() {
