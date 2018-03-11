@@ -25,7 +25,7 @@ const Browse = observer(class Browse extends Component {
   		filter: [],
       meal:"",
       recipes: [],
-      availableTags: [],
+      availableTags: [1],
       searchHeader: ""
   	};
     this.handleChangeSearch = this.handleChangeSearch.bind(this);
@@ -48,7 +48,8 @@ const Browse = observer(class Browse extends Component {
 					const searchTerm = search[1][0];
 					await this.setState(prevState => ({
 						filter: filteredTgs,
-						searchTerm: searchTerm
+						searchWord: searchTerm,
+						searchHeader: "Sökresultat"
 					}));
 					this.searchForm.value = searchTerm;
 					await RecipeStore.searchOnMount(searchFromUrl)
@@ -56,13 +57,10 @@ const Browse = observer(class Browse extends Component {
 			}
 			catch(e) {
 				await RecipeStore.getAll();
+				this.setState({ searchHeader:"Topplista" });
 			}
 		}
-		else {
-			await RecipeStore.getAll();
-		}
-		this.setState({
-			searchHeader:"Topplista",
+		await this.setState({
 			availableTags: RecipeStore.getTags()
 		});
   }
@@ -83,7 +81,7 @@ const Browse = observer(class Browse extends Component {
 		this.makeUrl();
   }
   async addFilter({ target }) {
-	 if(target.value !== undefined) {
+	 	if(target.value !== undefined) {
 			if(!this.state.filter.includes(parseInt(target.value,10))) {
 	  		await this.setState(prevState => ({
 		  		filter: prevState.filter.concat(parseInt(target.value,10))
@@ -165,13 +163,12 @@ const Browse = observer(class Browse extends Component {
   }
 	showTags() {
 		let tags = []
-		/*
-		RecipeStore.getMyTags(this.state.filter).forEach(function(tag) {
+		this.state.filter.forEach(function(tag) {
+			const tg = RecipeStore.tags.find(rsTag => {return rsTag.id===tag});
 			tags.push(
-					<span className="tag"><b>#</b>{ tag }</span>
+					<span key={tg.id} className="tag"><b>#</b>{ tg.tag }</span>
 			);
 		});
-		*/
 		return tags;
 	}
 
