@@ -1,13 +1,8 @@
 #mainContainer {
 	padding: 10px 0;
 	width: 100%;
-}
-#mainContainer {
 	margin: 0 auto;
 	max-width: 1400px;
-}
-#glyph-space {
-	padding-left: 20px;
 }
 #mainContainer .container {
 	margin: 0;
@@ -44,20 +39,28 @@
 .jumbotron {
 	margin: 0;
 }
-.jumbotron p span {
+.jumbotron div span {
 	padding: 0 5px;
+	font-size: 20px;
 }
-.jumbotron span+small {
-	padding-right: 10px;
+.jumbotron p {
+	margin: 15px 0;
+}
+.jumbotron div .tag-label {
+	padding: 5px;
+}
+@media (min-width: 768px) {
+	#left-span {
+		text-align: right;
+		padding-right: 5px;
+	}
+	#right-span {
+		text-align:left;
+		padding-left: 5px;
+	}
 }
 .pad {
 	margin: 0 20px;
-}
-.no-wrap {
-	white-space: nowrap;
-}
-.gl {
-	padding: 10px;
 }
 .show-grid {
 	background-color: #eee;
@@ -66,21 +69,12 @@
 	-ms-text-align-last: left;
 	text-align-last: left;
 }
-.itemInList {
-	text-align: justify;
-}
-.itemInList p {
-	margin: 2px;
-}
 .tag-label {
 	margin: 5px;
 	font-size: 20px;
 }
 #show-tags span {
 	display: inline-block;
-}
-#no-text-decoration {
-	text-decoration: none;
 }
 #modal .modal-dialog {
 	width: 90%;
@@ -93,23 +87,6 @@
 }
 #modalBody {
 	height: 330px;
-}
-#pic {
-	background: #FFF;
-	border: none;
-	color: #000;
-	display: block;
-	font: initial;
-	letter-spacing: normal;
-	line-height: normal;
-	padding: 0;
-	width: 100%;
-	margin: 0 auto;
-	max-height: 450px;
-	object-fit: cover;
-}
-.btn-success {
-	background-color: #2ecc71;
 }
 #ovenmitt-style {
 	height: 32px;
@@ -124,28 +101,10 @@
 #save-btn {
 	font-size: 20px;
 }
-/* TODO */
-#ingrs {
-}
-#ingredients-list  {
-}
-#steps {
-}
-#steps-list {
-
-}
-
 .showIngrs-div-modal {
 	margin-left: 10px;
-
 }
-
 #ingredients-list-modal {
 	text-align-last: left;
 	width: 100%;
-}
-.ingredient {
-
-}
-.amount-and-unit {
 }

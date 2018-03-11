@@ -182,27 +182,35 @@ const Recipe = observer( class Recipe extends Component {
       const link = "/publicprofile/" + RecipeStore.recipe.UserId;
       return (
         <div>
-          <p>
-            <span>
-              {this.likeButton()}
-            </span>
-            <span>
-              <Button id="save-btn"
-                onClick={this.saveRecipe.bind(this)}
-                style={this.state.savedStyle}>
-                <Glyphicon glyph="glyphicon glyphicon-heart " id="glyph-heart" />
-                <small>Spara</small>
-              </Button>
-            </span>
-            <span className="no-wrap">
-              <Glyphicon glyph=" glyphicon glyphicon-time "  />
-              <small> { RecipeStore.recipe.timeToComplete } minuter </small>
-            </span>
-            <span className="no-wrap">
-              <Glyphicon glyph=" glyphicon glyphicon-user "  />
-              <small><a href={link}>{ this.state.author }</a></small>
-            </span>
-          </p>
+          <Row>
+            <Col sm={10} smOffset={1}>
+              <Row>
+                <Col xs={12} sm={5} id='left-span'>
+                  <span >
+                    {this.likeButton()}
+                  </span>
+                  <span >
+                    <Button id="save-btn"
+                      onClick={this.saveRecipe.bind(this)}
+                      style={this.state.savedStyle}>
+                      <Glyphicon glyph="glyphicon glyphicon-heart " id="glyph-heart" />
+                      <small>Spara</small>
+                    </Button>
+                  </span>
+                </Col>
+                <Col xs={12} sm={7} id='right-span' >
+                  <span>
+                    <Glyphicon glyph=" glyphicon glyphicon-time "  />
+                    <small> { RecipeStore.recipe.timeToComplete } minuter </small>
+                  </span>
+                  <span>
+                    <Glyphicon glyph=" glyphicon glyphicon-user "  />
+                    <small><a href={link}>{ this.state.author }</a></small>
+                  </span>
+              </Col>
+            </Row>
+          </Col>
+        </Row>
           <p>
            { RecipeStore.recipe.tweet }
           </p>
@@ -233,10 +241,10 @@ const Recipe = observer( class Recipe extends Component {
       RecipeStore.recipe.RecipeIngredients.forEach(function(ingr) {
         ingrs.push(
           <li key={ingr.number}>
-            <Col xs={8}>
+            <Col xs={7}>
               <b className="ingredient">{ ingr.Ingredient.name } </b>
             </Col>
-            <Col xs={4}>
+            <Col xs={5}>
               <small className="amount-and-unit"> { ingr.amount } { ingr.Unit.name }</small>
             </Col>
           </li>
@@ -252,7 +260,7 @@ const Recipe = observer( class Recipe extends Component {
       stps.push(
         <h1 key={0}>
           Instruktioner
-          <Button bsStyle="success" className="pad"
+          <Button bsStyle="primary" className="pad"
               onClick={ this.cookingMode.bind(this) }>
             <b>Börja laga</b>
           </Button>
@@ -260,7 +268,7 @@ const Recipe = observer( class Recipe extends Component {
       );
       RecipeStore.recipe.Steps.forEach(function(stp) {
         stps.push(
-          <li key={stp.number} className="itemInList">
+          <li key={stp.number}>
             <p>
               { stp.instruction }
             </p>
