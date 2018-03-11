@@ -187,7 +187,7 @@ const MyRecipes = observer(class MyRecipes extends Component {
             <a className="btn btn-default btn-sm editButton pull-right" href={`/recipe/${recipe.id}/edit`}>
               <Glyphicon glyph="pencil" />
             </a>
-            {recipe.title}
+            <a href={`/recipe/${recipe.id}`} className="recipe-link">{recipe.title}</a>
             </td>
           </tr>
       );
