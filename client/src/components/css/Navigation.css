@@ -5,3 +5,97 @@ body {
 	text-align: right;
 	margin-right: 0;
 }
+
+.navbar-default .navbar-brand {
+	color: #27ae60;
+	padding: 23px;
+	padding-bottom: 40px;
+}
+
+.dropdown-menu>li>a {
+	padding-top: 7px;
+	padding-left: 12px;
+	padding-bottom: 10px;
+	padding-right: 0px;
+}
+
+.dropdown-menu>li>a:hover {
+	color: #fff;
+	text-decoration: none;
+	background-color: #2ecc71;
+}
+
+/**
+ * For desktop devices.
+ */
+
+@media (min-width: 768px) {
+	.navbar-default .navbar-nav>li>a {
+		line-height: 33px;
+		padding-left: 20px;
+		padding-right: 20px;
+	}
+
+	.navbar-default .navbar-nav>li>a.new-button {
+		background-color: #2ecc71;
+    	color: #fff;
+	}
+
+	.navbar-default .navbar-nav .heart-icon {
+		color: #e74c3c;
+	}
+
+	.navbar-default .navbar-nav>li>a.profile-button {
+		color: #777;
+		margin-right: 20px;
+	}
+
+	.navbar-default .navbar-nav>li>a.profile-button:hover {
+		color: #555;
+	}
+
+	.navbar-default .navbar-nav>li>a.profile-button::before {
+		content: 'Inloggad:';
+		color: #999;
+		margin-right: 10px;
+	}
+
+	.navbar-default .navbar-nav>li>a.log-out {
+		background-color: #e5e5e5;
+	}
+}
+
+/**
+ * For mobile devices.
+ */
+
+@media (max-width: 767px) {
+	.navbar-default .navbar-collapse {
+		margin-top: 63px;
+		text-align: left;
+	}
+
+	.navbar-default .navbar-toggle .icon-bar {
+		background-color: #fff;
+	}
+
+	.navbar-default .navbar-toggle {
+		color: #fff;
+		background-color: #2ecc71 !important;
+		padding: 24px;
+		padding-top: 25px;
+		margin-right: -16px;
+		margin-top: 0px;
+		border: 0px;
+		margin-bottom: 0px;
+		border-radius: 0px;
+	}
+
+	.navbar-default .navbar-toggle:hover {
+		background-color: #2ecc71;
+	}
+
+	.icon-bar {
+		color: #fff;
+	}
+}
