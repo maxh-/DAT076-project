@@ -30,7 +30,7 @@ body {
 .App-title {
   font-size: 1.5em;
 }
-
+nn
 .App-intro {
   font-size: large;
 }
@@ -43,6 +43,41 @@ h1 {
       font-family: 'Lora', serif;
 }
 
+
 main {
 	margin-top: 40px;
 }
+
+.btn.btn-primary{
+    background-color: #2ecc71;
+    border-color: #27ae60;
+}
+
+.btn.btn-primary:hover{
+    background-color: #27ae60;
+    border-color: #27ae60;
+    outline: none;
+}
+
+.btn.btn-primary.active,
+.btn.btn-primary:active,
+.btn.btn-primary:focus-within
+ {
+    background-color: #27ae60;
+    border-color: #27ae60;
+    box-shadow: inset 0px 7px 20px -8px rgba(0,0,0,0.75);
+    outline: none;
+}
+
+.btn.btn-primary.active.focus,
+.btn.btn-primary.active:focus,
+.btn.btn-primary.active:hover,
+.btn.btn-primary:active.focus,
+.btn.btn-primary:active:focus,
+.btn.btn-primary:active:hover {
+    background-color: #27ae60;
+    border-color: #27ae60;
+    outline: none;
+    box-shadow: inset 0px 7px 20px -8px rgba(0,0,0,0.75);
+}
+
