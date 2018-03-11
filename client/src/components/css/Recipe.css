@@ -111,3 +111,19 @@
 	text-align-last: left;
 	width: 100%;
 }
+
+b.ingredient {
+	word-wrap: break-word;
+}
+
+small.amount-and-unit {
+	word-wrap: break-word;
+}
+
+p.step-text {
+	word-wrap: break-word;
+}
+
+.break-word {
+	word-wrap: break-word;
+}
