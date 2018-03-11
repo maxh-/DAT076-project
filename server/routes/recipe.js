@@ -22,7 +22,7 @@ router.post('/', isAuthenticated, checkSchema(recipeSchema.create), check('ingre
   }
   return unique;
 }), oneOf([
-  check('ingredients.*.ingredient').exists().not().isEmpty().matches(/^[a-zåäöA-ZÅÄÖ\s]*$/),
+  check('ingredients.*.ingredient').exists().not().isEmpty().matches(/^\S+[\S\s.,!?'"#]*$/),
   check('ingredients.*.IngredientId').exists().isInt()
 ]), validate, async (req, res, next) => {
   const response = await recipeController.create(req.body, req.user.id);
@@ -75,7 +75,7 @@ router.put('/:id', isAuthenticated, checkSchema(recipeSchema.update), check('ing
   }
   return unique;
 }), oneOf([
-  check('ingredients.*.ingredient').exists().not().isEmpty().matches(/^[a-zåäöA-ZÅÄÖ\s]*$/),
+  check('ingredients.*.ingredient').exists().not().isEmpty().matches(/^\S+[\S\s.,!?'"#]*$/),
   check('ingredients.*.IngredientId').exists().isInt()
 ]), validate, async (req, res, next) => {
   const response = await recipeController.update(req.body, req.params.id, req.user.id);
