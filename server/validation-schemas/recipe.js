@@ -8,6 +8,10 @@ exports.create = {
     matches: {
       options: /^\S+[\S\s.,!?'"#]*$/,
       errorMessage: "must only contain letters"
+    },
+    isLength: {
+      options: {min: 1, max: 250},
+      errorMessage: "Cant be longer than 250 charactes and not empty"
     }
   },
   tweet: {
@@ -19,6 +23,10 @@ exports.create = {
     matches: {
       options: /^\S+[\S\s.,!?'"#]*$/,
       errorMessage: "must only contain letters"
+    },
+    isLength: {
+      options: {min: 1, max: 140},
+      errorMessage: "Cant be longer than 140 charactes and not empty"
     }
   },
   timeToComplete: {
@@ -51,6 +59,10 @@ exports.create = {
     matches: {
       options: /^\S+[\S\s.,!?'"#]*$/,
       errorMessage: "must only contain letters"
+    },
+    isLength: {
+      options: {min: 1, max: 250},
+      errorMessage: "Cant be longer than 250 charactes and not empty"
     }
   },
   'steps.*.number': {
@@ -134,6 +146,10 @@ exports.update = {
     matches: {
       options: /^\S+[\S\s.,!?'"#]*$/,
       errorMessage: "must only contain letters"
+    },
+    isLength: {
+      options: {min: 1, max: 250},
+      errorMessage: "Cant be longer than 250 charactes and not empty"
     }
   },
   tweet: {
@@ -145,6 +161,10 @@ exports.update = {
     matches: {
       options: /^\S+[\S\s.,!?'"#]*$/,
       errorMessage: "must only contain letters"
+    },
+    isLength: {
+      options: {min: 1, max: 140},
+      errorMessage: "Cant be longer than 140 charactes and not empty"
     }
   },
   timeToComplete: {
@@ -177,6 +197,10 @@ exports.update = {
     matches: {
       options: /^\S+[\S\s.,!?'"#]*$/,
       errorMessage: "must only contain letters"
+    },
+    isLength: {
+      options: {min: 1, max: 250},
+      errorMessage: "Cant be longer than 250 charactes and not empty"
     }
   },
   'steps.*.number': {

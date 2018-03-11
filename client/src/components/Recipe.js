@@ -269,7 +269,7 @@ const Recipe = observer( class Recipe extends Component {
       RecipeStore.recipe.Steps.forEach(function(stp) {
         stps.push(
           <li key={stp.number}>
-            <p>
+            <p className="step-text">
               { stp.instruction }
             </p>
           </li>
@@ -341,17 +341,17 @@ const Recipe = observer( class Recipe extends Component {
               </Row>
               <Row>
                 <Col sm={12} md={8}>
-                  <div className="showIngrs-div-modal" class="well">
+                  <div className="showIngrs-div-modal break-word" class="well">
                   <p>
-                    <b>
+                    <b className="break-word">
                       {this.state.step.instruction}
                     </b>
                   </p>
                 </div>
                 </Col>
                 <Col sm={12} md={4}>
-                  <div className="showIngrs-div-modal" class="well">
-                    <ul id="ingredients-list-modal" >
+                  <div className="showIngrs-div-modal break-word" class="well">
+                    <ul id="ingredients-list-modal" className="break-word">
                       { this.showIngredients(false) }
                     </ul>
                   </div>
