@@ -1,6 +1,40 @@
-.Footer {
-	color:white;
-	margin: 0;
-	border-radius: 0;
-	height: 160px;
+.footer {
+	background-color: #ddd;
+	padding: 40px;
+	margin-top: 30px;
+	text-align: center;
 }
+
+.footer .footer-brand {
+	color: #27ae60;
+	font-size: 1.3em;
+}
+
+.footer .footer-brand small{
+	color: #333;
+}
+
+/**
+ * For desktop devices.
+ */
+
+@media (min-width: 768px) {
+	.footer .footer-brand {
+		text-align: right;
+	}
+
+	.footer .footer-masthead {
+		border-left: 2px solid #999;
+		text-align: left;
+	}
+}
+
+/**
+ * For mobile devices.
+ */
+
+ @media (max-width: 767px) {
+	 .footer .footer-brand {
+		 padding-bottom: 10px;
+	 }
+ }
