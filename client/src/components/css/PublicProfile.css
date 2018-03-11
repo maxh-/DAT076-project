@@ -1,6 +1,7 @@
 .Parent {
 	padding: 0;
 	height: 200px;
+
     overflow: hidden;
     position: relative;
 	  cursor: pointer;
@@ -20,7 +21,7 @@
   background-color: inherit;
 }
 .Gr {
-  width: 600px;
+  max-width: 600px;
 }
 .Op{
 	border-top-right-radius: 4px;
