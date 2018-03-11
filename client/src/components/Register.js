@@ -53,7 +53,7 @@ class RegisterForm extends Component {
   getFirstNameState() {
     if (this.state.firstName.length === 0) return null;
 
-    if (/^[a-zåäöA-ZÅÄÖ]+$/.test(this.state.firstName)) {
+    if (/^[a-zåäöA-ZÅÄÖ\-]+$/.test(this.state.firstName)) {
       return 'success';
     } else {
       return 'error';
@@ -63,7 +63,7 @@ class RegisterForm extends Component {
   getLastNameState() {
     if (this.state.lastName.length === 0) return null;
 
-    if (/^[a-zåäöA-ZÅÄÖ]+[a-zåäaA-ZÅÄÖ\s]*$/.test(this.state.lastName)) {
+    if (/^[a-zåäöA-ZÅÄÖ]+[a-zåäaA-ZÅÄÖ\s\-]*$/.test(this.state.lastName)) {
       return 'success';
     } else {
       return 'error';
