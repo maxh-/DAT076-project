@@ -47,17 +47,19 @@ class RecipeStore {
   searchFor(tags, searchTerm) {
     let tag = "";
     let term = "";
-
+    console.log(tags);
     if(tags.length === 0) { tag = ""; }
     else                  { tag = "tags="+tags.join(); }
     if(searchTerm.length === 0) { term = ""; }
     else                        { term = '&q=' + searchTerm; }
+    console.log(tag + term);
 
     fetch('/api/recipe/search?'+tag+term, {
       method: 'GET',
     })
       .then(res => res.json())
       .then(body => {
+        console.log(body);
         if(body.success && body.recipes) {
           this.recipes = body.recipes;
         }

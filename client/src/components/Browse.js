@@ -59,6 +59,8 @@ const Browse = observer(class Browse extends Component {
 				await RecipeStore.getAll();
 				this.setState({ searchHeader:"Topplista" });
 			}
+		} else {
+			await RecipeStore.getAll();
 		}
 		await this.setState({
 			availableTags: RecipeStore.getTags()
@@ -86,6 +88,7 @@ const Browse = observer(class Browse extends Component {
 	  		await this.setState(prevState => ({
 		  		filter: prevState.filter.concat(parseInt(target.value,10))
 		  	}));
+				console.log(this.state.filter);
 				this.setState({ searchHeader:"Sökresultat" });
 				await RecipeStore.searchFor(this.state.filter, this.state.searchWord);
 			}
@@ -99,7 +102,8 @@ const Browse = observer(class Browse extends Component {
 				}
 				else {
 					this.setState({ searchHeader:"Sökresultat" });
-					await RecipeStore.searchFor([], this.state.searchWord);
+					console.log("SÖK ändå");
+					await RecipeStore.searchFor(this.state.filter, this.state.searchWord);
 				}
 			}
 			this.makeUrl()
@@ -111,7 +115,7 @@ const Browse = observer(class Browse extends Component {
 				("tags="+this.state.filter.join()) : "tags=";
 		const searchWord = this.state.searchWord.length>0 ?
 				("&q="+this.state.searchWord) : "&q=";
-		this.props.history.push(tags+searchWord);
+		this.props.history.push('/browse/'+tags+searchWord);
 	}
 
   showRecipeCols() {
