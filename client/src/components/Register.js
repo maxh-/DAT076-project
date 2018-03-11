@@ -18,8 +18,6 @@ export default class Register extends Component {
   render() {
     return (
       <div className="register">
-        <h2>Registrering</h2>
-        <hr />
         <RegisterForm />
       </div>
     );
@@ -63,7 +61,7 @@ class RegisterForm extends Component {
   getLastNameState() {
     if (this.state.lastName.length === 0) return null;
 
-    if (/^[a-zåäöA-ZÅÄÖ]+[a-zåäaA-ZÅÄÖ\s-]*$/.test(this.state.lastName)) {
+    if (/^[a-zåäöA-ZÅÄÖ]+[ a-zåäaA-ZÅÄÖ\s-]*$/.test(this.state.lastName)) {
       return 'success';
     } else {
       return 'error';
@@ -131,7 +129,6 @@ async onPassword2Change(e) {
         firstName: this.state.firstName,
         lastName: this.state.lastName
       })
-
     })
     .then(res => res.json())
     .then(function(res) {
@@ -143,14 +140,15 @@ async onPassword2Change(e) {
       } else {
         alert("Något gick fel.");
       }
-  })
+    })
   }
 
-//TODO: Fixa generell onChange-funktion som funkar med bootstrap.
   render() {
     return (
       <Row>
-        <Col md={7}>
+        <Col sm={8} smOffset={2} md={6} mdOffset={3}>
+          <h2>Registrering</h2>
+          <hr />
           <form onSubmit={this.onSubmit.bind(this)}>
             <FormGroup
               controlId="email"
