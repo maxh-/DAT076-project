@@ -7,11 +7,11 @@ class Footer extends Component {
     return(
       <div className="footer">
         <Row>
-          <Col sm={2} smOffset={1} className="footer-brand">
+          <Col sm={2} className="footer-brand">
             Receptsidan<br />
             <small>DAT076 projekt</small>
           </Col>
-          <Col sm={9} className="footer-masthead">
+          <Col sm={10} className="footer-masthead">
             Adis Mahmutovic<br />
             David Berg Marklund<br />
             Linus Nilsson<br />

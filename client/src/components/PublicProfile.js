@@ -16,7 +16,7 @@ const PublicProfile = observer(class PublicProfile extends Component {
       lastName:"",
     };
   }
-
+//Get tge users public info
 async getUser() {
   let usr = [];
   await  fetch('/api/user/' + this.id , {
@@ -35,7 +35,7 @@ async getUser() {
    this.getUser();
    let recipes = [];
 
-
+//Get recipes made by user
   await fetch('/api/user/'+this.id+'/recipes', {
          headers: {
            'Content-Type': 'application/json'
@@ -59,7 +59,7 @@ async getUser() {
                     })
 
 }
-
+//Render the grid
   showRecipes() {
     let grid = [];
     let recipes =this.state.recipes;
@@ -88,7 +88,6 @@ async getUser() {
   render() {
 
     return (
-
       <div className="PublicProfile">
         <h2>{this.state.firstName} {this.state.lastName}</h2>
         <Row>
@@ -100,15 +99,11 @@ async getUser() {
             <h2> Recept </h2>
             <br />
             </Col>
-
             <Grid className="Gr">
              <Row  className="Show-grid" >
-               <Col  >
                     { this.showRecipes()}
-               </Col>
              </Row>
            </Grid>
-
         </Row>
       </div>
     );

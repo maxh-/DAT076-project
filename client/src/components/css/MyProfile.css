@@ -6,7 +6,7 @@
   width: 130px;
   height: auto;
   border-radius: 50%;
-  border: 3px solid #999;
+  border: 3px solid #DDD;
 }
 
 .aboutUser {
@@ -33,4 +33,12 @@ form {
 .recipeName {
   font-size: 1.2em;
   margin-bottom: -10px;
+}
+
+.glyphicon-pencil {
+  color: #2ECC71;
+}
+
+.editButton:hover {
+  border-color: #2ECC71;
 }
