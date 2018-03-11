@@ -64,21 +64,17 @@ async getUser() {
     let grid = [];
     let recipes =this.state.recipes;
     recipes.forEach(function(recipe) {
-      let backGround = {
-        backgroundImage: 'url(/img/'+recipe.id+'.jpg)'
-      };
+
       grid.push(
         <Col className="Parent" xs={12} sm={6} lg={4}
             key={recipe.id}>
-          <div className="Child" style={backGround} >
-
+          <PublicProfileImage id={recipe.id}/>
           <div className="Op">
             <a href={'/recipe/' + recipe.id } >
               <span>
                 { recipe.title }
               </span>
             </a>
-          </div>
           </div>
         </Col>
       );
@@ -107,6 +103,43 @@ async getUser() {
         </Row>
       </div>
     );
+  }
+});
+
+const PublicProfileImage = observer(class PublicProfileImage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      style: {
+        background: "url('/img/food.png')", // default image
+				backgroundAttachment: "fixed"
+      }
+    }
+  }
+
+  async componentDidMount() {
+    // load recipe image & update styles if it exists
+    const image = `/img/${this.props.id}.jpg`;
+    var img = new Image();
+    img.onload = () => {
+      this.setState({
+        style: {
+          ...this.state.style,
+          background: "url(" + image + ")",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
+          backgroundSize: "cover"
+        }
+      });
+    };
+    img.src = image;
+  }
+
+  render() {
+    return (
+			<div className="Child" style={this.state.style}></div>
+
+		);
   }
 });
 
