@@ -34,3 +34,11 @@ form {
   font-size: 1.2em;
   margin-bottom: -10px;
 }
+
+.glyphicon-pencil {
+  color: #2ECC71;
+}
+
+.editButton:hover {
+  border-color: #2ECC71;
+}
