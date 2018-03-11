@@ -46,7 +46,7 @@ const Login = observer(class Login extends Component {
     return (
       <div className="login">
         <Row>
-          <Col md={7}>
+          <Col sm={8} smOffset={2} md={6} mdOffset={3}>
             <h2>Logga in</h2>
             <hr />
             <form onSubmit={this.onSubmit.bind(this)}>
