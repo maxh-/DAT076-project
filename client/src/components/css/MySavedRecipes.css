@@ -18,3 +18,15 @@
   margin: 0 auto;
   padding: 5px;
 }
+
+.sortText{
+  text-align: middle;
+  padding: 0;
+  padding-top: 7px;
+}
+
+label.col-sm-2 {
+  text-align: right;
+  padding: 0;
+  padding-top: 7px;
+}

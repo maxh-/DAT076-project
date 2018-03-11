@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {  Button,  ListGroup, ListGroupItem, Col,
-  FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
+  FormGroup, ControlLabel, FormControl, Row } from 'react-bootstrap';
 import Auth from '../util/AuthService';
 import './css/MySavedRecipes.css';
 
@@ -176,26 +176,33 @@ getFavourites() { //Render the favorites in listgroups
     return (
       <div classNtimeame="MySavedRecipes">
       <h2>Mina sparade recept</h2>
-
-        <FormGroup controlId="formControlsSelect">
-        <Col className="col-two" sm={2} componentClass={ControlLabel}>
-            Sortera efter
+        <Row>
+        <div className="rowDiv">
+        <FormGroup controlId="titel">
+        <Col sm={2}>
         </Col>
-        <Col className="col-ten" sm={10}>
-            <FormControl componentClass="select"
-                placeholder="select"
-                value={this.state.dropDown}
-                onChange={this.handleChange.bind(this)}
-                name="dropDown"
-                defaultValue="timeTo">
-                <option value="timeTo">Tidsåtgång</option>
-                <option value="Nam">Namn</option>
-            </FormControl>
+          <Col componentClass={ControlLabel} sm={2}>
+            Sortera efter:
+          </Col>
+          <Col sm={4}>
+          <FormControl componentClass="select"
+              placeholder="select"
+              value={this.state.dropDown}
+              onChange={this.handleChange.bind(this)}
+              name="dropDown"
+              defaultValue="timeTo">
+}           <option value="timeTo">Tidsåtgång</option>
+            <option value="Nam">Namn</option>
+          </FormControl>
+          </Col>
+          <Col sm={4}>
           </Col>
         </FormGroup>
+        </div>
+        </Row>
         <br/>
         <br/>
-        <ListGroup class="l-g" >
+        <ListGroup className="l-g" >
           {this.getFavourites()}
           <Button class="btn btn-danger" onClick={this.removeAll.bind(this)}>Ta bort alla recept</Button>
         </ListGroup>
