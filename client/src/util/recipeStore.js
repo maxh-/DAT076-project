@@ -33,6 +33,17 @@ class RecipeStore {
         }
       });
   }
+  searchOnMount(term) {
+    fetch('/api/recipe/search?'+term, {
+      method: 'GET',
+    })
+      .then(res => res.json())
+      .then(body => {
+        if(body.success && body.recipes) {
+          this.recipes = body.recipes;
+        }
+      });
+  }
   searchFor(tags, searchTerm) {
     let tag = "";
     let term = "";
@@ -52,8 +63,8 @@ class RecipeStore {
         }
       });
   }
-  getTags() {
-   fetch('/api/tag/', {
+  async getTags() {
+   await fetch('/api/tag/', {
       method: 'GET',
     })
       .then(res => res.json())

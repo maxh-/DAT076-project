@@ -120,6 +120,9 @@
 	margin: 0 2px;
 	font-size: 20px;
 }
+.tag {
+	padding: 0 3px;
+}
 #fo {
 	width: 100%;
 }
@@ -143,7 +146,12 @@
 	box-shadow:         0px 5px 4px 2px #ccc;  /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
 
 }
-
+div div div ul.dropdown-menu {
+	width: inherit;
+}
+div div div ul.dropdown-menu div {
+	width: 100%;
+}
 #btnGrp{
 	height: 20px;
 	width: 100%;

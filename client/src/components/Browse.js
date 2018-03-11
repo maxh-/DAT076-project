@@ -1,17 +1,23 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
-import { Glyphicon, Grid, Row, Col, Button, InputGroup,
-	FormControl, DropdownButton,
-	ToggleButtonGroup, ToggleButton,
-	PageHeader, ButtonToolbar } from 'react-bootstrap';
+import {
+	Row,
+	Col,
+	Grid,
+	Button,
+	Glyphicon,
+	PageHeader,
+	InputGroup,
+	FormControl,
+	ToggleButton,
+	ButtonToolbar,
+	DropdownButton,
+	ToggleButtonGroup
+} from 'react-bootstrap';
 import './css/Browse.css';
 import RecipeStore from '../util/recipeStore';
 
-
-
-
 const Browse = observer(class Browse extends Component {
-
 	constructor(props) {
     super(props);
     this.state = {
@@ -22,19 +28,49 @@ const Browse = observer(class Browse extends Component {
       availableTags: [],
       searchHeader: ""
   	};
-    RecipeStore.getAll();
-    RecipeStore.getTags();
     this.handleChangeSearch = this.handleChangeSearch.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.addFilter = this.addFilter.bind(this);
   }
 
-  componentDidMount() {
-		this.setState({searchHeader:"Topplista"});
+  async componentDidMount() {
+		await RecipeStore.getTags();
+		const searchFromUrl = this.props.match.params.searchterm ? this.props.match.params.searchterm : "";
+		if(searchFromUrl) {
+			const search = [];
+			try {
+				searchFromUrl.split('&').map(str => search.push(str.split('=').slice(1)));
+				if(search[0].length>0 || search[1].length>0) {
+					const tgs = [];
+					search[0][0].split(',').map(fltr => tgs.push(parseInt(fltr,10)));
+					const filteredTgs = tgs.filter(function(tag) {
+						return (tag<RecipeStore.tags.length) });
+					const searchTerm = search[1][0];
+					await this.setState(prevState => ({
+						filter: filteredTgs,
+						searchTerm: searchTerm
+					}));
+					this.searchForm.value = searchTerm;
+					//await RecipeStore.searchOnMount(searchFromUrl)
+				}
+			}
+			catch(e) {
+				await RecipeStore.getAll();
+			}
+		}
+		else {
+			await RecipeStore.getAll();
+		}
+		this.setState({
+			searchHeader:"Topplista",
+			availableTags: RecipeStore.getTags()
+		});
   }
+	componentDidUpdate() {
+	}
 
-  handleChangeSearch({ target }) {
-    this.setState({
+  async handleChangeSearch({ target }) {
+    await this.setState({
       [target.name]: target.value
     });
     if(target.value.length === 0) {
@@ -44,11 +80,10 @@ const Browse = observer(class Browse extends Component {
         RecipeStore.getAll();
       }
     }
+		this.makeUrl();
   }
-
   async addFilter({ target }) {
 	 if(target.value !== undefined) {
-
 			if(!this.state.filter.includes(parseInt(target.value,10))) {
 	  		await this.setState(prevState => ({
 		  		filter: prevState.filter.concat(parseInt(target.value,10))
@@ -69,8 +104,17 @@ const Browse = observer(class Browse extends Component {
 					await RecipeStore.searchFor([], this.state.searchWord);
 				}
 			}
+			this.makeUrl()
 		}
   }
+
+	makeUrl() {
+		const tags = this.state.filter.length>0 ?
+				("tags="+this.state.filter.join()) : "tags=";
+		const searchWord = this.state.searchWord.length>0 ?
+				("&q="+this.state.searchWord) : "&q=";
+		this.props.history.push(tags+searchWord);
+	}
 
   showRecipeCols() {
     let recipeCols = [];
@@ -82,24 +126,26 @@ const Browse = observer(class Browse extends Component {
       };
       recipeCols.push(
         <Col className="grand-parent" xs={12} sm={6} lg={4}
-            key={recipe.id}>
-						<a href={'/recipe/' + recipe.id } >
+          	key={recipe.id}>
+					<a href={'/recipe/' + recipe.id } >
 					<div className="parent">
 						<BrowseImage id={recipe.id} />
 	          <div className="op">
 							<div>
-		              <span>
-		                { recipe.title }
-		              </span>
 
-		              <span id="span-right">
-		                   { recipe.Likes }
-		                <img
-											alt={recipe.id}
-											src="/img/oven-like.svg"
-											style={ovenmittStyle}
-											className="pl"/>
-		              </span>
+	              <span>
+	                { recipe.title }
+	              </span>
+
+	              <span id="span-right">
+                  { recipe.Likes }
+	                <img
+										alt={recipe.id}
+										src="/img/oven-like.svg"
+										style={ovenmittStyle}
+										className="pl"/>
+	              </span>
+
 		          </div>
 						</div>
 					</div>
@@ -119,11 +165,13 @@ const Browse = observer(class Browse extends Component {
   }
 	showTags() {
 		let tags = []
+		/*
 		RecipeStore.getMyTags(this.state.filter).forEach(function(tag) {
 			tags.push(
-					<span><b>#</b>{ tag }</span>
+					<span className="tag"><b>#</b>{ tag }</span>
 			);
 		});
+		*/
 		return tags;
 	}
 
@@ -141,7 +189,6 @@ const Browse = observer(class Browse extends Component {
   }
 
   render() {
-		//Switch för splash och sök?
     return (
     	<div className="content">
     		<div id="search" >
@@ -149,6 +196,7 @@ const Browse = observer(class Browse extends Component {
 			      <InputGroup className="gr">
 				      <FormControl bsSize="large" id="fc" type="text"
 				        placeholder="Sök recept" name="searchWord"
+								inputRef={((a) => this.searchForm = a)}
 				        onChange={this.handleChangeSearch.bind(this)} />
 				      <InputGroup.Addon id="addon" >
 					  		<Button id="subBtn" type="submit" bsSize="large">
@@ -157,6 +205,7 @@ const Browse = observer(class Browse extends Component {
 							</InputGroup.Addon>
 				    </InputGroup>
 		  		</form>
+
           <ButtonToolbar>
             <Col xs={3}>
               <DropdownButton title="Måltid" className="btns" id="a">
@@ -170,6 +219,7 @@ const Browse = observer(class Browse extends Component {
                 </ToggleButtonGroup>
               </DropdownButton>
             </Col>
+
             <Col xs={3}>
              	<DropdownButton title="Rättyp" className="btns" id="b">
   		          <ToggleButtonGroup type="radio" name="filter"
@@ -178,23 +228,25 @@ const Browse = observer(class Browse extends Component {
       			      <ToggleButton className="dropdownItem" value={5}>Nattamat</ToggleButton>
       			      <ToggleButton className="dropdownItem" value={6}>Bakismat</ToggleButton>
                   <ToggleButton className="dropdownItem" value={7}>Veganskt</ToggleButton>
+									<ToggleButton className="dropdownItem" value={11}>Pizza</ToggleButton>
+									<ToggleButton className="dropdownItem" value={12}>Pasta</ToggleButton>
+									<ToggleButton className="dropdownItem" value={13}>Burgare</ToggleButton>
+									<ToggleButton className="dropdownItem" value={14}>Fisk</ToggleButton>
   				      </ToggleButtonGroup>
               </DropdownButton>
             </Col>
+
             <Col xs={3}>
               <DropdownButton title="Ingrediens" className="btns" id="c">
   		          <ToggleButtonGroup type="radio" name="filter"
   		      					value={this.state.filter}
           						onClick={this.addFilter.bind(this)}>
-                  <ToggleButton className="dropdownItem" value={11}>Pizza</ToggleButton>
-                  <ToggleButton className="dropdownItem" value={12}>Pasta</ToggleButton>
-                  <ToggleButton className="dropdownItem" value={13}>Burgare</ToggleButton>
-                  <ToggleButton className="dropdownItem" value={14}>Fisk</ToggleButton>
                   <ToggleButton className="dropdownItem" value={15}>Grönsaker</ToggleButton>
                   <ToggleButton className="dropdownItem" value={16}>Kött</ToggleButton>
                 </ToggleButtonGroup>
               </DropdownButton>
             </Col>
+
             <Col xs={3}>
               <DropdownButton title="Specialkost" className="btns" id="d">
                 <ToggleButtonGroup type="radio" name="filter"
@@ -204,22 +256,21 @@ const Browse = observer(class Browse extends Component {
       			      <ToggleButton className="dropdownItem" value={9}>lakto-ovo-vegetarianskt</ToggleButton>
       			      <ToggleButton className="dropdownItem" value={10}>ovo-vegetarianskt</ToggleButton>
                   <ToggleButton className="dropdownItem" value={17}>Glutenfritt</ToggleButton>
-
                 </ToggleButtonGroup>
               </DropdownButton>
             </Col>
 				  </ButtonToolbar>
-	      	{ this.searchTerm() }
+	      	{ this.showTags() }
         </div>
         <div>
 	      </div>
 				<PageHeader>
-					{this.state.searchHeader}
+					{ this.state.searchHeader }
 				</PageHeader>
 	      <Grid className="gr">
 			    <Row  className="show-grid" >
 	          <Col >
-                { this.showRecipeCols() }
+              { this.showRecipeCols() }
 				    </Col>
 		      </Row>
 			  </Grid>
