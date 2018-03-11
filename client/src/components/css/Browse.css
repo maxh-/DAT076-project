@@ -81,10 +81,10 @@
 	opacity: 1;
  	color: white;
   font-family: 'Lora', serif;
- 	font-size: 28px;
-	padding-left: 20px;
+ 	font-size: 22px;
 }
 .op {
+	height: 35px;
 	width: 100%;
 	text-align: left;
 	text-decoration: none;
@@ -168,9 +168,13 @@ div div div ul.dropdown-menu div {
 	margin: 0;
 	width: 52px;
 }
+.op-span-left {
+	text-overflow: ellipsis;
+}
 #span-right {
-	border-radius: 4px;
-	padding: 4px 8px;
+	border-right-radius: 4px;
+	width: 60px;
+	padding: 1px 8px;
 	font-size: 20px;
 	background-color: #1B5E20;
 	color: #2ecc71;
