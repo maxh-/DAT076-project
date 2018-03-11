@@ -9,7 +9,7 @@ class Footer extends Component {
         <Row>
           <Col md={1} mdOffset={1} className="footer-brand">
             Receptsidan<br />
-            <small>a DAT076 project</small>
+            <small>DAT076 projekt</small>
           </Col>
           <Col md={10} className="footer-masthead">
             Adis Mahmutovic<br />
