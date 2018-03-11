@@ -100,6 +100,10 @@ const Browse = observer(class Browse extends Component {
 					this.setState({ searchHeader:"Topplista" });
 					await RecipeStore.getAll();
 				}
+				else if(this.state.filter.length>0) {
+					this.setState({ searchHeader:"Sökresultat" });
+					await RecipeStore.searchFor(this.state.filter,this.state.searchWord);
+				}
 				else {
 					this.setState({ searchHeader:"Sökresultat" });
 					console.log("SÖK ändå");

@@ -222,32 +222,24 @@ const Recipe = observer( class Recipe extends Component {
     return tgs;
   }
 
-  showIngredients() {
+  showIngredients(heading) {
     let ingrs = [];
-    if(this.state.exists) {
-      ingrs.push(
-        <h1 key={0}> Ingredienser </h1>
-      );
+      if(this.state.exists) {
+        if(heading) {
+          ingrs.push(
+            <h1 key={0}> Ingredienser </h1>
+          );
+        }
       RecipeStore.recipe.RecipeIngredients.forEach(function(ingr) {
         ingrs.push(
           <li key={ingr.number}>
-            <b>{ ingr.Ingredient.name } </b>
-            <small> { ingr.amount } { ingr.Unit.name }</small>
+            <Col xs={8}>
+              <b className="ingredient">{ ingr.Ingredient.name } </b>
+            </Col>
+            <Col xs={4}>
+              <small className="amount-and-unit"> { ingr.amount } { ingr.Unit.name }</small>
+            </Col>
           </li>
-        );
-      });
-    }
-    return ingrs;
-  }
-  showIngredientsModal() {
-    let ingrs = [];
-    if(this.state.exists) {
-      RecipeStore.recipe.RecipeIngredients.forEach(function(ingr) {
-        ingrs.push(
-          <ul>
-            <b>{ ingr.Ingredient.name }: </b>
-            <small> { ingr.amount } { ingr.Unit.name }</small>
-          </ul>
         );
       });
     }
@@ -304,7 +296,7 @@ const Recipe = observer( class Recipe extends Component {
           <Row className="show-grid">
             <Col xs={12} md={4} id="ingrs"  className="lists">
               <ul id="ingredients-list">
-                { this.showIngredients() }
+                { this.showIngredients(true) }
               </ul>
             </Col>
             <Col xs={12} md={8} id="steps" className="lists">
@@ -340,22 +332,23 @@ const Recipe = observer( class Recipe extends Component {
               <hr/>
               </Row>
               <Row>
-              <Col xs={12} md={4}>
-              <div className="showIngrs-div-modal">
-                      <ul id="ingredients-list-modal" class="well">
-                        { this.showIngredientsModal() }
-                      </ul>
+                <Col sm={12} md={8}>
+                  <div className="showIngrs-div-modal" class="well">
+                  <p>
+                    <b>
+                      {this.state.step.instruction}
+                    </b>
+                  </p>
+                </div>
+                </Col>
+                <Col sm={12} md={4}>
+                  <div className="showIngrs-div-modal" class="well">
+                    <ul id="ingredients-list-modal" >
+                      { this.showIngredients(false) }
+                    </ul>
                   </div>
-                  </Col>
-                  <Col xs={12} md={4}>
-              <p>
-                <b>
-                  {this.state.step.instruction}
-                </b>
-              </p>
-              </Col>
+                </Col>
               </Row>
-
             </div>
           </Modal.Body>
           <Modal.Footer>
